@@ -8,7 +8,7 @@ const {
   validateManualTaskInputInput
 } = require("../../util/validators");
 
-const monthOptions = require("../../client/src/assets/options/month.json");
+const monthOptions = require("../../json/month.json");
 
 module.exports = {
   Query: {

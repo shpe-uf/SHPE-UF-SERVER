@@ -8,8 +8,8 @@ const {
   validateManualInputInput
 } = require("../../util/validators");
 
-const categoryOptions = require("../../client/src/assets/options/category.json");
-const monthOptions = require("../../client/src/assets/options/month.json");
+const categoryOptions = require('../../json/category.json');
+const monthOptions = require("../../json/month.json");
 
 module.exports = {
   Query: {
