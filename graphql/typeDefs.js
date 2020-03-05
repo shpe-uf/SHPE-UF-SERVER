@@ -27,6 +27,7 @@ module.exports = gql`
     listServ: Boolean!
     events: [Event]!
     tasks: [Task]!
+    bookmarkedtasks: [Task]!
     token: String!
     message: String!
     classes: [Class]!
@@ -249,6 +250,16 @@ module.exports = gql`
     username: String!
   }
 
+  input bookmarkTaskInput {
+    name: String!
+    username: String!
+  }
+
+  input unBookmarkTaskInput {
+    name: String!
+    username: String!
+  }
+
   input RedeemTasksPointsInput {
     name: String!
     username: String!
@@ -329,6 +340,8 @@ module.exports = gql`
     getSexStat: [StatData]
     getEthnicityStat: [StatData]
     getAlumnis: [Alumni]
+    getUserTasks: [User]
+    getBookmarkedTasks: [User]
   }
 
   ### MUTATIONS LIST ###
@@ -342,6 +355,8 @@ module.exports = gql`
     createEvent(createEventInput: CreateEventInput): [Event]
     redeemPoints(redeemPointsInput: RedeemPointsInput): User!
     createTask(createTaskInput: CreateTaskInput): Task!
+    bookmarkTask(bookmarkTaskInput: bookmarkTaskInput): User!
+    unBookmarkTask(unBookmarkTaskInput: unBookmarkTaskInput): User!
     redeemTasksPoints(redeemTasksPointsInput: RedeemTasksPointsInput): User!
     approveRequest(
       approveRejectRequestInput: ApproveRejectRequestInput

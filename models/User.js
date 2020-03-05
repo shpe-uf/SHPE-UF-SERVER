@@ -94,11 +94,14 @@ const userSchema = new Schema({
     createdAt: String,
     points: Number,
   }],
-  classes: [
-    {
-      code: String
-    }
-  ],
+  bookmarkedtasks: [{
+    name: String,
+    createdAt: String,
+    points: Number,
+  }],
+  classes: [{
+    code: String
+  }],
   token: {
     type: String
   },

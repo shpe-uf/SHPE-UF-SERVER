@@ -99,6 +99,7 @@ module.exports = {
             listServ: user.listServ,
             events: user.events,
             tasks: user.tasks,
+            bookmarkedTasks: user.bookmarkedTasks,
             bookmarks: user.bookmarks,
             classes: user.classes
           };
@@ -383,6 +384,58 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
+    },
+    async getUserTasks() {
+      try {
+        const data = await User.aggregate([{
+          $group: {
+            _id: '$tasks',
+            value: {
+              $sum: 1
+            }
+          }
+        },
+        {
+          $sort: {
+            value: -1
+          }
+        }
+        ]);
+
+        if (data) {
+          return data;
+        } else {
+          throw new Error("Data not found.");
+        }
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
+    async getBookmarkedTasks() {
+      try {
+        const data = await User.aggregate([{
+          $group: {
+            _id: '$bookmarkedTasks',
+            value: {
+              $sum: 1
+            }
+          }
+        },
+        {
+          $sort: {
+            value: -1
+          }
+        }
+        ]);
+
+        if (data) {
+          return data;
+        } else {
+          throw new Error("Data not found.");
+        }
+      } catch (err) {
+        throw new Error(err);
+      }
     }
   },
 
@@ -537,6 +590,7 @@ module.exports = {
         listServ,
         events: [],
         tasks: [],
+        bookmarkedTasks: [],
         bookmarks: []
       });
 
@@ -681,6 +735,7 @@ module.exports = {
           listServ: user.listServ,
           events: user.events,
           tasks: user.tasks,
+          bookmarkedTasks: user.bookmarkedTasks,
           bookmarks: user.bookmarks,
           message: "Event code has been sent for approval."
         };
@@ -762,6 +817,84 @@ module.exports = {
       }
     },
 
+    async bookmarkTask(
+      _, {
+        bookmarkTaskInput: {
+          name,
+          username
+        }
+      }
+    ){
+      var errors = {};
+
+      const task = await Task.findOne({
+        name
+      });
+
+      var updatedUser = await User.findOneAndUpdate({
+        username
+      }, {
+          $push: {
+            bookmarkedTasks: {
+              $each: [{
+                name: task.name,
+                category: task.category,
+                createdAt: task.createdAt,
+                points: task.points
+              }],
+              $sort: {
+                createdAt: 1
+              }
+            }
+          },
+        }, {
+          new: true
+        });
+
+      updatedUser.message = "";
+
+      return updatedUser;
+    },
+
+    async unBookmarkTask(
+      _, {
+        unBookmarkTaskInput: {
+          name,
+          username
+        }
+      }
+    ){
+      var errors = {};
+
+      const task = await Task.findOne({
+        name
+      });
+
+      var updatedUser = await User.findOneAndUpdate({
+        username
+      }, {
+          $pull: {
+            bookmarkedTasks: {
+              $each: [{
+                name: task.name,
+                category: task.category,
+                createdAt: task.createdAt,
+                points: task.points
+              }],
+              $sort: {
+                createdAt: 1
+              }
+            }
+          },
+        }, {
+          new: true
+        });
+
+      updatedUser.message = "";
+
+      return updatedUser;
+    },
+
     async redeemTasksPoints(
       _, {
         redeemTasksPointsInput: {
@@ -822,7 +955,6 @@ module.exports = {
 
       console.log(newTaskRequest);
 
-
       const res = await newTaskRequest.save();
 
       var newUser = {
@@ -846,6 +978,7 @@ module.exports = {
         listServ: user.listServ,
         events: user.events,
         tasks: user.tasks,
+        bookmarkedtasks: user.bookmarkedTasks,
         message: "Task has been sent for approval."
 
       };
@@ -1023,7 +1156,7 @@ module.exports = {
 
       return updatedUser;
     },
-    
+
     async editUserProfile(
       _,
       {
