@@ -299,7 +299,7 @@ module.exports.validateCreateEditCorporationInput = (
   }
 
   if (logo.trim() === "") {
-    errors.slogan = "No logo was provided.";
+    errors.logo = "No logo was provided.";
   }
 
   if (slogan.trim() === "") {
