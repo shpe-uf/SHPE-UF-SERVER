@@ -8,7 +8,519 @@
     "value": "ask eddy what key, value, and text mean/which ones I use"
   },
   {
+    "key": "Accounting, Fisher School of",
+    "value": "17030000"
+  },
+  {
+    "key": "Advertising",
+    "value": "23020000"
+  },
+  {
+    "key": "African American Studies",
+    "value": "16620000"
+  },
+  {
+    "key": "African Studies",
+    "value": "16600000"
+  },
+  {
+    "key": "Agricultural & Life Sciences-General",
+    "value": "60030000"
+  },
+  {
+    "key": "Agricultural Education and Communication",
+    "value": "60260000"
+  },
+  {
+    "key": "Agricultural Operations Management",
+    "value": "60079998"
+  },
+  {
+    "key": "Agricultural and Biological Engineering",
+    "value": "60070000"
+  },
+  {
+    "key": "Agronomy",
+    "value": "60080000"
+  },
+  {
+    "key": "Animal Sciences",
+    "value": "60090000"
+  },
+  {
+    "key": "Anthropology",
+    "value": "16040000"
+  },
+  {
+    "key": "Applied Physiology & Kinesiology",
+    "value": "26030000"
+  },
+  {
+    "key": "Architecture, School of",
+    "value": "15020000"
+  },
+  {
+    "key": "Art and Art History",
+    "value": "13020000"
+  },
+  {
+    "key": "Arts-General",
+    "value": "13010000"
+  },
+  {
+    "key": "Astronomy",
+    "value": "16060000"
+  },
+  {
+    "key": "Behavioral Science & Community Health",
+    "value": "33040000"
+  },
+  {
+    "key": "Biological Sciences",
+    "value": "16900300"
+  },
+  {
+    "key": "Biomedical Engineering",
+    "value": "19340000"
+  },
+  {
+    "key": "Biostatistics",
+    "value": "36010000"
+  },
+  {
+    "key": "Botany",
+    "value": "16900500"
+  },
+  {
+    "key": "Business Admin-General",
+    "value": "17010000"
+  },
+  {
+    "key": "Chemical Engineering",
+    "value": "19030000"
+  },
+  {
+    "key": "Chemistry",
+    "value": "16120000"
+  },
+  {
+    "key": "Civil and Coastal Engineering",
+    "value": "19040000"
+  },
+  {
+    "key": "Classics",
+    "value": "16140000"
+  },
+  {
+    "key": "Clinical Health Psychology",
+    "value": "33070000"
+  },
+  {
+    "key": "College of Public Health & Health Professions",
+    "value": "33000000"
+  },
+  {
+    "key": "Comparative, Diagnostic & Population Medicine",
+    "value": "28060000"
+  },
+  {
+    "key": "Computer & Information Science & Engineering",
+    "value": "19140000"
+  },
+  {
+    "key": "Construction Management, Rinker School of",
+    "value": "15030000"
+  },
+  {
+    "key": "Criminology",
+    "value": "16920300"
+  },
+  {
+    "key": "Dentistry-General",
+    "value": "34010000"
+  },
+  {
+    "key": "Dentistry-Endodontics",
+    "value": "34110000"
+  },
+  {
+    "key": "Dentistry-Oral & Maxillofacial Diagnostic Science",
+    "value": "34160000"
+  },
+  {
+    "key": "Dentistry-Oral Biology",
+    "value": "34030000"
+  },
+  {
+    "key": "Dentistry-Orthodontics",
+    "value": "34070000"
+  },
+  {
+    "key": "Dentistry-Periodontics",
+    "value": "34130000"
+  },
+  {
+    "key": "Dentistry-Prosthodontics",
+    "value": "34140000"
+  },
+  {
+    "key": "Design, Construction & Planning-General",
+    "value": "15010000"
+  },
+  {
+    "key": "Digital Worlds Institute",
+    "value": "13050000"
+  },
+  {
+    "key": "Economics",
+    "value": "17050000"
+  },
+  {
+    "key": "Education-Human Devel and Org Studies in Ed",
+    "value": "18070000"
+  },
+  {
+    "key": "Education-Spec Ed Schl Psych Early Child Stu",
+    "value": "18080000"
+  },
+  {
+    "key": "Education-Teaching and Learning",
+    "value": "18050000"
+  },
+  {
+    "key": "Electrical and Computer Engineering",
+    "value": "19050000"
+  },
+  {
+    "key": "Engineering-General",
+    "value": "19400000"
+  },
+  {
+    "key": "English",
+    "value": "16200000"
+  },
+  {
     "key": "",
     "value": ""
   },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "",
+    "value": ""
+  }
 ]
