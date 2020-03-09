@@ -4,10 +4,6 @@
     "value": ""
   },
   {
-    "key": "json bois",
-    "value": "ask eddy what key, value, and text mean/which ones I use"
-  },
-  {
     "key": "Accounting, Fisher School of",
     "value": "17030000"
   },
@@ -364,203 +360,307 @@
     "value": "29010000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Aging Geriatric Research",
+    "value": "29310000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Anatomy",
+    "value": "29260000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Anesthesiology",
+    "value": "29040000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Biochemistry Molecular Biology",
+    "value": "29030000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Community Health and Family Medicine",
+    "value": "29160000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Emergency Medicine",
+    "value": "29290200"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Health Outcomes & Biomedical Informat",
+    "value": "29240100"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Molecular Genetics & Microbiology",
+    "value": "29060000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Neurological Surgery",
+    "value": "29190000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Neurology",
+    "value": "29180000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Neuroscience",
+    "value": "29020000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Obstetrics & Gynecology",
+    "value": "29070000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Ophthalmology",
+    "value": "29150000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Orthopaedics and Rehabilitation",
+    "value": "29170000"
   },
   {
-    "key": "Medicine-",
-    "value": ""
+    "key": "Medicine-Otolaryngology",
+    "value": "29210000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Medicine-Pathology",
+    "value": "29080000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Medicine-Pediatrics",
+    "value": "29090000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Medicine-Pharmacology & Therapeutics",
+    "value": "29100000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Medicine-Physiology",
+    "value": "29110000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Medicine-Psychiatry",
+    "value": "29120000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Medicine-Radiation Oncology",
+    "value": "29200000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Medicine-Radiology",
+    "value": "29130000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Medicine-School of Physician Assistant Studies",
+    "value": "29710000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Medicine-Surgery",
+    "value": "29140000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Medieval & Early Modern Studies",
+    "value": "16820000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Microbiology and Cell Science",
+    "value": "60100000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Military Science-Air Force",
+    "value": "25020000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Military Science-Army",
+    "value": "25010000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Military Science-Navy",
+    "value": "25050000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Music",
+    "value": "13030000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Natural Resources and Environment, School of",
+    "value": "60170000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "New World School of the Arts-Dance",
+    "value": "13100500"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "New World School of the Arts-Music",
+    "value": "13100300"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "New World School of the Arts-Theatre",
+    "value": "13100400"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "New World School of the Arts-Visual Arts",
+    "value": "13100200"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Nuclear and Radiological Engineering",
+    "value": "19080000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Nursing",
+    "value": "31010000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Occupational Therapy",
+    "value": "33030000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Packaging Sciences",
+    "value": "60079999"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Pathobiology",
+    "value": "28100000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Pharmacy-Pharmaceutics",
+    "value": "32020000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Pharmacy-Medicinal Chemistry",
+    "value": "32030000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Pharmacy-Pharmacodynamics",
+    "value": "32040000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Pharmacy-Pharmacy Outcomes and Policy",
+    "value": "32050000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Pharmacy-Pharmacy Practice",
+    "value": "32060000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Philosophy",
+    "value": "16340000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Physical Therapy",
+    "value": "33050000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Physics",
+    "value": "16360000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Physiological Science",
+    "value": "28050000"
   },
   {
-    "key": "",
-    "value": ""
+    "key": "Plant Pathology",
+    "value": "60190000"
+  },
+  {
+    "key": "Political Science",
+    "value": "16380000"
+  },
+  {
+    "key": "Portuguese",
+    "value": "16880500"
+  },
+  {
+    "key": "Psychology",
+    "value": "16400000"
+  },
+  {
+    "key": "Public Health & Health Professions - Undergrad",
+    "value": "33010000"
+  },
+  {
+    "key": "Public Relations",
+    "value": "23060000"
+  },
+  {
+    "key": "Rehabilitation Science Doctoral Program",
+    "value": "33120000"
+  },
+  {
+    "key": "Religion",
+    "value": "16420000"
+  },
+  {
+    "key": "Small Animal Clinic Science",
+    "value": "28090000"
+  },
+  {
+    "key": "Sociology",
+    "value": "16920500"
+  },
+  {
+    "key": "Soil and Water Sciences",
+    "value": "60210000"
+  },
+  {
+    "key": "Spanish",
+    "value": "16880300"
+  },
+  {
+    "key": "Speech, Language, and Hearing Sciences",
+    "value": "33060000"
+  },
+  {
+    "key": "Sport Management",
+    "value": "26040000"
+  },
+  {
+    "key": "Statistics",
+    "value": "16480000"
+  },
+  {
+    "key": "Telecommunication",
+    "value": "23030000"
+  },
+  {
+    "key": "Theatre and Dance",
+    "value": "13040000"
+  },
+  {
+    "key": "Tourism Recreation and Sport Management",
+    "value": "26020000"
+  },
+  {
+    "key": "Tourism, Hospitality & Event Management",
+    "value": "26090000"
+  },
+  {
+    "key": "Undergraduate Studies -SFCC",
+    "value": "02070000"
+  },
+  {
+    "key": "Urban and Regional Planning",
+    "value": "15060000"
+  },
+  {
+    "key": "Veterinary Medical Sciences",
+    "value": "28011100"
+  },
+  {
+    "key": "Wildlife Ecology and Conservation",
+    "value": "60470000"
+  },
+  {
+    "key": "Womens Studies",
+    "value": "16800000"
+  },
+  {
+    "key": "Written & Oral Communication",
+    "value": "16580100"
+  },
+  {
+    "key": "Zoology",
+    "value": "16900700"
+  },
+  {
+    "key": "Other",
+    "value": "00000000"
   }
 ]
