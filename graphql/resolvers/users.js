@@ -385,58 +385,65 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async getUserTasks() {
-      try {
-        const data = await User.aggregate([{
-          $group: {
-            _id: '$tasks',
-            value: {
-              $sum: 1
-            }
-          }
-        },
-        {
-          $sort: {
-            value: -1
-          }
-        }
-        ]);
-
-        if (data) {
-          return data;
-        } else {
-          throw new Error("Data not found.");
-        }
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
-    async getBookmarkedTasks() {
-      try {
-        const data = await User.aggregate([{
-          $group: {
-            _id: '$bookmarkedTasks',
-            value: {
-              $sum: 1
-            }
-          }
-        },
-        {
-          $sort: {
-            value: -1
-          }
-        }
-        ]);
-
-        if (data) {
-          return data;
-        } else {
-          throw new Error("Data not found.");
-        }
-      } catch (err) {
-        throw new Error(err);
-      }
-    }
+    // async getUserTasks() {
+    //   console.log("break 1");
+    //   try {
+    //     console.log("break 2");
+    //     const data = await User.aggregate([{
+    //       $group: {
+    //         _id: '$tasks',
+    //         value: {
+    //           $sum: 1
+    //         }
+    //       }
+    //     },
+    //     {
+    //       $sort: {
+    //         value: -1
+    //       }
+    //     }
+    //     ]);
+    //
+    //     if (data) {
+    //       console.log("break 3");
+    //       console.log(data);
+    //       return data;
+    //     } else {
+    //       throw new Error("Data not found.");
+    //     }
+    //   } catch (err) {
+    //     throw new Error(err);
+    //     console.log("break 4");
+    //     console.log(err);
+    //   }
+    //   console.log("break 5");
+    // },
+    // async getBookmarkedTasks() {
+    //   try {
+    //     const data = await User.aggregate([{
+    //       $group: {
+    //         _id: '$bookmarkedTasks',
+    //         value: {
+    //           $sum: 1
+    //         }
+    //       }
+    //     },
+    //     {
+    //       $sort: {
+    //         value: -1
+    //       }
+    //     }
+    //     ]);
+    //
+    //     if (data) {
+    //       return data;
+    //     } else {
+    //       throw new Error("Data not found.");
+    //     }
+    //   } catch (err) {
+    //     throw new Error(err);
+    //   }
+    // }
   },
 
   Mutation: {
@@ -850,8 +857,10 @@ module.exports = {
         }, {
           new: true
         });
+        console.log("hello");
 
       updatedUser.message = "";
+      console.log("hello");
 
       return updatedUser;
     },
