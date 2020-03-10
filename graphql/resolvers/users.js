@@ -385,65 +385,6 @@ module.exports = {
         throw new Error(err);
       }
     },
-    // async getUserTasks() {
-    //   console.log("break 1");
-    //   try {
-    //     console.log("break 2");
-    //     const data = await User.aggregate([{
-    //       $group: {
-    //         _id: '$tasks',
-    //         value: {
-    //           $sum: 1
-    //         }
-    //       }
-    //     },
-    //     {
-    //       $sort: {
-    //         value: -1
-    //       }
-    //     }
-    //     ]);
-    //
-    //     if (data) {
-    //       console.log("break 3");
-    //       console.log(data);
-    //       return data;
-    //     } else {
-    //       throw new Error("Data not found.");
-    //     }
-    //   } catch (err) {
-    //     throw new Error(err);
-    //     console.log("break 4");
-    //     console.log(err);
-    //   }
-    //   console.log("break 5");
-    // },
-    // async getBookmarkedTasks() {
-    //   try {
-    //     const data = await User.aggregate([{
-    //       $group: {
-    //         _id: '$bookmarkedTasks',
-    //         value: {
-    //           $sum: 1
-    //         }
-    //       }
-    //     },
-    //     {
-    //       $sort: {
-    //         value: -1
-    //       }
-    //     }
-    //     ]);
-    //
-    //     if (data) {
-    //       return data;
-    //     } else {
-    //       throw new Error("Data not found.");
-    //     }
-    //   } catch (err) {
-    //     throw new Error(err);
-    //   }
-    // }
   },
 
   Mutation: {
@@ -837,6 +778,8 @@ module.exports = {
       const task = await Task.findOne({
         name
       });
+      console.log(task);
+
 
       var updatedUser = await User.findOneAndUpdate({
         username
@@ -845,9 +788,13 @@ module.exports = {
             bookmarkedTasks: {
               $each: [{
                 name: task.name,
-                category: task.category,
+                startDate: task.startDate,
+                endDate: task.endDate,
+                description: task.description,
                 createdAt: task.createdAt,
-                points: task.points
+                points: task.points,
+                semester: task.semester,
+                attendance: task.attendance
               }],
               $sort: {
                 createdAt: 1
@@ -857,10 +804,8 @@ module.exports = {
         }, {
           new: true
         });
-        console.log("hello");
 
       updatedUser.message = "";
-      console.log("hello");
 
       return updatedUser;
     },
@@ -884,15 +829,13 @@ module.exports = {
       }, {
           $pull: {
             bookmarkedTasks: {
-              $each: [{
                 name: task.name,
-                category: task.category,
+                startDate: task.startDate,
+                endDate: task.endDate,
+                description: task.description,
                 createdAt: task.createdAt,
-                points: task.points
-              }],
-              $sort: {
-                createdAt: 1
-              }
+                points: task.points,
+                semester: task.semester
             }
           },
         }, {

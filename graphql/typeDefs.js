@@ -27,7 +27,7 @@ module.exports = gql`
     listServ: Boolean!
     events: [Event]!
     tasks: [Task]!
-    bookmarkedtasks: [Task]!
+    bookmarkedTasks: [Task]!
     token: String!
     message: String!
     classes: [Class]!
