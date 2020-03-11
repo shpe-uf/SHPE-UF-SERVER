@@ -12,6 +12,8 @@ module.exports = {
       console.time('calls');
       const user = await User.findOne({ username });
 
+      console.log(user);
+      
       user.classes.map(async classTemp => {
         const newClassTemp = await Class.findOne({ code: classTemp.code }).select("-users._id");
         lodash.remove(newClassTemp.users, function (user){
@@ -32,7 +34,7 @@ module.exports = {
         username : {$in: matches}
       }).sort({lastName: 1, firstName: 1});
       
-      console.log(users)
+      //console.log(users)
 
       return users;
     }
