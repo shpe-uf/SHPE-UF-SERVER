@@ -116,10 +116,10 @@ module.exports = {
       return corporations;
     },
 
-    async updateCorporation(
+    async editCorporation(
       _,
       {
-        editCorporationProfileInput: {
+        editCorporationInput: {
           name,
           logo,
           slogan, 
@@ -143,7 +143,7 @@ module.exports = {
         }
       }
     ){
-      console.log("Update Corporation Running")
+      console.log("Update Corporation Running");
 
       const { valid, errors } = validateCreateEditCorporationInput(
         name,

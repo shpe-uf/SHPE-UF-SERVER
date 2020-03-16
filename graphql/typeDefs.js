@@ -218,7 +218,7 @@ module.exports = gql`
     nationalConvention: String!
   }
 
-  input EditCorporationProfileInput {
+  input EditCorporationInput {
     name: String!
     slogan: String!
     majors: [String!]!
@@ -337,7 +337,7 @@ module.exports = gql`
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!, remember: String!): User!
     createCorporation(createCorporationInput: CreateCorporationInput): [Corporation]
-    updateCorporation(editCorporationProfileInput: EditCorporationProfileInput): [Corporation]
+    editCorporation(editCorporationInput: EditCorporationInput): [Corporation]
     deleteCorporation(name: String!): Boolean!
     createEvent(createEventInput: CreateEventInput): [Event]
     redeemPoints(redeemPointsInput: RedeemPointsInput): User!
