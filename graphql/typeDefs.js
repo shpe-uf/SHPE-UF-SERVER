@@ -338,7 +338,7 @@ module.exports = gql`
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!, remember: String!): User!
     createCorporation(createCorporationInput: CreateCorporationInput): [Corporation]
-    editCorporation(editCorporationInput: EditCorporationInput): [Corporation]
+    editCorporation(editCorporationInput: EditCorporationInput): Corporation!
     deleteCorporation(name: String!): Boolean!
     createEvent(createEventInput: CreateEventInput): [Event]
     redeemPoints(redeemPointsInput: RedeemPointsInput): User!
