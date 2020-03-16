@@ -18,5 +18,21 @@ selectProgram = Select(driver.find_element_by_id('prog')).select_by_visible_text
 time.sleep(5)
 searchButton = driver.find_element_by_xpath('//*[@id="filterSidebar"]/button')
 searchButton.click()
-#at this point, the page shows the first 50 courses
-print (html)
+time.sleep(5)
+
+courseArr = []
+for course in driver.find_elements_by_class_name('course-code'):
+    courseObject = {
+        "key": driver.find_element_by_tag_name('h3').text,
+        "value": driver.find_element_by_tag_name('h3').text
+    }
+    courseArr.append(courseObject)
+
+idk = driver.find_elements_by_class_name('course-code')
+print (idk)
+
+with open('courses.json', 'w') as outfile:
+    json.dump(courseArr, outfile)
+
+#okay, so the file is sending info to the json file, but the part where I put the scraped info into json is
+#not working, says it's not finding the elements
