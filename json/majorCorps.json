@@ -1,0 +1,646 @@
+[
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "3M",
+    "value": "3M"
+  },
+  {
+    "key": "ABB",
+    "value": "ABB"
+  },
+  {
+    "key": "AIAA",
+    "value": "AIAA"
+  },
+  {
+    "key": "ASML",
+    "value": "ASML"
+  },
+  {
+    "key": "Abarca Health LLC",
+    "value": "Abarca Health LLC"
+  },
+  {
+    "key": "Accenture",
+    "value": "Accenture"
+  },
+  {
+    "key": "Aerotek",
+    "value": "Aerotek"
+  },
+  {
+    "key": "Air Force STEM",
+    "value": "Air Force STEM"
+  },
+  {
+    "key": "Air Products and Chemicals",
+    "value": "Air Products and Chemicals"
+  },
+  {
+    "key": "Airbus Americas",
+    "value": "Airbus Americas"
+  },
+  {
+    "key": "Albemarle Corporation",
+    "value": "Albemarle Corporation"
+  },
+  {
+    "key": "Alcon",
+    "value": "Alcon"
+  },
+  {
+    "key": "Allstate",
+    "value": "Allstate"
+  },
+  {
+    "key": "Amazon",
+    "value": "Amazon"
+  },
+  {
+    "key": "Ameren",
+    "value": "Ameren"
+  },
+  {
+    "key": "American Airlines",
+    "value": "American Airlines"
+  },
+  {
+    "key": "American Express",
+    "value": "American Express"
+  },
+  {
+    "key": "Arconic Inc",
+    "value": "Arconic Inc"
+  },
+  {
+    "key": "Argonne National Laboratory",
+    "value": "Argonne National Laboratory"
+  },
+  {
+    "key": "Arizona Public Service(APS)",
+    "value": "Arizona Public Service(APS)"
+  },
+  {
+    "key": "Arup",
+    "value": "Arup"
+  },
+  {
+    "key": "BAE Systems",
+    "value": "BAE Systems"
+  },
+  {
+    "key": "BASF",
+    "value": "BASF"
+  },
+  {
+    "key": "BP",
+    "value": "BP"
+  },
+  {
+    "key": "Baker Hughes",
+    "value": "Baker Hughes"
+  },
+  {
+    "key": "Betchel Corporation",
+    "value": "Betchel Corporation"
+  },
+  {
+    "key": "BlackLine",
+    "value": "BlackLine"
+  },
+  {
+    "key": "Blue Origin, LLC",
+    "value": "Blue Origin, LLC"
+  },
+  {
+    "key": "Boeing",
+    "value": "Boeing"
+  },
+  {
+    "key": "Boston Scientific",
+    "value": "Boston Scientific"
+  },
+  {
+    "key": "Bridgestone",
+    "value": "Bridgestone"
+  },
+  {
+    "key": "Burns & McDonnell",
+    "value": "Burns & McDonnell"
+  },
+  {
+    "key": "Capital One",
+    "value": "Capital One"
+  },
+  {
+    "key": "Career Communications Group, Inc.",
+    "value": "Career Communications Group, Inc."
+  },
+  {
+    "key": "Cargill",
+    "value": "Cargill"
+  },
+  {
+    "key": "Carrollo Engineers, Inc.",
+    "value": "Carrollo Engineers, Inc."
+  },
+  {
+    "key": "Caterpillar",
+    "value": "Caterpillar"
+  },
+  {
+    "key": "Central Intelligence Agency",
+    "value": "Central Intelligence Agency"
+  },
+  {
+    "key": "Chevron",
+    "value": "Chevron"
+  },
+  {
+    "key": "Cisco",
+    "value": "Cisco"
+  },
+  {
+    "key": "Corteva Agriscience",
+    "value": "Corteva Agriscience"
+  },
+  {
+    "key": "Cummins",
+    "value": "Cummins"
+  },
+  {
+    "key": "DENSO",
+    "value": "DENSO"
+  },
+  {
+    "key": "Defense Contract Management Agency (DCMA)",
+    "value": "Defense Contract Management Agency (DCMA)"
+  },
+  {
+    "key": "Dell",
+    "value": "Dell"
+  },
+  {
+    "key": "Delta Air Lines",
+    "value": "Delta Air Lines"
+  },
+  {
+    "key": "Deutsche Bank",
+    "value": "Deutsche Bank"
+  },
+  {
+    "key": "Discover",
+    "value": "Discover"
+  },
+  {
+    "key": "Disney",
+    "value": "Disney"
+  },
+  {
+    "key": "Dominion Energy, Inc.",
+    "value": "Dominion Energy, Inc."
+  },
+  {
+    "key": "Dow",
+    "value": "Dow"
+  },
+  {
+    "key": "Dropbox",
+    "value": "Dropbox"
+  },
+  {
+    "key": "DuPont",
+    "value": "DuPont"
+  },
+  {
+    "key": "Eaton",
+    "value": "Eaton"
+  },
+  {
+    "key": "Ecolab",
+    "value": "Ecolab"
+  },
+  {
+    "key": "Elanco Animal Health",
+    "value": "Elanco Animal Health"
+  },
+  {
+    "key": "Electronic Arts (EA)",
+    "value": "Electronic Arts (EA)"
+  },
+  {
+    "key": "Eli Lilly and Company",
+    "value": "Eli Lilly and Company"
+  },
+  {
+    "key": "Entergy LLC",
+    "value": "Entergy LLC"
+  },
+  {
+    "key": "Exelon",
+    "value": "Exelon"
+  },
+  {
+    "key": "ExxonMobil",
+    "value": "ExxonMobil"
+  },
+  {
+    "key": "Facebook",
+    "value": "Facebook"
+  },
+  {
+    "key": "FedEx",
+    "value": "FedEx"
+  },
+  {
+    "key": "Federal Reserve Bank of San Francisco",
+    "value": "Federal Reserve Bank of San Francisco"
+  },
+  {
+    "key": "Fiat Chrysler Automobiles (FCA)",
+    "value": "Fiat Chrysler Automobiles (FCA)"
+  },
+  {
+    "key": "FirstEnergy",
+    "value": "FirstEnergy"
+  },
+  {
+    "key": "Fish & Richardson P.C",
+    "value": "Fish & Richardson P.C"
+  },
+  {
+    "key": "Flatiron Health",
+    "value": "Flatiron Health"
+  },
+  {
+    "key": "Fluor",
+    "value": "Fluor"
+  },
+  {
+    "key": "Ford",
+    "value": "Ford"
+  },
+  {
+    "key": "Freeport-McMoRan",
+    "value": "Freeport-McMoRan"
+  },
+  {
+    "key": "General Electric (GE)",
+    "value": "General Electric (GE)"
+  },
+  {
+    "key": "General Dynamics",
+    "value": "General Dynamics"
+  },
+  {
+    "key": "General Motors",
+    "value": "General Motors"
+  },
+  {
+    "key": "Georgia Pacific",
+    "value": "Georgia Pacific"
+  },
+  {
+    "key": "Gilbane Building Company",
+    "value": "Gilbane Building Company"
+  },
+  {
+    "key": "Goldman Sachs",
+    "value": "Goldman Sachs"
+  },
+  {
+    "key": "Google",
+    "value": "Google"
+  },
+  {
+    "key": "Hensel Phelps",
+    "value": "Hensel Phelps"
+  },
+  {
+    "key": "Honeywell",
+    "value": "Honeywell"
+  },
+  {
+    "key": "Hormel Foods Corporation",
+    "value": "Hormel Foods Corporation"
+  },
+  {
+    "key": "Huntington Ingalls Industries",
+    "value": "Huntington Ingalls Industries"
+  },
+  {
+    "key": "IBM",
+    "value": "IBM"
+  },
+  {
+    "key": "Illinois Department of Transportation",
+    "value": "Illinois Department of Transportation"
+  },
+  {
+    "key": "Intel",
+    "value": "Intel"
+  },
+  {
+    "key": "JPMorgan Chase & Co.",
+    "value": "JPMorgan Chase & Co."
+  },
+  {
+    "key": "Jacobs",
+    "value": "Jacobs"
+  },
+  {
+    "key": "Jet Propulsion Laboratory",
+    "value": "Jet Propulsion Laboratory"
+  },
+  {
+    "key": "John Deere",
+    "value": "John Deere"
+  },
+  {
+    "key": "Johnson & Johnson",
+    "value": "Johnson & Johnson"
+  },
+  {
+    "key": "Johnson Controls",
+    "value": "Johnson Controls"
+  },
+  {
+    "key": "Kimberly-Clark Corporation",
+    "value": "Kimberly-Clark Corporation"
+  },
+  {
+    "key": "Leidos",
+    "value": "Leidos"
+  },
+  {
+    "key": "Lincoln Electric",
+    "value": "Lincoln Electric"
+  },
+  {
+    "key": "Lockheed Martin",
+    "value": "Lockheed Martin"
+  },
+  {
+    "key": "Lyft",
+    "value": "Lyft"
+  },
+  {
+    "key": "L’Oréal USA",
+    "value": "L’Oréal USA"
+  },
+  {
+    "key": "M&T Bank Corporation",
+    "value": "M&T Bank Corporation"
+  },
+  {
+    "key": "McKinsey & Company",
+    "value": "McKinsey & Company"
+  },
+  {
+    "key": "Medtronic",
+    "value": "Medtronic"
+  },
+  {
+    "key": "Merck & Co, Inc.",
+    "value": "Merck & Co, Inc."
+  },
+  {
+    "key": "Michelin",
+    "value": "Michelin"
+  },
+  {
+    "key": "Microsoft",
+    "value": "Microsoft"
+  },
+  {
+    "key": "Mortenson",
+    "value": "Mortenson"
+  },
+  {
+    "key": "NXP Semiconductors",
+    "value": "NXP Semiconductors"
+  },
+  {
+    "key": "National Aeronautics and Space Administration (NASA)",
+    "value": "National Aeronautics and Space Administration (NASA)"
+  },
+  {
+    "key": "National Security Agency (NSA)",
+    "value": "National Security Agency (NSA)"
+  },
+  {
+    "key": "Naval Nuclear Laboratory",
+    "value": "Naval Nuclear Laboratory"
+  },
+  {
+    "key": "NiSource",
+    "value": "NiSource"
+  },
+  {
+    "key": "Nike, Inc",
+    "value": "Nike, Inc"
+  },
+  {
+    "key": "Norfolk Southern Corp.",
+    "value": "Norfolk Southern Corp."
+  },
+  {
+    "key": "Northrop Grumman",
+    "value": "Northrop Grumman"
+  },
+  {
+    "key": "ON Semiconductor",
+    "value": "ON Semiconductor"
+  },
+  {
+    "key": "Oracle",
+    "value": "Oracle"
+  },
+  {
+    "key": "Pacific Gas and Electric Company",
+    "value": "Pacific Gas and Electric Company"
+  },
+  {
+    "key": "Pixar",
+    "value": "Pixar"
+  },
+  {
+    "key": "Procter and Gamble (P&G)",
+    "value": "Procter and Gamble (P&G)"
+  },
+  {
+    "key": "Qualcomm",
+    "value": "Qualcomm"
+  },
+  {
+    "key": "Raytheon",
+    "value": "Raytheon"
+  },
+  {
+    "key": "Rocket Mortgage by Quicken Loans",
+    "value": "Rocket Mortgage by Quicken Loans"
+  },
+  {
+    "key": "Rockwell Automation",
+    "value": "Rockwell Automation"
+  },
+  {
+    "key": "Rolls-Royce Corporation",
+    "value": "Rolls-Royce Corporation"
+  },
+  {
+    "key": "Sensata Technologies",
+    "value": "Sensata Technologies"
+  },
+  {
+    "key": "Sila Nanotechnologies",
+    "value": "Sila Nanotechnologies"
+  },
+  {
+    "key": "Skyworks Solutions",
+    "value": "Skyworks Solutions"
+  },
+  {
+    "key": "Squarespace",
+    "value": "Squarespace"
+  },
+  {
+    "key": "Starbucks",
+    "value": "Starbucks"
+  },
+  {
+    "key": "State Farm",
+    "value": "State Farm"
+  },
+  {
+    "key": "Survey Monkey",
+    "value": "Survey Monkey"
+  },
+  {
+    "key": "T-Mobile",
+    "value": "T-Mobile"
+  },
+  {
+    "key": "T. Row Price",
+    "value": "T. Row Price"
+  },
+  {
+    "key": "Texas Department of Transportation",
+    "value": "Texas Department of Transportation"
+  },
+  {
+    "key": "Texas Instruments",
+    "value": "Texas Instruments"
+  },
+  {
+    "key": "Textron Aviation",
+    "value": "Textron Aviation"
+  },
+  {
+    "key": "Thermo Fisher Scientific",
+    "value": "Thermo Fisher Scientific"
+  },
+  {
+    "key": "Toyota",
+    "value": "Toyota"
+  },
+  {
+    "key": "Turner",
+    "value": "Turner"
+  },
+  {
+    "key": "Twitter",
+    "value": "Twitter"
+  },
+  {
+    "key": "Two Sigma",
+    "value": "Two Sigma"
+  },
+  {
+    "key": "U.S Coast Guard",
+    "value": "U.S Coast Guard"
+  },
+  {
+    "key": "U.S. Army Test & Evaluation Command",
+    "value": "U.S. Army Test & Evaluation Command"
+  },
+  {
+    "key": "U.S. Department of Energy",
+    "value": "U.S. Department of Energy"
+  },
+  {
+    "key": "U.S. Department of State",
+    "value": "U.S. Department of State"
+  },
+  {
+    "key": "U.S. Marines",
+    "value": "U.S. Marines"
+  },
+  {
+    "key": "Uber",
+    "value": "Uber"
+  },
+  {
+    "key": "Ultimate Software",
+    "value": "Ultimate Software"
+  },
+  {
+    "key": "Unilever",
+    "value": "Unilever"
+  },
+  {
+    "key": "United Technologies",
+    "value": "United Technologies"
+  },
+  {
+    "key": "Unity Technologies",
+    "value": "Unity Technologies"
+  },
+  {
+    "key": "Vectrus Systems Corporation",
+    "value": "Vectrus Systems Corporation"
+  },
+  {
+    "key": "Verizon",
+    "value": "Verizon"
+  },
+  {
+    "key": "Visa, Inc.",
+    "value": "Visa, Inc."
+  },
+  {
+    "key": "WSP USA, Inc",
+    "value": "WSP USA, Inc"
+  },
+  {
+    "key": "Walmart",
+    "value": "Walmart"
+  },
+  {
+    "key": "Warner Bros",
+    "value": "Warner Bros"
+  },
+  {
+    "key": "Wells Fargo",
+    "value": "Wells Fargo"
+  },
+  {
+    "key": "Yello",
+    "value": "Yello"
+  },
+  {
+    "key": "Zillow",
+    "value": "Zillow"
+  },
+  {
+    "key": "Zoox",
+    "value": "Zoox"
+  },
+  {
+    "key": "Other",
+    "value": "Other"
+  }
+]
