@@ -143,7 +143,6 @@ module.exports = {
         }
       }
     ){
-      console.log("Update Corporation Running");
 
       const { valid, errors } = validateCreateEditCorporationInput(
         name,
