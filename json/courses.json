@@ -400,14 +400,6 @@
     "value": "AEB6942 - Advanced Applications in Agribusiness Experience"
   },
   {
-    "key": "AEB6971 - Research for Master's Thesis",
-    "value": "AEB6971 - Research for Master's Thesis"
-  },
-  {
-    "key": "AEB7571 - Econometric Methods I",
-    "value": "AEB7571 - Econometric Methods I"
-  },
-  {
     "key": "AEB7645 - Economic Development and Agriculture",
     "value": "AEB7645 - Economic Development and Agriculture"
   },
@@ -464,20 +456,12 @@
     "value": "AEC4942 - Agricultural Education Internship"
   },
   {
-    "key": "AEC4943 - Leadership Development Internship",
-    "value": "AEC4943 - Leadership Development Internship"
-  },
-  {
     "key": "AEC4944 - Cooperative Extension Internship",
     "value": "AEC4944 - Cooperative Extension Internship"
   },
   {
     "key": "AEC5060 - Public Opinion and Agricultural and Natural Resource Issues",
     "value": "AEC5060 - Public Opinion and Agricultural and Natural Resource Issues"
-  },
-  {
-    "key": "AEC5324 - Philosophy and Development of Agricultural Education",
-    "value": "AEC5324 - Philosophy and Development of Agricultural Education"
   },
   {
     "key": "AEC5454 - Leadership Development for Extension and Community Nonprofit Organizations",
@@ -504,28 +488,8 @@
     "value": "AEC6905 - Problems in Agricultural and Extension Education"
   },
   {
-    "key": "AEC6910 - Supervised Research",
-    "value": "AEC6910 - Supervised Research"
-  },
-  {
     "key": "AEC6912 - Nonthesis Research in Agricultural and Extension Education",
     "value": "AEC6912 - Nonthesis Research in Agricultural and Extension Education"
-  },
-  {
-    "key": "AEC6932 - Special Topics In Agricultural Education and Communication: FACULTY SUCCESS",
-    "value": "AEC6932 - Special Topics In Agricultural Education and Communication: FACULTY SUCCESS"
-  },
-  {
-    "key": "AEC6932 - Special Topics In Agricultural Education and Communication: Digital Media Prod in Ag/NR",
-    "value": "AEC6932 - Special Topics In Agricultural Education and Communication: Digital Media Prod in Ag/NR"
-  },
-  {
-    "key": "AEC6932 - Special Topics In Agricultural Education and Communication: Mixed Methods Research",
-    "value": "AEC6932 - Special Topics In Agricultural Education and Communication: Mixed Methods Research"
-  },
-  {
-    "key": "AEC6932 - Special Topics In Agricultural Education and Communication: Statistical Thinking",
-    "value": "AEC6932 - Special Topics In Agricultural Education and Communication: Statistical Thinking"
   },
   {
     "key": "AEC6971 - Research for Master's Thesis",
@@ -542,10 +506,6 @@
   {
     "key": "AFA4352 - Black Hair Politics",
     "value": "AFA4352 - Black Hair Politics"
-  },
-  {
-    "key": "AFA4936 - African-American Studies Senior Integrative Seminar",
-    "value": "AFA4936 - African-American Studies Senior Integrative Seminar"
   },
   {
     "key": "AFA4940 - African-American Studies Internship",
@@ -577,20 +537,8 @@
     "value": "AFR3220L - Professional Officer Course (POC) Leadership Laboratory 1"
   },
   {
-    "key": "AFR4201L - Professional Officer Course (POC) Leadership Laboratory 3",
-    "value": "AFR4201L - Professional Officer Course (POC) Leadership Laboratory 3"
-  },
-  {
     "key": "AFS2002 - The African Experience: An Introduction to African Studies",
     "value": "AFS2002 - The African Experience: An Introduction to African Studies"
-  },
-  {
-    "key": "AFS3930 - Special Topics in African Studies: Geography of Africa",
-    "value": "AFS3930 - Special Topics in African Studies: Geography of Africa"
-  },
-  {
-    "key": "AFS3930 - Special Topics in African Studies: Intro to African Politics",
-    "value": "AFS3930 - Special Topics in African Studies: Intro to African Politics"
   },
   {
     "key": "AFS4911 - Undergraduate Research in African Studies: RESEARCH AFRI. STUD",
@@ -631,6 +579,44 @@
   {
     "key": "AFS6905 - Individual Work in African Studies: BEG WOLOF FR GRAD ST 1",
     "value": "AFS6905 - Individual Work in African Studies: BEG WOLOF FR GRAD ST 1"
+  },
+  { "key": "AGR3303 - Genetics", "value": "AGR3303 - Genetics" },
+  {
+    "key": "AGR4905 - Individual Study",
+    "value": "AGR4905 - Individual Study"
+  },
+  {
+    "key": "AGR4932 - Agronomy Topics: TOPICS",
+    "value": "AGR4932 - Agronomy Topics: TOPICS"
+  },
+  {
+    "key": "AGR5266C - Field Plot Techniques",
+    "value": "AGR5266C - Field Plot Techniques"
+  },
+  { "key": "AGR5511 - Crop Ecology", "value": "AGR5511 - Crop Ecology" },
+  {
+    "key": "AGR6322 - Advanced Plant Breeding",
+    "value": "AGR6322 - Advanced Plant Breeding"
+  },
+  {
+    "key": "AGR6905 - Agronomic Problems",
+    "value": "AGR6905 - Agronomic Problems"
+  },
+  {
+    "key": "AGR6905 - Agronomic Problems: AGROECOLOGY PROJECT",
+    "value": "AGR6905 - Agronomic Problems: AGROECOLOGY PROJECT"
+  },
+  {
+    "key": "AGR6933 - Graduate Agronomy Seminar: GRAD AGRON SEMINAR",
+    "value": "AGR6933 - Graduate Agronomy Seminar: GRAD AGRON SEMINAR"
+  },
+  {
+    "key": "AGR6940 - Supervised Teaching: SUPERVISED TEACHING - Genetics",
+    "value": "AGR6940 - Supervised Teaching: SUPERVISED TEACHING - Genetics"
+  },
+  {
+    "key": "AGR6940 - Supervised Teaching",
+    "value": "AGR6940 - Supervised Teaching"
   },
   {
     "key": "AEC6912 - Nonthesis Research in Agricultural and Extension Education",
@@ -772,6 +758,10 @@
   },
   { "key": "AGR5511 - Crop Ecology", "value": "AGR5511 - Crop Ecology" },
   {
+    "key": "AGR6322 - Advanced Plant Breeding",
+    "value": "AGR6322 - Advanced Plant Breeding"
+  },
+  {
     "key": "AGR6905 - Agronomic Problems",
     "value": "AGR6905 - Agronomic Problems"
   },
@@ -873,8 +863,8 @@
     "value": "AMH3500 - U.S. Labor History"
   },
   {
-    "key": "AMH4130 - American Revolutionary Era, 1760-1789",
-    "value": "AMH4130 - American Revolutionary Era, 1760-1789"
+    "key": "AHM2200 - Intermed Amharic 1",
+    "value": "AHM2200 - Intermed Amharic 1"
   },
   {
     "key": "AKA1130 - Beginning Akan 1",
@@ -950,10 +940,6 @@
     "value": "AMH3500 - U.S. Labor History"
   },
   {
-    "key": "AMH4130 - American Revolutionary Era, 1760-1789",
-    "value": "AMH4130 - American Revolutionary Era, 1760-1789"
-  },
-  {
     "key": "AMH4319 - Crime and Punishment in American History",
     "value": "AMH4319 - Crime and Punishment in American History"
   },
@@ -990,20 +976,16 @@
     "value": "AML3607 - African-American Literature 2"
   },
   {
+    "key": "AML4242 - Studies in Twentieth-Century American Literature and Culture",
+    "value": "AML4242 - Studies in Twentieth-Century American Literature and Culture"
+  },
+  {
     "key": "AML4453 - Studies in American Literature and Culture: Law and American Literature",
     "value": "AML4453 - Studies in American Literature and Culture: Law and American Literature"
   },
   {
     "key": "AML4685 - Race and Ethnicity: Black & White Women Write Race",
     "value": "AML4685 - Race and Ethnicity: Black & White Women Write Race"
-  },
-  {
-    "key": "AML4685 - Race and Ethnicity: Lit & Cult Chicanx Civil Right",
-    "value": "AML4685 - Race and Ethnicity: Lit & Cult Chicanx Civil Right"
-  },
-  {
-    "key": "AML4685 - Race and Ethnicity: Contemp Afro-Latinx Literature",
-    "value": "AML4685 - Race and Ethnicity: Contemp Afro-Latinx Literature"
   },
   {
     "key": "AML6017 - Studies in American Literature Before 1900",
@@ -1145,10 +1127,6 @@
   {
     "key": "ANS4388 - Canine and Feline Genetics",
     "value": "ANS4388 - Canine and Feline Genetics"
-  },
-  {
-    "key": "ANS4604C - Live Animal Evaluation",
-    "value": "ANS4604C - Live Animal Evaluation"
   },
   {
     "key": "ANG6110 - Archaeological Theory",
@@ -1510,6 +1488,10 @@
     "value": "AOM3333 - Pesticide Application Techniques"
   },
   {
+    "key": "ANS6971 - Research for Master's Thesis",
+    "value": "ANS6971 - Research for Master's Thesis"
+  },
+  {
     "key": "ANS7979 - Advanced Research",
     "value": "ANS7979 - Advanced Research"
   },
@@ -1766,10 +1748,7 @@
     "key": "ARC1720 - Survey of Architecture History",
     "value": "ARC1720 - Survey of Architecture History"
   },
-  {
-    "key": "ARC2180 - Introduction to Digital Architecture",
-    "value": "ARC2180 - Introduction to Digital Architecture"
-  },
+  { "key": "APK3163 - Sport Nutrition", "value": "APK3163 - Sport Nutrition" },
   { "key": "APK3200 - Motor Learning", "value": "APK3200 - Motor Learning" },
   {
     "key": "APK3220C - Biomechanical Basis of Movement",
@@ -1968,10 +1947,6 @@
   {
     "key": "ARH2050 - Introduction to the Principles and History of Art 1",
     "value": "ARH2050 - Introduction to the Principles and History of Art 1"
-  },
-  {
-    "key": "ARH2051 - Introduction to the Principles and History of Art 2",
-    "value": "ARH2051 - Introduction to the Principles and History of Art 2"
   },
   {
     "key": "ARC4951 - Vicenza Institute of Architecture: Architectural Design Studio",
@@ -2194,6 +2169,10 @@
     "value": "ART2401C - Printmaking: Color Theory"
   },
   {
+    "key": "ARH6914 - Independent Study in Ancient Art History: IND STUDY ANCIENT ART",
+    "value": "ARH6914 - Independent Study in Ancient Art History: IND STUDY ANCIENT ART"
+  },
+  {
     "key": "ARH6915 - Independent Study in Medieval Art History: IND STUDY MEDIEVAL",
     "value": "ARH6915 - Independent Study in Medieval Art History: IND STUDY MEDIEVAL"
   },
@@ -2398,10 +2377,6 @@
   {
     "key": "AST7980 - Research for Doctoral Dissertation",
     "value": "AST7980 - Research for Doctoral Dissertation"
-  },
-  {
-    "key": "ATR2010C - Prevention and Care of Athletic Injuries",
-    "value": "ATR2010C - Prevention and Care of Athletic Injuries"
   },
   {
     "key": "ART6973C - Individual Project",
@@ -2613,6 +2588,14 @@
     "value": "BCN4510C - Mechanical Systems"
   },
   {
+    "key": "BCH6910 - Supervised Research",
+    "value": "BCH6910 - Supervised Research"
+  },
+  {
+    "key": "BCH6936 - Biochemistry Seminar",
+    "value": "BCH6936 - Biochemistry Seminar"
+  },
+  {
     "key": "BCH6971 - Research for Master's Thesis: MASTERS RESEARCH",
     "value": "BCH6971 - Research for Master's Thesis: MASTERS RESEARCH"
   },
@@ -2803,16 +2786,8 @@
     "value": "BME6330 - Cell and Tissue Engineering"
   },
   {
-    "key": "BME6535 - Radiological Physics, Measurements and Dosimetry",
-    "value": "BME6535 - Radiological Physics, Measurements and Dosimetry"
-  },
-  {
-    "key": "BME6938 - Special Topics in Biomedical Engineering: IMMUNE ENGINEERING",
-    "value": "BME6938 - Special Topics in Biomedical Engineering: IMMUNE ENGINEERING"
-  },
-  {
-    "key": "BME6938 - Special Topics in Biomedical Engineering: BIOMEDICAL DATA SCIENCE",
-    "value": "BME6938 - Special Topics in Biomedical Engineering: BIOMEDICAL DATA SCIENCE"
+    "key": "BME1008 - Introduction to Biomedical Engineering",
+    "value": "BME1008 - Introduction to Biomedical Engineering"
   },
   {
     "key": "BME3053C - Computer Applications for BME",
@@ -3026,8 +3001,12 @@
     "value": "BSC6038 - Broader Impacts of Science on Society"
   },
   {
-    "key": "BSC6438 - R for Functional Genomics",
-    "value": "BSC6438 - R for Functional Genomics"
+    "key": "BOT6971 - Research for Master's Thesis",
+    "value": "BOT6971 - Research for Master's Thesis"
+  },
+  {
+    "key": "BOT7979 - Advanced Research",
+    "value": "BOT7979 - Advanced Research"
   },
   {
     "key": "BOT7980 - Research for Doctoral Dissertation",
@@ -3229,12 +3208,8 @@
     "value": "CGN3501C - Civil Engineering Materials"
   },
   {
-    "key": "CGN3710 - Experimentation and Instrumentation in Civil Engineering",
-    "value": "CGN3710 - Experimentation and Instrumentation in Civil Engineering"
-  },
-  {
-    "key": "CGN4600 - Public Works Engineering and Management Practices",
-    "value": "CGN4600 - Public Works Engineering and Management Practices"
+    "key": "CEG4111 - Foundation Engineering Design",
+    "value": "CEG4111 - Foundation Engineering Design"
   },
   {
     "key": "CEG6015 - Advanced Soil Mechanics",
@@ -3497,8 +3472,8 @@
     "value": "CHM4413L - Biophysical Chemistry Laboratory"
   },
   {
-    "key": "CHM4611 - Advanced Inorganic Chemistry",
-    "value": "CHM4611 - Advanced Inorganic Chemistry"
+    "key": "CHI4911 - Undergraduate Research in Language or Linguistics: UG RES LANG OR LING",
+    "value": "CHI4911 - Undergraduate Research in Language or Linguistics: UG RES LANG OR LING"
   },
   {
     "key": "CHM1020 - Chemistry for the Liberal Arts",
@@ -3723,10 +3698,6 @@
     "value": "CJC4010 - Introduction to Corrections"
   },
   {
-    "key": "CJJ4010 - Juvenile Justice",
-    "value": "CJJ4010 - Juvenile Justice"
-  },
-  {
     "key": "CHM6480 - Elements of Quantum Chemistry",
     "value": "CHM6480 - Elements of Quantum Chemistry"
   },
@@ -3879,6 +3850,10 @@
     "key": "CLP4134 - Introduction to Clinical Child/Pediatric Psychology",
     "value": "CLP4134 - Introduction to Clinical Child/Pediatric Psychology"
   },
+  {
+    "key": "CLP4302 - Introduction to Clinical Psychology",
+    "value": "CLP4302 - Introduction to Clinical Psychology"
+  },
   { "key": "CLP6905 - Individual Work", "value": "CLP6905 - Individual Work" },
   {
     "key": "CLP6940 - Supervised Teaching",
@@ -3956,9 +3931,10 @@
     "key": "COP3275 - Computer Programming Using C",
     "value": "COP3275 - Computer Programming Using C"
   },
+  { "key": "CLP6905 - Individual Work", "value": "CLP6905 - Individual Work" },
   {
-    "key": "COP3503 - Programming Fundamentals 2",
-    "value": "COP3503 - Programming Fundamentals 2"
+    "key": "CLP6940 - Supervised Teaching",
+    "value": "CLP6940 - Supervised Teaching"
   },
   {
     "key": "CLP7934 - Special Topics In Clinical Psychology: CHILD/PEDS RES. SEM.",
@@ -4191,8 +4167,14 @@
     "key": "CRW6166 - Studies in Literary Form: Research & Imaginative Writing",
     "value": "CRW6166 - Studies in Literary Form: Research & Imaginative Writing"
   },
-  { "key": "CRW6331 - Verse Writing", "value": "CRW6331 - Verse Writing" },
-  { "key": "CRW6906 - Individual Work", "value": "CRW6906 - Individual Work" },
+  {
+    "key": "CPO4911 - Undergraduate Research in Comparative Politics: UG RES COMP POLITICS",
+    "value": "CPO4911 - Undergraduate Research in Comparative Politics: UG RES COMP POLITICS"
+  },
+  {
+    "key": "CPO6091 - Introduction to Comparative Political Analysis",
+    "value": "CPO6091 - Introduction to Comparative Political Analysis"
+  },
   {
     "key": "CPO6096 - Comparative Qualitative and Mixed Methods",
     "value": "CPO6096 - Comparative Qualitative and Mixed Methods"
@@ -4356,12 +4338,13 @@
     "value": "DCP1003 - Creating our Built Environment"
   },
   {
-    "key": "DCP3200 - Methods of Inquiry for Sustainability and the Built Environment",
-    "value": "DCP3200 - Methods of Inquiry for Sustainability and the Built Environment"
+    "key": "DAN3724 - Anatomy for Dance with Laboratory",
+    "value": "DAN3724 - Anatomy for Dance with Laboratory"
   },
+  { "key": "DAN3745 - Pilates", "value": "DAN3745 - Pilates" },
   {
-    "key": "DCP3210 - Sustainable Solutions for the Built Environment",
-    "value": "DCP3210 - Sustainable Solutions for the Built Environment"
+    "key": "DAN3775 - Dance in Medicine",
+    "value": "DAN3775 - Dance in Medicine"
   },
   {
     "key": "DAN4434 - Laban Move Analysis",
@@ -4572,16 +4555,28 @@
     "value": "DEP4115 - Infant Development"
   },
   {
-    "key": "DEP6059 - Seminar: Special Topics in Developmental Psychology: SEM DEVELOP PSYCHOL",
-    "value": "DEP6059 - Seminar: Special Topics in Developmental Psychology: SEM DEVELOP PSYCHOL"
+    "key": "DEN6934 - Special Topics in Dentistry: SPEC TOPICS DENTISTRY",
+    "value": "DEN6934 - Special Topics in Dentistry: SPEC TOPICS DENTISTRY"
   },
   {
-    "key": "DEP6099 - Survey of Developmental Psychology",
-    "value": "DEP6099 - Survey of Developmental Psychology"
+    "key": "DEN6935 - Special Topics in Dentistry: CURRENT LIT/PER CASES",
+    "value": "DEN6935 - Special Topics in Dentistry: CURRENT LIT/PER CASES"
   },
   {
-    "key": "DIE4125L - Food Systems Management Laboratory",
-    "value": "DIE4125L - Food Systems Management Laboratory"
+    "key": "DEN6935 - Special Topics in Dentistry: COMPLETE DENTURES",
+    "value": "DEN6935 - Special Topics in Dentistry: COMPLETE DENTURES"
+  },
+  {
+    "key": "DEN6935 - Special Topics in Dentistry: CL/ABE/MED COMP/TT",
+    "value": "DEN6935 - Special Topics in Dentistry: CL/ABE/MED COMP/TT"
+  },
+  {
+    "key": "DEN6935 - Special Topics in Dentistry: LITERATURE REVIEW",
+    "value": "DEN6935 - Special Topics in Dentistry: LITERATURE REVIEW"
+  },
+  {
+    "key": "DEN6936 - Practice Management",
+    "value": "DEN6936 - Practice Management"
   },
   { "key": "DEN6942 - Grand Rounds", "value": "DEN6942 - Grand Rounds" },
   {
@@ -4778,16 +4773,16 @@
     "value": "EAS4949 - Co-op Work Experience"
   },
   {
-    "key": "EAS5938 - Special Topics in Aerospace Engineering: Rocket Propulsion",
-    "value": "EAS5938 - Special Topics in Aerospace Engineering: Rocket Propulsion"
+    "key": "EAB6780 - Ethics and Professional Issues",
+    "value": "EAB6780 - Ethics and Professional Issues"
   },
   {
-    "key": "EAS6242 - Advanced Structural Composites",
-    "value": "EAS6242 - Advanced Structural Composites"
+    "key": "EAB6937C - Seminar: Special Topics in Experimental Analysis of Behavior",
+    "value": "EAB6937C - Seminar: Special Topics in Experimental Analysis of Behavior"
   },
   {
-    "key": "EAS6905 - Aerospace Research",
-    "value": "EAS6905 - Aerospace Research"
+    "key": "EAB6939 - Seminar: Special Topics in Applied Behavior Analysis",
+    "value": "EAB6939 - Seminar: Special Topics in Applied Behavior Analysis"
   },
   {
     "key": "EAP5835 - Academic Spoken English I",
@@ -4969,14 +4964,13 @@
     "key": "ECO4504 - Public Economics",
     "value": "ECO4504 - Public Economics"
   },
-  { "key": "ECO4905 - Individual Work", "value": "ECO4905 - Individual Work" },
   {
-    "key": "ECO4935 - Empirical Research in Economics Seminar",
-    "value": "ECO4935 - Empirical Research in Economics Seminar"
+    "key": "ECH6926 - Graduate Seminar",
+    "value": "ECH6926 - Graduate Seminar"
   },
   {
-    "key": "ECO4941 - Internship in Economics",
-    "value": "ECO4941 - Internship in Economics"
+    "key": "ECH6937 - Topics in Chemical Engineering I: INTERFACIAL PHEN",
+    "value": "ECH6937 - Topics in Chemical Engineering I: INTERFACIAL PHEN"
   },
   {
     "key": "ECH6971 - Research for Master's Thesis",
@@ -5022,6 +5016,14 @@
     "value": "ECO4504 - Public Economics"
   },
   { "key": "ECO4905 - Individual Work", "value": "ECO4905 - Individual Work" },
+  {
+    "key": "ECO4934 - Special Topics: COMP HEALTHCARE MKT",
+    "value": "ECO4934 - Special Topics: COMP HEALTHCARE MKT"
+  },
+  {
+    "key": "ECO4934 - Special Topics: Government and Business",
+    "value": "ECO4934 - Special Topics: Government and Business"
+  },
   {
     "key": "ECO4935 - Empirical Research in Economics Seminar",
     "value": "ECO4935 - Empirical Research in Economics Seminar"
@@ -5091,7 +5093,6 @@
     "key": "ECO7980 - Research for Doctoral Dissertation",
     "value": "ECO7980 - Research for Doctoral Dissertation"
   },
-  { "key": "ECP3203 - Labor Economics", "value": "ECP3203 - Labor Economics" },
   {
     "key": "ECP3302 - Environmental Economics and Resource Policy",
     "value": "ECP3302 - Environmental Economics and Resource Policy"
@@ -5153,12 +5154,16 @@
     "value": "EDA6503 - The Principalship"
   },
   {
-    "key": "EDA6948 - Supervised Practice in School Administration",
-    "value": "EDA6948 - Supervised Practice in School Administration"
+    "key": "EDA6107 - Leading Change in Educational Organizations",
+    "value": "EDA6107 - Leading Change in Educational Organizations"
   },
   {
-    "key": "EDA7206 - Organizational Leadership in Education",
-    "value": "EDA7206 - Organizational Leadership in Education"
+    "key": "EDA6192 - Educational Leadership: The Individual",
+    "value": "EDA6192 - Educational Leadership: The Individual"
+  },
+  {
+    "key": "EDA6193 - Educational Leadership: Instruction",
+    "value": "EDA6193 - Educational Leadership: Instruction"
   },
   {
     "key": "EDA6195 - Educational Policy Development",
@@ -5373,16 +5378,44 @@
     "value": "EDG7224 - Critical Pedagogy"
   },
   {
-    "key": "EDG7979 - Advanced Research",
-    "value": "EDG7979 - Advanced Research"
+    "key": "EDG4930 - Special Topics: APP TEACHING SEMINAR",
+    "value": "EDG4930 - Special Topics: APP TEACHING SEMINAR"
   },
   {
-    "key": "EDG7982 - Practitioner Research: Theory & Practice",
-    "value": "EDG7982 - Practitioner Research: Theory & Practice"
+    "key": "EDG4930 - Special Topics: CRITICAL ISSUES IN ED",
+    "value": "EDG4930 - Special Topics: CRITICAL ISSUES IN ED"
   },
   {
-    "key": "EDH3410 - Introduction to Education Policy",
-    "value": "EDH3410 - Introduction to Education Policy"
+    "key": "EDG4930 - Special Topics: 4+1 PRACTICUM ONE",
+    "value": "EDG4930 - Special Topics: 4+1 PRACTICUM ONE"
+  },
+  {
+    "key": "EDG4930 - Special Topics: EXPERIENTIAL LEARNING",
+    "value": "EDG4930 - Special Topics: EXPERIENTIAL LEARNING"
+  },
+  {
+    "key": "EDG4930 - Special Topics: METHODS ENG ED",
+    "value": "EDG4930 - Special Topics: METHODS ENG ED"
+  },
+  {
+    "key": "EDG4930 - Special Topics: CRITICAL ISSUES IN ED",
+    "value": "EDG4930 - Special Topics: CRITICAL ISSUES IN ED"
+  },
+  {
+    "key": "EDG4930 - Special Topics: SENIOR SEMINAR",
+    "value": "EDG4930 - Special Topics: SENIOR SEMINAR"
+  },
+  {
+    "key": "EDG4930 - Special Topics: CRITICAL ISSUES IN EDUCATION",
+    "value": "EDG4930 - Special Topics: CRITICAL ISSUES IN EDUCATION"
+  },
+  {
+    "key": "EDG4930 - Special Topics: EXPERIENTIAL LEARNING",
+    "value": "EDG4930 - Special Topics: EXPERIENTIAL LEARNING"
+  },
+  {
+    "key": "EDG6226 - Foundations of Research in Curriculum & Instruction",
+    "value": "EDG6226 - Foundations of Research in Curriculum & Instruction"
   },
   {
     "key": "EDG6226 - Foundations of Research in Curriculum & Instruction",
@@ -5592,12 +5625,16 @@
     "value": "EEE6742 - Advanced Hardware Security and Trust"
   },
   {
-    "key": "EEL3000 - Introduction to Electrical and Computer Engineering",
-    "value": "EEL3000 - Introduction to Electrical and Computer Engineering"
+    "key": "EEE4511C - Real Time Digital Signal Processing Applications",
+    "value": "EEE4511C - Real Time Digital Signal Processing Applications"
   },
   {
-    "key": "EEL3008 - Physics of Electrical Engineering",
-    "value": "EEL3008 - Physics of Electrical Engineering"
+    "key": "EEE4701 - Automated Hardware/Software Verification",
+    "value": "EEE4701 - Automated Hardware/Software Verification"
+  },
+  {
+    "key": "EEE4773 - Fundamentals of Machine Learning",
+    "value": "EEE4773 - Fundamentals of Machine Learning"
   },
   {
     "key": "EEE5317C - Introduction to Power Electronics",
@@ -5827,16 +5864,12 @@
     "value": "EEL6933 - Electrical and Computer Engineering Graduate Seminar"
   },
   {
-    "key": "EEL6940 - Supervised Teaching",
-    "value": "EEL6940 - Supervised Teaching"
+    "key": "EEL5225 - Principles of Micro-Electro-Mechanical Transducers",
+    "value": "EEL5225 - Principles of Micro-Electro-Mechanical Transducers"
   },
   {
-    "key": "EEL6971 - Research for Master's Thesis",
-    "value": "EEL6971 - Research for Master's Thesis"
-  },
-  {
-    "key": "EEL7980 - Research for Doctoral Dissertation",
-    "value": "EEL7980 - Research for Doctoral Dissertation"
+    "key": "EEL5250 - Power System Analysis",
+    "value": "EEL5250 - Power System Analysis"
   },
   {
     "key": "EEL5406 - Computational Photography",
@@ -6059,12 +6092,16 @@
     "value": "EEX6910 - Supervised Research"
   },
   {
-    "key": "EEX6971 - Research for Master's Thesis",
-    "value": "EEX6971 - Research for Master's Thesis"
+    "key": "EEX6233 - Designing Instruction for Inclusive Classrooms",
+    "value": "EEX6233 - Designing Instruction for Inclusive Classrooms"
   },
   {
-    "key": "EEX6973 - Project in Lieu of Thesis",
-    "value": "EEX6973 - Project in Lieu of Thesis"
+    "key": "EEX6525 - Disability Related Policy and Legislation",
+    "value": "EEX6525 - Disability Related Policy and Legislation"
+  },
+  {
+    "key": "EEX6661 - Teaching and Managing Behavior for Student Learning",
+    "value": "EEX6661 - Teaching and Managing Behavior for Student Learning"
   },
   {
     "key": "EEX6786 - Collaborative Practice in Inclusive Schools",
@@ -6252,16 +6289,12 @@
     "value": "EGS4625 - Fundamentals of Engineering Project Management"
   },
   {
-    "key": "EGS6039 - Engineering Leadership",
-    "value": "EGS6039 - Engineering Leadership"
+    "key": "EGN5949 - Practicum/Internship/Cooperative Work Experience",
+    "value": "EGN5949 - Practicum/Internship/Cooperative Work Experience"
   },
   {
-    "key": "EGS6056 - Learning and Teaching in Engineering",
-    "value": "EGS6056 - Learning and Teaching in Engineering"
-  },
-  {
-    "key": "EGS6101 - Divergent Thinking",
-    "value": "EGS6101 - Divergent Thinking"
+    "key": "EGN5949 - Practicum/Internship/Cooperative Work Experience",
+    "value": "EGN5949 - Practicum/Internship/Cooperative Work Experience"
   },
   {
     "key": "EGN5949 - Practicum/Internship/Cooperative Work Experience",
@@ -6461,12 +6494,16 @@
     "value": "EME4401 - Integrating Technology in the Elementary Curriculum"
   },
   {
-    "key": "EME5054 - Foundations of Educational Technology",
-    "value": "EME5054 - Foundations of Educational Technology"
+    "key": "EMA4121 - Interfacial Engineering",
+    "value": "EMA4121 - Interfacial Engineering"
   },
   {
-    "key": "EME5405 - Internet in K-12 Instruction",
-    "value": "EME5405 - Internet in K-12 Instruction"
+    "key": "EMA4144 - Physical Ceramics 1",
+    "value": "EMA4144 - Physical Ceramics 1"
+  },
+  {
+    "key": "EMA4161 - Physical Properties of Polymers",
+    "value": "EMA4161 - Physical Properties of Polymers"
   },
   {
     "key": "EMA4161L - Polymers Laboratory",
@@ -6665,36 +6702,12 @@
     "value": "EML6905 - Individual Projects in Mechanical Engineering: INDV PROJ MECH ENGR"
   },
   {
-    "key": "EML6934 - Special Topics in Mechanical Engineering: INDUSTRY PRACTICUM",
-    "value": "EML6934 - Special Topics in Mechanical Engineering: INDUSTRY PRACTICUM"
+    "key": "EML4507 - Finite Element Analysis and Design",
+    "value": "EML4507 - Finite Element Analysis and Design"
   },
   {
-    "key": "EML6934 - Special Topics in Mechanical Engineering: Spec Off-Highway Vehicles",
-    "value": "EML6934 - Special Topics in Mechanical Engineering: Spec Off-Highway Vehicles"
-  },
-  {
-    "key": "EML6934 - Special Topics in Mechanical Engineering: New Dev Inter Mass & Invis Flo",
-    "value": "EML6934 - Special Topics in Mechanical Engineering: New Dev Inter Mass & Invis Flo"
-  },
-  {
-    "key": "EML6934 - Special Topics in Mechanical Engineering: ROBUST CONTROL AERO",
-    "value": "EML6934 - Special Topics in Mechanical Engineering: ROBUST CONTROL AERO"
-  },
-  {
-    "key": "EML6934 - Special Topics in Mechanical Engineering: INDUSTRY PRACTICUM",
-    "value": "EML6934 - Special Topics in Mechanical Engineering: INDUSTRY PRACTICUM"
-  },
-  {
-    "key": "EML6934 - Special Topics in Mechanical Engineering: VVU & Q",
-    "value": "EML6934 - Special Topics in Mechanical Engineering: VVU & Q"
-  },
-  {
-    "key": "EML6971 - Research for Master's Thesis",
-    "value": "EML6971 - Research for Master's Thesis"
-  },
-  {
-    "key": "EML7980 - Research for Doctoral Dissertation",
-    "value": "EML7980 - Research for Doctoral Dissertation"
+    "key": "EML4600 - Refrigeration and Air Conditioning Fundamentals",
+    "value": "EML4600 - Refrigeration and Air Conditioning Fundamentals"
   },
   {
     "key": "EML4722 - Introduction to Computational Fluid Dynamics",
@@ -6842,20 +6855,12 @@
     "value": "ENC2305 - Analytical Writing and Thinking: THE RHETORIC OF THE MIND"
   },
   {
-    "key": "ENC2305 - Analytical Writing and Thinking",
-    "value": "ENC2305 - Analytical Writing and Thinking"
-  },
-  {
     "key": "ENC2305 - Analytical Writing and Thinking: The Post-Human Condition",
     "value": "ENC2305 - Analytical Writing and Thinking: The Post-Human Condition"
   },
   {
     "key": "ENC2305 - Analytical Writing and Thinking: There's No Place like \"Home\"",
     "value": "ENC2305 - Analytical Writing and Thinking: There's No Place like \"Home\""
-  },
-  {
-    "key": "ENC2305 - Analytical Writing and Thinking",
-    "value": "ENC2305 - Analytical Writing and Thinking"
   },
   {
     "key": "ENC2305 - Analytical Writing and Thinking: Law and Literature",
@@ -6941,6 +6946,10 @@
     "key": "ENC3310 - Advanced Exposition",
     "value": "ENC3310 - Advanced Exposition"
   },
+  {
+    "key": "ENC3312 - Advanced Argumentative Writing",
+    "value": "ENC3312 - Advanced Argumentative Writing"
+  },
   { "key": "ENC3414 - Hypermedia", "value": "ENC3414 - Hypermedia" },
   {
     "key": "ENC3453 - Writing in the Health Professions",
@@ -7006,14 +7015,21 @@
     "key": "ENG4136 - Film and Video Production: Basic Filmmaking",
     "value": "ENG4136 - Film and Video Production: Basic Filmmaking"
   },
-  { "key": "ENG4844 - Queer Theory", "value": "ENG4844 - Queer Theory" },
   {
-    "key": "ENG4905 - Independent Study",
-    "value": "ENG4905 - Independent Study"
+    "key": "ENG3125 - History of Film, Part 3",
+    "value": "ENG3125 - History of Film, Part 3"
   },
   {
-    "key": "ENG4911 - Undergraduate Research in English: UG RESEARCH ENGLISH",
-    "value": "ENG4911 - Undergraduate Research in English: UG RESEARCH ENGLISH"
+    "key": "ENG4015 - Psychological Approaches to Literature: Psychoanalytic Approach to Lit",
+    "value": "ENG4015 - Psychological Approaches to Literature: Psychoanalytic Approach to Lit"
+  },
+  {
+    "key": "ENG4133 - Film Studies: Closely Watched Films",
+    "value": "ENG4133 - Film Studies: Closely Watched Films"
+  },
+  {
+    "key": "ENG4133 - Film Studies: Films of Environmental Crisis",
+    "value": "ENG4133 - Film Studies: Films of Environmental Crisis"
   },
   {
     "key": "ENG4135 - National Cinemas: French Cinema",
@@ -7225,16 +7241,20 @@
     "value": "ENV4300 - Solid Waste Containment Design"
   },
   {
-    "key": "ENV4411 - Stormwater Control Systems",
-    "value": "ENV4411 - Stormwater Control Systems"
+    "key": "ENU6051 - Radiation Interaction Basics and Applications I",
+    "value": "ENU6051 - Radiation Interaction Basics and Applications I"
   },
   {
-    "key": "ENV4432 - Potable Water System Design",
-    "value": "ENV4432 - Potable Water System Design"
+    "key": "ENU6106 - Nuclear Reactor Analysis I",
+    "value": "ENU6106 - Nuclear Reactor Analysis I"
   },
   {
-    "key": "ENV4501 - Environmental Hydrology 1",
-    "value": "ENV4501 - Environmental Hydrology 1"
+    "key": "ENU6135 - Nuclear Thermal Hydraulics",
+    "value": "ENU6135 - Nuclear Thermal Hydraulics"
+  },
+  {
+    "key": "ENU6657 - Diagnostic Radiological Physics",
+    "value": "ENU6657 - Diagnostic Radiological Physics"
   },
   {
     "key": "ENU6805 - Introduction to Nuclear Reactor Materials",
@@ -7423,24 +7443,32 @@
     "value": "ENY6593 - Advanced Mosquito Biology"
   },
   {
-    "key": "ENY6665 - Advanced Medical and Veterinary Entomology I",
-    "value": "ENY6665 - Advanced Medical and Veterinary Entomology I"
+    "key": "ENY4932 - Special Topics in Entomology and Nematology: MOLEC BIO INSECT NEM",
+    "value": "ENY4932 - Special Topics in Entomology and Nematology: MOLEC BIO INSECT NEM"
   },
   {
-    "key": "ENY6665L - Advanced Medical and Veterinary Entomology Laboratory",
-    "value": "ENY6665L - Advanced Medical and Veterinary Entomology Laboratory"
+    "key": "ENY4932 - Special Topics in Entomology and Nematology: SPIDER BIOLOGY",
+    "value": "ENY4932 - Special Topics in Entomology and Nematology: SPIDER BIOLOGY"
   },
   {
-    "key": "ENY6706 - Forensic Entomology",
-    "value": "ENY6706 - Forensic Entomology"
+    "key": "ENY4932 - Special Topics in Entomology and Nematology: INSECTS AND PLANTS",
+    "value": "ENY4932 - Special Topics in Entomology and Nematology: INSECTS AND PLANTS"
   },
   {
-    "key": "ENY6905 - Problems in Entomology: PROBLEMS IN ENTOMOL",
-    "value": "ENY6905 - Problems in Entomology: PROBLEMS IN ENTOMOL"
+    "key": "ENY4932 - Special Topics in Entomology and Nematology: HONEY BEE BIOLOGY",
+    "value": "ENY4932 - Special Topics in Entomology and Nematology: HONEY BEE BIOLOGY"
   },
   {
-    "key": "ENY6905 - Problems in Entomology",
-    "value": "ENY6905 - Problems in Entomology"
+    "key": "ENY5006 - Graduate Survey of Entomology",
+    "value": "ENY5006 - Graduate Survey of Entomology"
+  },
+  {
+    "key": "ENY5006L - Graduate Survey of Entomology Laboratory",
+    "value": "ENY5006L - Graduate Survey of Entomology Laboratory"
+  },
+  {
+    "key": "ENY5212 - Insects and Wildlife",
+    "value": "ENY5212 - Insects and Wildlife"
   },
   { "key": "ENY6203 - Insect Ecology", "value": "ENY6203 - Insect Ecology" },
   {
@@ -7638,6 +7666,10 @@
     "value": "EUH3931 - Special Topics in European History"
   },
   {
+    "key": "EUH3931 - Special Topics in European History: Golden Age Spain",
+    "value": "EUH3931 - Special Topics in European History: Golden Age Spain"
+  },
+  {
     "key": "EUS2003 - European Experience: a Social Science Perspective",
     "value": "EUS2003 - European Experience: a Social Science Perspective"
   },
@@ -7686,6 +7718,10 @@
     "value": "EUS3930 - Undergraduate Seminar in European Studies: URBAN CULTURES"
   },
   {
+    "key": "EUS3930 - Undergraduate Seminar in European Studies: IM/MBILITS: TRSTS, MIGRTS, RFG",
+    "value": "EUS3930 - Undergraduate Seminar in European Studies: IM/MBILITS: TRSTS, MIGRTS, RFG"
+  },
+  {
     "key": "EUS3938 - European Less Commonly Taught Languages: ADVANCED TURKISH",
     "value": "EUS3938 - European Less Commonly Taught Languages: ADVANCED TURKISH"
   },
@@ -7718,29 +7754,32 @@
     "value": "EUS4930 - Special Topics in European Studies: INTERNATIONAL MIGRATION"
   },
   {
-    "key": "EUS4930 - Special Topics in European Studies: ECE SEMINAR",
-    "value": "EUS4930 - Special Topics in European Studies: ECE SEMINAR"
-  },
-  {
     "key": "EUS4930 - Special Topics in European Studies: DIVIDED CITIES",
     "value": "EUS4930 - Special Topics in European Studies: DIVIDED CITIES"
+  },
+  {
+    "key": "EUS4930 - Special Topics in European Studies: RUSSIAN FOREIGN POLICY",
+    "value": "EUS4930 - Special Topics in European Studies: RUSSIAN FOREIGN POLICY"
   },
   {
     "key": "EUS6005 - Intro Euro Studies",
     "value": "EUS6005 - Intro Euro Studies"
   },
   {
-    "key": "EVR2001 - Introduction to Environmental Science",
-    "value": "EVR2001 - Introduction to Environmental Science"
-  },
-  { "key": "EVR6933 - Seminar", "value": "EVR6933 - Seminar" },
-  {
-    "key": "EVS3000 - Environmental Science",
-    "value": "EVS3000 - Environmental Science"
+    "key": "EUS2003 - European Experience: a Social Science Perspective",
+    "value": "EUS2003 - European Experience: a Social Science Perspective"
   },
   {
-    "key": "EVS3000L - Environmental Science Laboratory",
-    "value": "EVS3000L - Environmental Science Laboratory"
+    "key": "EUS2131 - Spices, Dumplings, and Coffee: Food Customs in Europe",
+    "value": "EUS2131 - Spices, Dumplings, and Coffee: Food Customs in Europe"
+  },
+  {
+    "key": "EUS3100 - European Cinema: EUROPEAN ROAD MOVIE",
+    "value": "EUS3100 - European Cinema: EUROPEAN ROAD MOVIE"
+  },
+  {
+    "key": "EUS3220 - Secret Police under Communism",
+    "value": "EUS3220 - Secret Police under Communism"
   },
   {
     "key": "EUS3930 - Undergraduate Seminar in European Studies: EAST EUROPEAN POLITIC",
@@ -7775,6 +7814,10 @@
     "value": "EUS3930 - Undergraduate Seminar in European Studies: URBAN CULTURES"
   },
   {
+    "key": "EUS3930 - Undergraduate Seminar in European Studies: IM/MBILITS: TRSTS, MIGRTS, RFG",
+    "value": "EUS3930 - Undergraduate Seminar in European Studies: IM/MBILITS: TRSTS, MIGRTS, RFG"
+  },
+  {
     "key": "EUS3938 - European Less Commonly Taught Languages: ADVANCED TURKISH",
     "value": "EUS3938 - European Less Commonly Taught Languages: ADVANCED TURKISH"
   },
@@ -7807,12 +7850,12 @@
     "value": "EUS4930 - Special Topics in European Studies: INTERNATIONAL MIGRATION"
   },
   {
-    "key": "EUS4930 - Special Topics in European Studies: ECE SEMINAR",
-    "value": "EUS4930 - Special Topics in European Studies: ECE SEMINAR"
-  },
-  {
     "key": "EUS4930 - Special Topics in European Studies: DIVIDED CITIES",
     "value": "EUS4930 - Special Topics in European Studies: DIVIDED CITIES"
+  },
+  {
+    "key": "EUS4930 - Special Topics in European Studies: RUSSIAN FOREIGN POLICY",
+    "value": "EUS4930 - Special Topics in European Studies: RUSSIAN FOREIGN POLICY"
   },
   {
     "key": "EUS6005 - Intro Euro Studies",
@@ -8037,20 +8080,12 @@
     "value": "FIN5437 - Finance I: Asset Valuation, Risk, and Return"
   },
   {
-    "key": "FIN5439 - Finance II: Capital Structure and Risk Management Issues",
-    "value": "FIN5439 - Finance II: Capital Structure and Risk Management Issues"
+    "key": "FES6940 - Practicum in FES",
+    "value": "FES6940 - Practicum in FES"
   },
   {
-    "key": "FIN6427 - Measuring and Managing Value",
-    "value": "FIN6427 - Measuring and Managing Value"
-  },
-  {
-    "key": "FIN6465 - Financial Statement Analysis",
-    "value": "FIN6465 - Financial Statement Analysis"
-  },
-  {
-    "key": "FIN6525 - Asset Management Project",
-    "value": "FIN6525 - Asset Management Project"
+    "key": "FIN3403 - Business Finance",
+    "value": "FIN3403 - Business Finance"
   },
   {
     "key": "FIN4504 - Equity and Capital Markets",
@@ -8251,16 +8286,32 @@
     "value": "FOS4911 - Supervised Research in Food Science: SUPERVISED RESEARCH"
   },
   {
-    "key": "FOS4915 - Honors Thesis Research in Food Science: HONORS PROJECT",
-    "value": "FOS4915 - Honors Thesis Research in Food Science: HONORS PROJECT"
+    "key": "FOR6934 - Topics in Forest Resources and Conservation: FIELD OPS MGMT ECOSYS",
+    "value": "FOR6934 - Topics in Forest Resources and Conservation: FIELD OPS MGMT ECOSYS"
   },
   {
-    "key": "FOS4936 - Topics in Food Science: FATS AND OILS",
-    "value": "FOS4936 - Topics in Food Science: FATS AND OILS"
+    "key": "FOR6934 - Topics in Forest Resources and Conservation: FOREST ECO RESILIENCE",
+    "value": "FOR6934 - Topics in Forest Resources and Conservation: FOREST ECO RESILIENCE"
   },
   {
-    "key": "FOS4936 - Topics in Food Science: LIFE AFTER GRADUATION",
-    "value": "FOS4936 - Topics in Food Science: LIFE AFTER GRADUATION"
+    "key": "FOR6934 - Topics in Forest Resources and Conservation: Seminar in Env & Society",
+    "value": "FOR6934 - Topics in Forest Resources and Conservation: Seminar in Env & Society"
+  },
+  {
+    "key": "FOR6934 - Topics in Forest Resources and Conservation: Social Sci Res Methods for NR",
+    "value": "FOR6934 - Topics in Forest Resources and Conservation: Social Sci Res Methods for NR"
+  },
+  {
+    "key": "FOR6940 - Supervised Teaching",
+    "value": "FOR6940 - Supervised Teaching"
+  },
+  {
+    "key": "FOR6971 - Research for Master's Thesis",
+    "value": "FOR6971 - Research for Master's Thesis"
+  },
+  {
+    "key": "FOR7979 - Advanced Research",
+    "value": "FOR7979 - Advanced Research"
   },
   {
     "key": "FOR7980 - Research for Doctoral Dissertation",
@@ -8447,17 +8498,17 @@
     "value": "FRW4281 - Readings in the 20th Century French Novel"
   },
   {
-    "key": "FRW6217 - Seventeenth-Century French Prose",
-    "value": "FRW6217 - Seventeenth-Century French Prose"
+    "key": "FRE6735 - Special Studies in French Linguistics: FRENCH IN CONTACT",
+    "value": "FRE6735 - Special Studies in French Linguistics: FRENCH IN CONTACT"
   },
   {
-    "key": "FRW6288 - Twentieth-Century French Novel",
-    "value": "FRW6288 - Twentieth-Century French Novel"
+    "key": "FRT3004 - Monuments and Masterpieces of France: THE DREYFUS AFFAIR",
+    "value": "FRT3004 - Monuments and Masterpieces of France: THE DREYFUS AFFAIR"
   },
-  { "key": "FRW6905 - Individual Work", "value": "FRW6905 - Individual Work" },
+  { "key": "FRT3520 - French Cinema", "value": "FRT3520 - French Cinema" },
   {
-    "key": "FRW7979 - Advanced Research",
-    "value": "FRW7979 - Advanced Research"
+    "key": "FRW3100 - Introduction to French Literature 1",
+    "value": "FRW3100 - Introduction to French Literature 1"
   },
   {
     "key": "FRW4212 - Readings in 17th Century French Prose",
@@ -8647,20 +8698,28 @@
     "value": "GEB5215 - Professional Communication in Business"
   },
   {
-    "key": "GEB5215 - Professional Communication in Business",
-    "value": "GEB5215 - Professional Communication in Business"
+    "key": "GEB3373 - International Business",
+    "value": "GEB3373 - International Business"
   },
   {
-    "key": "GEB5215 - Professional Communication in Business",
-    "value": "GEB5215 - Professional Communication in Business"
+    "key": "GEB4930 - Special Topics: TRANSFER SUCCESS",
+    "value": "GEB4930 - Special Topics: TRANSFER SUCCESS"
   },
   {
-    "key": "GEB6229 - Professional Communication for Accountants",
-    "value": "GEB6229 - Professional Communication for Accountants"
+    "key": "GEB4930 - Special Topics: CAREER SUCCESS",
+    "value": "GEB4930 - Special Topics: CAREER SUCCESS"
   },
   {
-    "key": "GEB6229 - Professional Communication for Accountants",
-    "value": "GEB6229 - Professional Communication for Accountants"
+    "key": "GEB4930 - Special Topics: TRANSFER SUCCESS",
+    "value": "GEB4930 - Special Topics: TRANSFER SUCCESS"
+  },
+  {
+    "key": "GEB4930 - Special Topics: CAREER SUCCESS",
+    "value": "GEB4930 - Special Topics: CAREER SUCCESS"
+  },
+  {
+    "key": "GEB5114 - Entrepreneurship and Venture Finance",
+    "value": "GEB5114 - Entrepreneurship and Venture Finance"
   },
   {
     "key": "GEB5215 - Professional Communication in Business",
@@ -8805,10 +8864,6 @@
     "value": "GER3401 - German Grammar Review"
   },
   {
-    "key": "GER3413 - German Listening, Comprehension and Speaking",
-    "value": "GER3413 - German Listening, Comprehension and Speaking"
-  },
-  {
     "key": "GER4482 - Cultural Identity and Intercultural Competence",
     "value": "GER4482 - Cultural Identity and Intercultural Competence"
   },
@@ -8874,12 +8929,16 @@
     "value": "GIS3043 - Foundations of Geographic Information Systems"
   },
   {
-    "key": "GIS3072C - Geographic Information Systems",
-    "value": "GIS3072C - Geographic Information Systems"
+    "key": "GEW4930 - Seminar in Germanic Languages and Literatures",
+    "value": "GEW4930 - Seminar in Germanic Languages and Literatures"
   },
   {
-    "key": "GIS4037 - Digital Image Processing",
-    "value": "GIS4037 - Digital Image Processing"
+    "key": "GEW6900 - Seminar in Germanic Languages and Literatures",
+    "value": "GEW6900 - Seminar in Germanic Languages and Literatures"
+  },
+  {
+    "key": "GEW6901 - Special Study in Germanic Languages and Literatures",
+    "value": "GEW6901 - Special Study in Germanic Languages and Literatures"
   },
   {
     "key": "GEW6905 - Independent Study: INDIVIDUAL WORK",
@@ -9101,16 +9160,16 @@
     "value": "GMS5909 - Finding Biomedical Research Information and Communicating Science"
   },
   {
-    "key": "GMS6007 - Fundamentals of Neuroscience",
-    "value": "GMS6007 - Fundamentals of Neuroscience"
+    "key": "GMS5606L - Medical Human Anatomy Laboratory",
+    "value": "GMS5606L - Medical Human Anatomy Laboratory"
   },
   {
-    "key": "GMS6021 - Principles of Neuroscience I: Organization and Development of the Nervous System",
-    "value": "GMS6021 - Principles of Neuroscience I: Organization and Development of the Nervous System"
+    "key": "GMS5613 - Medical Human Anatomy by Diagnostic Imaging",
+    "value": "GMS5613 - Medical Human Anatomy by Diagnostic Imaging"
   },
   {
-    "key": "GMS6029 - Brain Journal Club",
-    "value": "GMS6029 - Brain Journal Club"
+    "key": "GMS5630 - Medical Histology",
+    "value": "GMS5630 - Medical Histology"
   },
   {
     "key": "GMS5905 - Special Topics in Biomedical Sciences: Neuroscience Grant Writing",
@@ -9477,11 +9536,11 @@
     "key": "HAI1131 - Beginning Haitian Creole 2",
     "value": "HAI1131 - Beginning Haitian Creole 2"
   },
-  {
-    "key": "HAI2200 - Intermediate Haitian Creole 1",
-    "value": "HAI2200 - Intermediate Haitian Creole 1"
-  },
   { "key": "HAI4905 - Individual Work", "value": "HAI4905 - Individual Work" },
+  {
+    "key": "HAT3564 - Haitian Culture and Society",
+    "value": "HAT3564 - Haitian Culture and Society"
+  },
   {
     "key": "HBR1130 - Beginning Modern Hebrew 1",
     "value": "HBR1130 - Beginning Modern Hebrew 1"
@@ -10520,12 +10579,12 @@
     "value": "IDS2338 - Democratic Engagement and Public Leadership"
   },
   {
-    "key": "IDS2935 - Special Topics: Art of Getting Hired",
-    "value": "IDS2935 - Special Topics: Art of Getting Hired"
-  },
-  {
     "key": "IDS2935 - Special Topics: Q1 Echoes of Invisible World",
     "value": "IDS2935 - Special Topics: Q1 Echoes of Invisible World"
+  },
+  {
+    "key": "IDS2935 - Special Topics: Q1 Cultural Animals",
+    "value": "IDS2935 - Special Topics: Q1 Cultural Animals"
   },
   {
     "key": "IDS2935 - Special Topics: Q1 Autobio in AM Lit",
@@ -10616,12 +10675,20 @@
     "value": "IDS2935 - Special Topics: Making Babies"
   },
   {
+    "key": "IDS2935 - Special Topics: Knowledge and the Universe",
+    "value": "IDS2935 - Special Topics: Knowledge and the Universe"
+  },
+  {
     "key": "IDS2935 - Special Topics: Why Chemistry Matters",
     "value": "IDS2935 - Special Topics: Why Chemistry Matters"
   },
   {
     "key": "IDS2935 - Special Topics: Communication and Civic Engage",
     "value": "IDS2935 - Special Topics: Communication and Civic Engage"
+  },
+  {
+    "key": "IDS2935 - Special Topics: Global patterns of STIs",
+    "value": "IDS2935 - Special Topics: Global patterns of STIs"
   },
   {
     "key": "IDS2935 - Special Topics: Energy and Society",
@@ -10642,6 +10709,18 @@
   {
     "key": "IDS2935 - Special Topics: What are Sexual Ethics?",
     "value": "IDS2935 - Special Topics: What are Sexual Ethics?"
+  },
+  {
+    "key": "IDS2935 - Special Topics: Sustainable Development",
+    "value": "IDS2935 - Special Topics: Sustainable Development"
+  },
+  {
+    "key": "IDS2935 - Special Topics: Health Mythbusters",
+    "value": "IDS2935 - Special Topics: Health Mythbusters"
+  },
+  {
+    "key": "IDS2935 - Special Topics: Q1 Music and Text",
+    "value": "IDS2935 - Special Topics: Q1 Music and Text"
   },
   {
     "key": "IDS2935 - Special Topics: Q1 Representing War",
@@ -10703,6 +10782,8 @@
     "key": "IDS4930 - Special Topics in Interdisciplinary Studies: Strategic Self-Marketing",
     "value": "IDS4930 - Special Topics in Interdisciplinary Studies: Strategic Self-Marketing"
   },
+  { "key": "IDS4940 - Internship", "value": "IDS4940 - Internship" },
+  { "key": "IDS4940 - Internship", "value": "IDS4940 - Internship" },
   { "key": "IDS4940 - Internship", "value": "IDS4940 - Internship" },
   {
     "key": "IDS4941 - Innovation Academy Internship: IA INTERNSHIP",
@@ -11374,16 +11455,16 @@
     "value": "LAH3470 - Introduction to Caribbean History"
   },
   {
-    "key": "LAH3931 - Special Topics in Latin American History",
-    "value": "LAH3931 - Special Topics in Latin American History"
+    "key": "LAH3931 - Special Topics in Latin American History: Golden Age Spain",
+    "value": "LAH3931 - Special Topics in Latin American History: Golden Age Spain"
   },
   {
     "key": "LAH3931 - Special Topics in Latin American History: History of Asylum Seeking",
     "value": "LAH3931 - Special Topics in Latin American History: History of Asylum Seeking"
   },
   {
-    "key": "LAH3931 - Special Topics in Latin American History",
-    "value": "LAH3931 - Special Topics in Latin American History"
+    "key": "LAH3931 - Special Topics in Latin American History: Global Catholic Missions",
+    "value": "LAH3931 - Special Topics in Latin American History: Global Catholic Missions"
   },
   { "key": "LAH4433 - Modern Mexico", "value": "LAH4433 - Modern Mexico" },
   {
@@ -11412,8 +11493,8 @@
     "value": "LAS4935 - Latin American Area Seminar: BLACK in the Americas"
   },
   {
-    "key": "LAS4935 - Latin American Area Seminar: Coffee Culture, Prod & Markets",
-    "value": "LAS4935 - Latin American Area Seminar: Coffee Culture, Prod & Markets"
+    "key": "LAS4935 - Latin American Area Seminar: Coffee Culture",
+    "value": "LAS4935 - Latin American Area Seminar: Coffee Culture"
   },
   {
     "key": "LAS4935 - Latin American Area Seminar: Seminar on Amazonia",
@@ -11473,8 +11554,8 @@
     "value": "LAS6938 - Seminar in Modern Latin American Studies: Fnd of Eco Development in LA"
   },
   {
-    "key": "LAS6938 - Seminar in Modern Latin American Studies: Coffee Culture, Prod & Markets",
-    "value": "LAS6938 - Seminar in Modern Latin American Studies: Coffee Culture, Prod & Markets"
+    "key": "LAS6938 - Seminar in Modern Latin American Studies: Coffee Culture",
+    "value": "LAS6938 - Seminar in Modern Latin American Studies: Coffee Culture"
   },
   {
     "key": "LAS6938 - Seminar in Modern Latin American Studies: Human Rights in LA",
@@ -11575,16 +11656,16 @@
     "value": "LEI6910 - Supervised Research"
   },
   {
+    "key": "LEI6931 - Special Topics in Recreation, Parks, and Tourism: TRSM/HOSP BUS PERSP",
+    "value": "LEI6931 - Special Topics in Recreation, Parks, and Tourism: TRSM/HOSP BUS PERSP"
+  },
+  {
     "key": "LEI6931 - Special Topics in Recreation, Parks, and Tourism: STRGC HOSP BUS MGT",
     "value": "LEI6931 - Special Topics in Recreation, Parks, and Tourism: STRGC HOSP BUS MGT"
   },
   {
     "key": "LEI6931 - Special Topics in Recreation, Parks, and Tourism: PROFESSIONAL PAPER",
     "value": "LEI6931 - Special Topics in Recreation, Parks, and Tourism: PROFESSIONAL PAPER"
-  },
-  {
-    "key": "LEI6931 - Special Topics in Recreation, Parks, and Tourism: TRSM/HOSP BUS PERSP",
-    "value": "LEI6931 - Special Topics in Recreation, Parks, and Tourism: TRSM/HOSP BUS PERSP"
   },
   {
     "key": "LEI6931 - Special Topics in Recreation, Parks, and Tourism: DESTN. & HOSP CRISIS MGMT.",
@@ -11823,6 +11904,10 @@
   {
     "key": "LIT4233 - Postcolonial Literature, Culture and Theory: Postcolonial Theory",
     "value": "LIT4233 - Postcolonial Literature, Culture and Theory: Postcolonial Theory"
+  },
+  {
+    "key": "LIT4333 - Literature for the Adolescent",
+    "value": "LIT4333 - Literature for the Adolescent"
   },
   {
     "key": "LIT4334 - Golden Age of Children's Literature",
@@ -12095,6 +12180,10 @@
     "key": "MAN6331 - Compensation in Organizations",
     "value": "MAN6331 - Compensation in Organizations"
   },
+  {
+    "key": "MAN6366 - Organizational Staffing",
+    "value": "MAN6366 - Organizational Staffing"
+  },
   { "key": "MAN6446 - Negotiations", "value": "MAN6446 - Negotiations" },
   {
     "key": "MAN6447 - Art and Science of Negotiation",
@@ -12159,10 +12248,6 @@
   {
     "key": "MAN7267 - Seminar on Groups and Teams Research",
     "value": "MAN7267 - Seminar on Groups and Teams Research"
-  },
-  {
-    "key": "MAN7778 - Seminar in Strategic Adaptation to Environment",
-    "value": "MAN7778 - Seminar in Strategic Adaptation to Environment"
   },
   {
     "key": "MAN7980 - Research for Doctoral Dissertation",
@@ -12714,12 +12799,12 @@
   { "key": "MDT7090 - Elective Topics", "value": "MDT7090 - Elective Topics" },
   { "key": "MDT7090 - Elective Topics", "value": "MDT7090 - Elective Topics" },
   {
-    "key": "MDT7100 - Elect Top/Community",
-    "value": "MDT7100 - Elect Top/Community"
-  },
-  {
     "key": "MDT7100 - Elect Top/Community: CM E 21",
     "value": "MDT7100 - Elect Top/Community: CM E 21"
+  },
+  {
+    "key": "MDT7100 - Elect Top/Community",
+    "value": "MDT7100 - Elect Top/Community"
   },
   {
     "key": "MDT7100 - Elect Top/Community",
@@ -12772,22 +12857,22 @@
   {
     "key": "MDT7360 - Elect Top/Pharmacol",
     "value": "MDT7360 - Elect Top/Pharmacol"
-  },
-  {
-    "key": "MDT7400 - Elect Top/Pediatrics",
-    "value": "MDT7400 - Elect Top/Pediatrics"
-  },
-  {
-    "key": "MDT7400 - Elect Top/Pediatrics",
-    "value": "MDT7400 - Elect Top/Pediatrics"
-  },
-  {
-    "key": "MDT7400 - Elect Top/Pediatrics",
-    "value": "MDT7400 - Elect Top/Pediatrics"
   },
   {
     "key": "MDT7400 - Elect Top/Pediatrics: PED E 10",
     "value": "MDT7400 - Elect Top/Pediatrics: PED E 10"
+  },
+  {
+    "key": "MDT7400 - Elect Top/Pediatrics",
+    "value": "MDT7400 - Elect Top/Pediatrics"
+  },
+  {
+    "key": "MDT7400 - Elect Top/Pediatrics",
+    "value": "MDT7400 - Elect Top/Pediatrics"
+  },
+  {
+    "key": "MDT7400 - Elect Top/Pediatrics",
+    "value": "MDT7400 - Elect Top/Pediatrics"
   },
   {
     "key": "MDT7400 - Elect Top/Pediatrics",
@@ -14424,6 +14509,10 @@
     "key": "PCB4085 - Genetical Ethics",
     "value": "PCB4085 - Genetical Ethics"
   },
+  {
+    "key": "PCB4522 - Molecular Genetics",
+    "value": "PCB4522 - Molecular Genetics"
+  },
   { "key": "PCB4674 - Evolution", "value": "PCB4674 - Evolution" },
   {
     "key": "PCB4723C - Physiology and Molecular Biology of Animals",
@@ -14528,6 +14617,10 @@
   {
     "key": "PEN1136 - Openwater Scuba Diving",
     "value": "PEN1136 - Openwater Scuba Diving"
+  },
+  {
+    "key": "PEN2138C - Advanced Scuba Diving",
+    "value": "PEN2138C - Advanced Scuba Diving"
   },
   {
     "key": "PET4948C - Practicum in Exercise and Sport Sciences: PRACTICUM IN APK",
@@ -15829,6 +15922,14 @@
     "value": "POS4931 - Special Topics: RELIGION AND POLITICS"
   },
   {
+    "key": "POS4931 - Special Topics: Pol Inst of the European Union",
+    "value": "POS4931 - Special Topics: Pol Inst of the European Union"
+  },
+  {
+    "key": "POS4931 - Special Topics: Coalits, Parl, & Part in Eur",
+    "value": "POS4931 - Special Topics: Coalits, Parl, & Part in Eur"
+  },
+  {
     "key": "POS4934 - Honors Preparation",
     "value": "POS4934 - Honors Preparation"
   },
@@ -16176,6 +16277,10 @@
   {
     "key": "PUR4932 - Special Study: SOCIAL MEDIA ANALYTICS",
     "value": "PUR4932 - Special Study: SOCIAL MEDIA ANALYTICS"
+  },
+  {
+    "key": "PUR4932 - Special Study: SPORTS BRANDING",
+    "value": "PUR4932 - Special Study: SPORTS BRANDING"
   },
   {
     "key": "PUR4940 - Public Relations Internship",
@@ -17133,6 +17238,10 @@
   {
     "key": "SPM6726 - Issues in Sport Law",
     "value": "SPM6726 - Issues in Sport Law"
+  },
+  {
+    "key": "SPM6905 - Directed Independent Study: Advanced Sport Law",
+    "value": "SPM6905 - Directed Independent Study: Advanced Sport Law"
   },
   {
     "key": "SPM6905 - Directed Independent Study: SPORT CAREER TRANSITI",
@@ -18681,6 +18790,10 @@
     "value": "VME4012 - Aquatic Animal Conservation Issues"
   },
   {
+    "key": "VME4906 - Problems in Veterinary Science: Intro to Water Analysis",
+    "value": "VME4906 - Problems in Veterinary Science: Intro to Water Analysis"
+  },
+  {
     "key": "VME6010 - Aquatic Animal Conservation Issues",
     "value": "VME6010 - Aquatic Animal Conservation Issues"
   },
@@ -18931,8 +19044,16 @@
   },
   { "key": "WOH3241 - The Vietnam War", "value": "WOH3241 - The Vietnam War" },
   {
+    "key": "WOH3931 - Special Topics in World History: Global Catholic Missions",
+    "value": "WOH3931 - Special Topics in World History: Global Catholic Missions"
+  },
+  {
     "key": "WOH4243 - Empires, Nationalism, and Revolution 1945-1994",
     "value": "WOH4243 - Empires, Nationalism, and Revolution 1945-1994"
+  },
+  {
+    "key": "WOH4264 - Empires and Imperialism",
+    "value": "WOH4264 - Empires and Imperialism"
   },
   {
     "key": "WOH4930 - History Research Seminar: World History",
