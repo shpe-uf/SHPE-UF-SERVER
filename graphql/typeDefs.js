@@ -27,7 +27,7 @@ module.exports = gql`
     listServ: Boolean!
     events: [Event]!
     tasks: [Task]!
-    bookmarkedTasks: [Task]!
+    bookmarkedTasks: [String]!
     token: String!
     message: String!
     classes: [Class]!
@@ -340,8 +340,6 @@ module.exports = gql`
     getSexStat: [StatData]
     getEthnicityStat: [StatData]
     getAlumnis: [Alumni]
-    getUserTasks: [User]
-    getBookmarkedTasks: [User]
   }
 
   ### MUTATIONS LIST ###

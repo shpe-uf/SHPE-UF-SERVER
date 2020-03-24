@@ -94,11 +94,7 @@ const userSchema = new Schema({
     createdAt: String,
     points: Number,
   }],
-  bookmarkedTasks: [{
-    name: String,
-    createdAt: String,
-    points: Number,
-  }],
+  bookmarkedTasks: [String],
   classes: [{
     code: String
   }],

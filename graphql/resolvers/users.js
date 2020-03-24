@@ -591,8 +591,6 @@ module.exports = {
 
       const { valid, errors } = validateRedeemPointsInput(code);
 
-      console.log(errors);
-
       if (!valid) {
         throw new UserInputError("Errors", {
           errors
@@ -778,34 +776,17 @@ module.exports = {
       const task = await Task.findOne({
         name
       });
-      console.log(task);
 
 
       var updatedUser = await User.findOneAndUpdate({
         username
       }, {
-          $push: {
-            bookmarkedTasks: {
-              $each: [{
-                name: task.name,
-                startDate: task.startDate,
-                endDate: task.endDate,
-                description: task.description,
-                createdAt: task.createdAt,
-                points: task.points,
-                semester: task.semester,
-                attendance: task.attendance
-              }],
-              $sort: {
-                createdAt: 1
-              }
-            }
-          },
-        }, {
-          new: true
-        });
-
-      updatedUser.message = "";
+        $push: {
+          bookmarkedTasks: task.name
+        }
+      }, {
+        new: true
+      });
 
       return updatedUser;
     },
@@ -827,22 +808,12 @@ module.exports = {
       var updatedUser = await User.findOneAndUpdate({
         username
       }, {
-          $pull: {
-            bookmarkedTasks: {
-                name: task.name,
-                startDate: task.startDate,
-                endDate: task.endDate,
-                description: task.description,
-                createdAt: task.createdAt,
-                points: task.points,
-                semester: task.semester
-            }
-          },
-        }, {
-          new: true
-        });
-
-      updatedUser.message = "";
+        $pull: {
+          bookmarkedTasks: task.name
+        }
+      }, {
+        new: true
+      });
 
       return updatedUser;
     },
@@ -881,8 +852,6 @@ module.exports = {
         }
       });
 
-      console.log(task);
-
       const request = await Request.findOne({
         name: task.name,
         username: user.username
@@ -904,8 +873,6 @@ module.exports = {
         username: user.username,
         createdAt: new Date().toISOString()
       });
-
-      console.log(newTaskRequest);
 
       const res = await newTaskRequest.save();
 
