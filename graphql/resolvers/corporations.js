@@ -221,15 +221,16 @@ module.exports = {
        }
     ){
 
-      Corporation.deleteOne({ '_id': id }, (err) => {
+      await Corporation.deleteOne({ '_id': id }, (err) => {
         if (err){
           console.log(err);
           throw err;
         }
-        else 
-          return true;
       });
-      return false;
+
+      const corporations = await Corporation.find();
+
+      return corporations;
     }
   }
 };
