@@ -70,6 +70,7 @@ module.exports = gql`
 
 
   type Corporation {
+    id: ID!
     name: String!
     logo: String!
     slogan: String!

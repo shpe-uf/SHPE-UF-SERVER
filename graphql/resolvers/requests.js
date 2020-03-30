@@ -64,7 +64,6 @@ module.exports = {
         }
       }
     ) {
-      console.log("test");
       const event = await Event.findOne({
         name: name
       });
@@ -74,10 +73,6 @@ module.exports = {
       const user = await User.findOne({
         username
       });
-
-      if (!task) {
-        console.log(task);
-      }
 
       var pointsIncrease = {};
 

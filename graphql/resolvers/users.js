@@ -589,8 +589,6 @@ module.exports = {
 
       const { valid, errors } = validateRedeemPointsInput(code);
 
-      console.log(errors);
-
       if (!valid) {
         throw new UserInputError("Errors", {
           errors
@@ -796,8 +794,6 @@ module.exports = {
         }
       });
 
-      console.log(task);
-
       const request = await Request.findOne({
         name: task.name,
         username: user.username
@@ -820,10 +816,7 @@ module.exports = {
         createdAt: new Date().toISOString()
       });
 
-      console.log(newTaskRequest);
-
-
-      const res = await newTaskRequest.save();
+      await newTaskRequest.save();
 
       var newUser = {
         firstName: user.firstName,

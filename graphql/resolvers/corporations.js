@@ -143,7 +143,6 @@ module.exports = {
         }
       }
     ){
-      console.log("Update Corporation Running")
 
       const { valid, errors } = validateCreateEditCorporationInput(
         name,
@@ -220,7 +219,6 @@ module.exports = {
 
       Corporation.deleteOne({ 'name': name }, (err) => {
         if (err){
-          console.log(err);
           throw err;
         }
         else 
