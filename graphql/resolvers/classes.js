@@ -31,8 +31,6 @@ module.exports = {
       const users = await User.find({
         username : {$in: matches}
       }).sort({lastName: 1, firstName: 1});
-      
-      console.log(users)
 
       return users;
     }
@@ -146,10 +144,8 @@ module.exports = {
       return res.classes;
     },
     async deleteClass(_, { deleteClassInput: { code, username } }) {
-      console.log('booys');
       const user = await User.findOne({ username });
       const classFound = await Class.findOne({ code });
-      console.log('here');
       if (classFound) {
         classFound.users = classFound.users.filter(
           userT => userT.username !== username

@@ -223,7 +223,6 @@ module.exports = {
 
       await Corporation.deleteOne({ '_id': id }, (err) => {
         if (err){
-          console.log(err);
           throw err;
         }
       });
