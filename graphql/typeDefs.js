@@ -220,6 +220,7 @@ module.exports = gql`
   }
 
   input EditCorporationInput {
+    id: ID!
     name: String!
     logo: String!
     slogan: String!

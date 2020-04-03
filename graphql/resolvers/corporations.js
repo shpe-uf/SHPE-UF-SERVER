@@ -120,6 +120,7 @@ module.exports = {
       _,
       {
         editCorporationInput: {
+          id,
           name,
           logo,
           slogan, 
@@ -172,12 +173,13 @@ module.exports = {
       springBBQ = (springBBQ === "true" || springBBQ === true) ? true : false;
       nationalConvention = (nationalConvention === "true" || nationalConvention === true) ? true : false;
     
-      const companyExists = await Corporation.findOne({name});
+      const companyExists = await Corporation.findOne({'_id': id});
 
       if (companyExists) {
         const updatedCorporation = await Corporation.findOneAndUpdate(
-          {name},
+          {'_id': id},
           {
+            id,
             name,
             logo,
             slogan,
@@ -204,9 +206,7 @@ module.exports = {
             new: true
           }
           );
-          
         return updatedCorporation;
-
       } else {
         throw new Error("Company not found.");
       }
