@@ -118,6 +118,20 @@ module.exports = gql`
     linkedin: String!
   }
 
+  type Reimbursement {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    studentId: Int!
+    address: String!
+    company: String!
+    event: String!
+    description: String!
+    reimbursed: Boolean!
+    amount: Int!
+  }
+
   ### AUXILIARY TYPES ###
   type StatData {
     _id: String!
@@ -295,6 +309,19 @@ module.exports = gql`
     sex: String!
   }
 
+  input ReimbursementInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    studentId: Int!
+    address: String!
+    company: String!
+    event: String!
+    description: String!
+    reimbursed: Boolean!
+    amount: Int!
+  }
+
   ### AUXILIARY INPUTS ###
   input UndergradInput {
     university: String!
@@ -330,6 +357,7 @@ module.exports = gql`
     getSexStat: [StatData]
     getEthnicityStat: [StatData]
     getAlumnis: [Alumni]
+    getReimbursements: [Reimbursement]
   }
 
   ### MUTATIONS LIST ###
@@ -367,5 +395,6 @@ module.exports = gql`
     registerAlumni(registerAlumniInput: RegisterAlumniInput): Alumni!
     changePermission(email: String!, currentEmail: String!, permission: String!): Boolean!
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
+    reimbursementRequest(reimbursementInput: ReimbursementInput): Reimbursement!
   }
 `;

@@ -16,7 +16,7 @@ module.exports.validateRegisterInput = (
 ) => {
   const errors = {};
 
-  const nameValidator = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+  const nameValidator = /^[a-zA-Z ]{3,20}$/;
   const usernameValidator = /^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i;
   const emailRegex = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
   const passwordValidator = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
@@ -26,7 +26,7 @@ module.exports.validateRegisterInput = (
   } else {
     if (!firstName.match(nameValidator)) {
       errors.firstName =
-        "First Name must be at least 3 character, max 20. No special characters or numbers.";
+        "First Name must be at least 3 characters, max 20. No special characters or numbers.";
     }
   }
 
@@ -35,7 +35,7 @@ module.exports.validateRegisterInput = (
   } else {
     if (!lastName.match(nameValidator)) {
       errors.lastName =
-        "Last name must be at least 3 character, max 20. No special characters or numbers.";
+        "Last name must be at least 3 characters, max 20. No special characters or numbers.";
     }
   }
 
@@ -400,14 +400,14 @@ module.exports.validateEditUserProfile = (
 ) => {
   const errors = {};
 
-  const nameValidator = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+  const nameValidator = /^[a-zA-Z ]{3,20}$/;
 
   if (firstName.trim() === "") {
     errors.firstName = "First name is required.";
   } else {
     if (!firstName.match(nameValidator)) {
       errors.firstName =
-        "First Name must be at least 3 character, max 20. No special characters or numbers.";
+        "First Name must be at least 3 characters, max 20. No special characters or numbers.";
     }
   }
 
@@ -416,7 +416,7 @@ module.exports.validateEditUserProfile = (
   } else {
     if (!lastName.match(nameValidator)) {
       errors.lastName =
-        "Last name must be at least 3 character, max 20. No special characters or numbers.";
+        "Last name must be at least 3 characters, max 20. No special characters or numbers.";
     }
   }
 
@@ -472,7 +472,7 @@ module.exports.validateRegisterAlumniInput = (
 ) => {
   const errors = {};
 
-  const nameValidator = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+  const nameValidator = /^[a-zA-Z ]{3,20}$/;
   const emailValidator = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
   const yearValidator = /^\d{4}$/;
 
@@ -481,7 +481,7 @@ module.exports.validateRegisterAlumniInput = (
   } else {
     if (!firstName.match(nameValidator)) {
       errors.firstName =
-        "First Name must be at least 3 character, max 20. No special characters or numbers.";
+        "First Name must be at least 3 characters, max 20. No special characters or numbers.";
     }
   }
 
@@ -490,7 +490,7 @@ module.exports.validateRegisterAlumniInput = (
   } else {
     if (!lastName.match(nameValidator)) {
       errors.lastName =
-        "Last name must be at least 3 character, max 20. No special characters or numbers.";
+        "Last name must be at least 3 characters, max 20. No special characters or numbers.";
     }
   }
 
@@ -590,6 +590,63 @@ module.exports.validateCreateClassInput = (code) => {
       errors.code =
         "Course code must be made up of letters (A-Z) and numbers (0-9). No special characters allowed.";
     }
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1
+  }
+};
+
+module.exports.validateReimbursementRequest = (
+  firstName,
+  lastName,
+  email,
+  studentId,
+  address,
+  company,
+  event,
+  description,
+  reimbursed,
+  amount
+) => {
+  const errors = {};
+
+  const nameValidator = /^[a-zA-Z ]{3,20}$/;
+  const emailValidator = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
+
+  if (firstName.trim() === "") {
+    errors.firstName = "First name is required.";
+  } else {
+    if (!firstName.match(nameValidator)) {
+      errors.firstName =
+        "First Name must be at least 3 characters, max 20. No special characters or numbers.";
+    }
+  }
+
+  if (lastName.trim() === "") {
+    errors.lastName = "Last Name is required.";
+  } else {
+    if (!lastName.match(nameValidator)) {
+      errors.lastName =
+        "Last name must be at least 3 character, max 20. No special characters or numbers.";
+    }
+  }
+
+  if (email.trim() === "") {
+    errors.email = "Email is required.";
+  } else {
+    if (!email.match(emailValidator)) {
+      errors.email = "Invalid email address.";
+    }
+  }
+
+  if (studentId > 99999999 || studentId < 10000000) {
+    errors.studentId = "Invalid student id.";
+  }
+
+  if (amount < 0) {
+    errors.amount = "Amount cannot be negative.";
   }
 
   return {

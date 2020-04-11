@@ -5,6 +5,7 @@ const tasksResolvers = require("./tasks.js");
 const corporationResolvers = require("./corporations.js");
 const classResolvers = require("./classes.js");
 const alumnisResolvers = require("./alumnis.js");
+const reimbursementsResolvers = require("./reimbursements.js");
 
 module.exports = {
   Query: {
@@ -14,7 +15,8 @@ module.exports = {
     ...tasksResolvers.Query,
     ...corporationResolvers.Query,
     ...alumnisResolvers.Query,
-    ...classResolvers.Query
+    ...classResolvers.Query,
+    ...reimbursementsResolvers.Query
   },
 
   Mutation: {
@@ -24,6 +26,7 @@ module.exports = {
     ...tasksResolvers.Mutation,
     ...corporationResolvers.Mutation,
     ...alumnisResolvers.Mutation,
-    ...classResolvers.Mutation
+    ...classResolvers.Mutation,
+    ...reimbursementsResolvers.Mutation
   }
 };
