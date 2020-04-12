@@ -30,7 +30,8 @@ module.exports = {
                     event,
                     description,
                     reimbursed,
-                    amount
+                    amount,
+                    execute
                 }
             }
         ) {
@@ -53,23 +54,26 @@ module.exports = {
                 });
             }
 
-            const newReimbursement = new Reimbursement({
-                firstName,
-                lastName,
-                email,
-                studentId,
-                address,
-                company,
-                event,
-                description,
-                reimbursed,
-                amount
-            });
+                const newReimbursement = new Reimbursement({
+                    firstName,
+                    lastName,
+                    email,
+                    studentId,
+                    address,
+                    company,
+                    event,
+                    description,
+                    reimbursed,
+                    amount
+                });
 
-            console.log(newReimbursement);
-            await newReimbursement.save();
-
-            return newReimbursement;
+            
+            if (execute) {
+                console.log(newReimbursement);
+                await newReimbursement.save();
+            }
+            
+            return newReimbursement;            
         }
     }
 };

@@ -313,13 +313,14 @@ module.exports = gql`
     firstName: String!
     lastName: String!
     email: String!
-    studentId: Int!
+    studentId: String!
     address: String!
     company: String!
     event: String!
     description: String!
     reimbursed: Boolean!
-    amount: Int!
+    amount: String!
+    execute: Boolean!
   }
 
   ### AUXILIARY INPUTS ###

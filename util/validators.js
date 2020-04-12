@@ -16,7 +16,7 @@ module.exports.validateRegisterInput = (
 ) => {
   const errors = {};
 
-  const nameValidator = /^[a-zA-Z ]{3,20}$/;
+  const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
   const usernameValidator = /^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i;
   const emailRegex = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
   const passwordValidator = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
@@ -400,7 +400,7 @@ module.exports.validateEditUserProfile = (
 ) => {
   const errors = {};
 
-  const nameValidator = /^[a-zA-Z ]{3,20}$/;
+  const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
 
   if (firstName.trim() === "") {
     errors.firstName = "First name is required.";
@@ -472,7 +472,7 @@ module.exports.validateRegisterAlumniInput = (
 ) => {
   const errors = {};
 
-  const nameValidator = /^[a-zA-Z ]{3,20}$/;
+  const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
   const emailValidator = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
   const yearValidator = /^\d{4}$/;
 
@@ -612,7 +612,7 @@ module.exports.validateReimbursementRequest = (
 ) => {
   const errors = {};
 
-  const nameValidator = /^[a-zA-Z ]{3,20}$/;
+  const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
   const emailValidator = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
 
   if (firstName.trim() === "") {
@@ -641,12 +641,38 @@ module.exports.validateReimbursementRequest = (
     }
   }
 
-  if (studentId > 99999999 || studentId < 10000000) {
-    errors.studentId = "Invalid student id.";
+  if (studentId.trim() === "") {
+    errors.studentId = "Student ID is required."
+  } else {
+    if (studentId > 99999999 || studentId < 10000000) {
+      errors.studentId = "Invalid student ID.";
+    }
   }
 
-  if (amount < 0) {
-    errors.amount = "Amount cannot be negative.";
+  if (amount.trim() === "") {
+    errors.amount = "Amount is required."
+  } else if (isNaN(amount)) {
+    errors.amount = "For amount only enter numbers."
+  } else {
+    if (amount < 0) {
+      errors.amount = "Amount cannot be negative.";
+    }
+  }
+
+  if (address.trim() === "") {
+    errors.address = "Address is required."
+  }
+
+  if (company.trim() === "") {
+    errors.company = "Company is required."
+  }
+
+  if (event.trim() === "") {
+    errors.event = "Event is required."
+  }
+
+  if (description.trim() === "") {
+    errors.description = "Description is required."
   }
 
   return {
