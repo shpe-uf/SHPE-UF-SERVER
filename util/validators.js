@@ -643,7 +643,9 @@ module.exports.validateReimbursementRequest = (
 
   if (studentId.trim() === "") {
     errors.studentId = "Student ID is required."
-  } else {
+  } else if (isNaN(studentId)) {
+    errors.studentId = "Student ID can only be numbers."
+  }else {
     if (studentId > 99999999 || studentId < 10000000) {
       errors.studentId = "Invalid student ID.";
     }
