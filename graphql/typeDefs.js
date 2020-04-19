@@ -129,7 +129,7 @@ module.exports = gql`
     event: String!
     description: String!
     reimbursed: Boolean!
-    amount: Int!
+    amount: String!
   }
 
   ### AUXILIARY TYPES ###
@@ -397,5 +397,7 @@ module.exports = gql`
     changePermission(email: String!, currentEmail: String!, permission: String!): Boolean!
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
     reimbursementRequest(reimbursementInput: ReimbursementInput): Reimbursement!
+    resolveReimbursement(id: ID!, email: String!): Reimbursement!
+    unresolveReimbursement(id: ID!, email: String!): Reimbursement!
   }
 `;
