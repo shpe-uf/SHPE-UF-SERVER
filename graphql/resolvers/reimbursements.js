@@ -86,10 +86,12 @@ module.exports = {
                     subject: "Reimbursement Request",
                     text:
                       "You made a request for a reimbursement.\n\n" +
+                      `ID: ${newReimbursement.id}\n` +
                       `Name: ${firstName} ${lastName}\n` +
                       `Email: ${email}\n` +
                       `Student ID: ${studentId}\n` +
-                      `Address: ${company}\n` +
+                      `Address: ${address}\n` +
+                      `Company: ${company}\n` +
                       `Event: ${event}\n` +
                       `Event description: ${description}\n` +
                       `Amount: $${amount}\n\n` +
@@ -110,10 +112,12 @@ module.exports = {
                     subject: "Reimbursement Request - " + `${firstName} ${lastName}`,
                     text:
                       "There is a new request for a reimbursement.\n\n" +
+                      `ID: ${newReimbursement.id}\n` +
                       `Name: ${firstName} ${lastName}\n` +
                       `Email: ${email}\n` +
                       `Student ID: ${studentId}\n` +
-                      `Address: ${company}\n` +
+                      `Address: ${address}\n` +
+                      `Company: ${company}\n` +
                       `Event: ${event}\n` +
                       `Event description: ${description}\n` +
                       `Amount: $${amount}\n\n`
