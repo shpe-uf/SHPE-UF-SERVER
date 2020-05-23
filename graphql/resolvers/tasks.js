@@ -116,8 +116,6 @@ module.exports = {
         });
       }
 
-      console.log("test");
-
       if (request) {
         errors.general =
           "This member has sent a request for this task. Check the Requests tab.";
@@ -161,7 +159,6 @@ module.exports = {
           errors
         });
       }
-      console.log("testTwo");
       
       var updatedUser = await User.findOneAndUpdate(
         {
@@ -186,7 +183,6 @@ module.exports = {
           new: true
         }
       );
-      console.log("testtest");
       updatedUser.message = "";
 
       await Task.findOneAndUpdate(
@@ -215,7 +211,6 @@ module.exports = {
           new: true
         }
       );
-      console.log("thirdTest");
       const updatedTasks = await Task.find();
 
       return updatedTasks;

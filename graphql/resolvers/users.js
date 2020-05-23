@@ -874,7 +874,7 @@ module.exports = {
         createdAt: new Date().toISOString()
       });
 
-      const res = await newTaskRequest.save();
+      await newTaskRequest.save();
 
       var newUser = {
         firstName: user.firstName,

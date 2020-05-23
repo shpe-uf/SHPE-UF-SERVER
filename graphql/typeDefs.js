@@ -71,6 +71,7 @@ module.exports = gql`
 
 
   type Corporation {
+    id: ID!
     name: String!
     logo: String!
     slogan: String!
@@ -219,8 +220,10 @@ module.exports = gql`
     nationalConvention: String!
   }
 
-  input EditCorporationProfileInput {
+  input EditCorporationInput {
+    id: ID!
     name: String!
+    logo: String!
     slogan: String!
     majors: [String!]!
     industries: [String!]!
@@ -242,7 +245,7 @@ module.exports = gql`
   }
 
   input DeleteCorporationInput {
-    name: String!
+    id: ID!
   }
 
   input RedeemPointsInput {
@@ -348,8 +351,8 @@ module.exports = gql`
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!, remember: String!): User!
     createCorporation(createCorporationInput: CreateCorporationInput): [Corporation]
-    updateCorporation(editCorporationProfileInput: EditCorporationProfileInput): [Corporation]
-    deleteCorporation(name: String!): Boolean!
+    editCorporation(editCorporationInput: EditCorporationInput): Corporation!
+    deleteCorporation(deleteCorporationInput: DeleteCorporationInput): [Corporation]!
     createEvent(createEventInput: CreateEventInput): [Event]
     redeemPoints(redeemPointsInput: RedeemPointsInput): User!
     createTask(createTaskInput: CreateTaskInput): Task!
