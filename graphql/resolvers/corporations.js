@@ -1,6 +1,5 @@
 const { UserInputError } = require("apollo-server");
 const Corporation = require("../../models/Corporation.js");
-const Request = require("../../models/Request.js");
 
 require("dotenv").config();
 
