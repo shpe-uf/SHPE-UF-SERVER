@@ -14,10 +14,6 @@ const receiptSchema = new Schema({
     type: String,
     required: false
   },
-  phone: {
-    type: String,
-    required: false
-  },
   dateOpened: {
     type: String,
     required: true

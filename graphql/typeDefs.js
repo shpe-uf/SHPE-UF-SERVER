@@ -127,7 +127,6 @@ module.exports = gql`
     username: String!,
     item: String!,
     email: String!,
-    phone: String,
     dateOpened: String!,
     dateClosed: String,
     open: Boolean!
@@ -205,8 +204,7 @@ module.exports = gql`
     item: String!,
     username: String!,
     numberOfItems: Int!,
-    email: String!,
-    phone: String
+    email: String!
   }
 
   input CreateCorporationInput {

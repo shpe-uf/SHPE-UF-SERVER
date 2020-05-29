@@ -39,9 +39,8 @@ module.exports = {
   
     async checkOut(_, data) {
       try{
-        console.log('here')
         //fixes bug where Object Null is received
-        const {item, username, numberOfItems, email, phone } = JSON.parse(JSON.stringify(data)).data;
+        const {item, username, numberOfItems, email } = JSON.parse(JSON.stringify(data)).data;
   
         const rentable = await Rentable.findOne({'item':item});
         const user = await User.findOne({'username': username});
@@ -78,7 +77,6 @@ module.exports = {
           const receipt = new Receipt({
             username,
             email,
-            phone,
             item,
             dateOpened,
             open: true
