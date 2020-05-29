@@ -1,7 +1,6 @@
 const { model, Schema } = require("mongoose");
 const Event = require("./Event").schema;
 const Task = require("./Task").schema;
-const Class = require("./Class").schema;
 
 const userSchema = new Schema({
   firstName: {
@@ -94,11 +93,9 @@ const userSchema = new Schema({
     createdAt: String,
     points: Number,
   }],
-  classes: [
-    {
-      code: String
-    }
-  ],
+  classes: {
+    type: [String]
+  },
   token: {
     type: String
   },
