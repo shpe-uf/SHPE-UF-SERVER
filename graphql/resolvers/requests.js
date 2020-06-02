@@ -64,6 +64,7 @@ module.exports = {
         }
       }
     ) {
+      console.log('here')
       const event = await Event.findOne({
         name: name
       });

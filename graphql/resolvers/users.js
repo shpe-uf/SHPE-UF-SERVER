@@ -51,7 +51,6 @@ module.exports = {
     async getUser(_, { userId }) {
       try {
         var user = await User.findById(userId);
-
         if (user) {
 
           const users = await User.find();

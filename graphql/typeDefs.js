@@ -30,17 +30,11 @@ module.exports = gql`
     bookmarkedTasks: [String]!
     token: String!
     message: String!
-    classes: [Class]!
     confirmed: Boolean!
     fallPercentile: Int!
     springPercentile: Int!
     summerPercentile: Int!
     bookmarks: [String]!
-  }
-
-  type Class {
-    code: String!
-    users: [User]!
   }
 
   type Event {
@@ -96,8 +90,8 @@ module.exports = gql`
 
   type Request {
     id: ID!
-    eventName: String!
-    category: String!
+    name: String!
+    type: String!
     points: String!
     firstName: String!
     lastName: String!
@@ -117,6 +111,26 @@ module.exports = gql`
     location: Location
     coordinates: Coordinates!
     linkedin: String!
+  }
+
+  type Rentable{
+    item: String!
+    quantity: Int!
+    level: Int!
+    description: String
+    link: String
+    renters: [String]!
+    category: String!
+    image: String!
+  }
+
+  type Receipt{
+    username: String!,
+    item: String!,
+    email: String!,
+    dateOpened: String!,
+    dateClosed: String,
+    open: Boolean!
   }
 
   ### AUXILIARY TYPES ###
@@ -187,14 +201,11 @@ module.exports = gql`
     points: Int!
   }
 
-  input CreateClassInput {
-    code: String!
-    username: String!
-  }
-
-  input DeleteClassInput {
-    code: String!
-    username: String!
+  input TransactionData {
+    item: String!,
+    username: String!,
+    numberOfItems: Int!,
+    email: String!
   }
 
   input CreateCorporationInput {
@@ -270,7 +281,8 @@ module.exports = gql`
 
   input ApproveRejectRequestInput {
     username: String!
-    eventName: String!
+    name: String!
+    type: String!
   }
 
   input ManualInputInput {
@@ -343,6 +355,8 @@ module.exports = gql`
     getSexStat: [StatData]
     getEthnicityStat: [StatData]
     getAlumnis: [Alumni]
+    getInventory: [Rentable]
+    getItem(item: String): Rentable
   }
 
   ### MUTATIONS LIST ###
@@ -367,9 +381,6 @@ module.exports = gql`
     ): [Request]
     manualInput(manualInputInput: ManualInputInput): [Event]
     manualTaskInput(manualTaskInputInput: ManualTaskInputInput): Task
-    createClass(createClassInput: CreateClassInput): [Class]
-    deleteClass(deleteClassInput: DeleteClassInput): [Class]
-    getClass(code: String!): Class!
     forgotPassword(email: String!): User!
     resetPassword(
       password: String!
@@ -382,5 +393,7 @@ module.exports = gql`
     registerAlumni(registerAlumniInput: RegisterAlumniInput): Alumni!
     changePermission(email: String!, currentEmail: String!, permission: String!): Boolean!
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
+    checkOut(data: TransactionData): [Receipt],
+    return(data: TransactionData): [Receipt]
   }
 `;
