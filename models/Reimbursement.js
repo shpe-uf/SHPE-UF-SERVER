@@ -34,7 +34,7 @@ const reimbursementSchema = new Schema({
         required: true
     },
     reimbursed: {
-        type: Boolean,
+        type: String,
         required: true
     },
     amount: {

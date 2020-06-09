@@ -68,7 +68,6 @@ module.exports = {
                     amount
                 });
 
-            
             if (execute) {
                 await newReimbursement.save();
 
@@ -143,7 +142,7 @@ module.exports = {
             }
         ){
             try {
-                const resolvedReimbursement = await Reimbursement.findByIdAndUpdate(id, {reimbursed: true});
+                const resolvedReimbursement = await Reimbursement.findByIdAndUpdate(id, {reimbursed: "resolved"});
 
                 const transporter = nodemailer.createTransport({
                     service: process.env.EMAIL_SERVICE,
@@ -185,7 +184,7 @@ module.exports = {
             }
         ){
             try {
-                const unresolvedReimbursement = await Reimbursement.findByIdAndUpdate(id, {reimbursed: false});
+                const unresolvedReimbursement = await Reimbursement.findByIdAndUpdate(id, {reimbursed: "pending"});
 
                 const transporter = nodemailer.createTransport({
                     service: process.env.EMAIL_SERVICE,
@@ -203,6 +202,90 @@ module.exports = {
                       "Your request for a reimbursement:\n\n" +
                       `Reimbursement ID: ${id} \n\n` +
                       "has been has been unresolved."
+                };
+            
+                transporter.sendMail(requesterMail, (err, response) => {
+                    if (err) {
+                      console.error("there was an error: ", err);
+                    } else {
+                      res.status(200).json('recovery email sent');
+                    }
+                });
+    
+                return unresolvedReimbursement;
+            } catch (err) {
+                throw new Error(err);
+            }
+        },
+
+        async cancelReimbursement(
+            _,
+            {
+                id,
+                email
+            }
+        ){
+            try {
+                const unresolvedReimbursement = await Reimbursement.findByIdAndUpdate(id, {reimbursed: "cancelled"});
+
+                const transporter = nodemailer.createTransport({
+                    service: process.env.EMAIL_SERVICE,
+                    auth: {
+                      user: process.env.EMAIL,
+                      pass: process.env.EMAIL_PASSWORD
+                    }
+                });
+
+                const requesterMail = {
+                    from: process.env.EMAIL,
+                    to: `${email}`,
+                    subject: "Reimbursement Request Cancelled",
+                    text:
+                      "Your request for a reimbursement:\n\n" +
+                      `Reimbursement ID: ${id} \n\n` +
+                      "has been has been cancelled."
+                };
+            
+                transporter.sendMail(requesterMail, (err, response) => {
+                    if (err) {
+                      console.error("there was an error: ", err);
+                    } else {
+                      res.status(200).json('recovery email sent');
+                    }
+                });
+    
+                return unresolvedReimbursement;
+            } catch (err) {
+                throw new Error(err);
+            }
+        },
+
+        async uncancelReimbursement(
+            _,
+            {
+                id,
+                email
+            }
+        ){
+            try {
+                const unresolvedReimbursement = await Reimbursement.findByIdAndUpdate(id, {reimbursed: "pending"});
+
+                const transporter = nodemailer.createTransport({
+                    service: process.env.EMAIL_SERVICE,
+                    auth: {
+                      user: process.env.EMAIL,
+                      pass: process.env.EMAIL_PASSWORD
+                    }
+                });
+
+                const requesterMail = {
+                    from: process.env.EMAIL,
+                    to: `${email}`,
+                    subject: "Reimbursement Request Uncancelled",
+                    text:
+                      "Your request for a reimbursement:\n\n" +
+                      `Reimbursement ID: ${id} \n\n` +
+                      "has been has been uncancelled."
                 };
             
                 transporter.sendMail(requesterMail, (err, response) => {

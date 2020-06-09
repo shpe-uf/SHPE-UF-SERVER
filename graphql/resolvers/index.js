@@ -15,7 +15,6 @@ module.exports = {
     ...tasksResolvers.Query,
     ...corporationResolvers.Query,
     ...alumnisResolvers.Query,
-    ...classResolvers.Query,
     ...reimbursementsResolvers.Query,
     ...shpeRentalsResolvers.Query
   },
@@ -27,7 +26,6 @@ module.exports = {
     ...tasksResolvers.Mutation,
     ...corporationResolvers.Mutation,
     ...alumnisResolvers.Mutation,
-    ...classResolvers.Mutation,
     ...reimbursementsResolvers.Mutation,
     ...shpeRentalsResolvers.Mutation
   }

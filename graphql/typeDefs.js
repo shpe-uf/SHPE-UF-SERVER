@@ -123,7 +123,7 @@ module.exports = gql`
     company: String!
     event: String!
     description: String!
-    reimbursed: Boolean!
+    reimbursed: String!
     amount: String!
   }
   
@@ -343,7 +343,7 @@ module.exports = gql`
     company: String!
     event: String!
     description: String!
-    reimbursed: Boolean!
+    reimbursed: String!
     amount: String!
     execute: Boolean!
   }
@@ -425,6 +425,8 @@ module.exports = gql`
     reimbursementRequest(reimbursementInput: ReimbursementInput): Reimbursement!
     resolveReimbursement(id: ID!, email: String!): Reimbursement!
     unresolveReimbursement(id: ID!, email: String!): Reimbursement!
+    cancelReimbursement(id: ID!, email: String!): Reimbursement!
+    uncancelReimbursement(id: ID!, email: String!): Reimbursement!
     checkOut(data: TransactionData): [Receipt],
     return(data: TransactionData): [Receipt]
   }
