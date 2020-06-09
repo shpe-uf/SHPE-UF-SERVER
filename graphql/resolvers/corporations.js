@@ -1,6 +1,5 @@
 const { UserInputError } = require("apollo-server");
 const Corporation = require("../../models/Corporation.js");
-const Request = require("../../models/Request.js");
 
 require("dotenv").config();
 
@@ -116,10 +115,11 @@ module.exports = {
       return corporations;
     },
 
-    async updateCorporation(
+    async editCorporation(
       _,
       {
-        editCorporationProfileInput: {
+        editCorporationInput: {
+          id,
           name,
           logo,
           slogan, 
@@ -172,12 +172,13 @@ module.exports = {
       springBBQ = (springBBQ === "true" || springBBQ === true) ? true : false;
       nationalConvention = (nationalConvention === "true" || nationalConvention === true) ? true : false;
     
-      const companyExists = await Corporation.findOne({name});
+      const companyExists = await Corporation.findOne({'_id': id});
 
       if (companyExists) {
         const updatedCorporation = await Corporation.findOneAndUpdate(
-          {name},
+          {'_id': id},
           {
+            id,
             name,
             logo,
             slogan,
@@ -204,9 +205,7 @@ module.exports = {
             new: true
           }
           );
-          
         return updatedCorporation;
-
       } else {
         throw new Error("Company not found.");
       }
@@ -214,17 +213,22 @@ module.exports = {
 
     async deleteCorporation(
       _,
-      { name }
+      { 
+        deleteCorporationInput: {
+          id
+        }
+       }
     ){
 
-      Corporation.deleteOne({ 'name': name }, (err) => {
+      await Corporation.deleteOne({ '_id': id }, (err) => {
         if (err){
           throw err;
         }
-        else 
-          return true;
       });
-      return false;
+
+      const corporations = await Corporation.find();
+
+      return corporations;
     }
   }
 };

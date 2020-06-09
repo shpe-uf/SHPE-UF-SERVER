@@ -52,7 +52,6 @@ module.exports = {
     async getUser(_, { userId }) {
       try {
         var user = await User.findById(userId);
-
         if (user) {
 
           const users = await User.find();
@@ -100,6 +99,7 @@ module.exports = {
             listServ: user.listServ,
             events: user.events,
             tasks: user.tasks,
+            bookmarkedTasks: user.bookmarkedTasks,
             bookmarks: user.bookmarks,
             classes: user.classes
           };
@@ -384,7 +384,7 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
-    }
+    },
   },
 
   Mutation: {
@@ -538,6 +538,7 @@ module.exports = {
         listServ,
         events: [],
         tasks: [],
+        bookmarkedTasks: [],
         bookmarks: []
       });
 
@@ -680,6 +681,7 @@ module.exports = {
           listServ: user.listServ,
           events: user.events,
           tasks: user.tasks,
+          bookmarkedTasks: user.bookmarkedTasks,
           bookmarks: user.bookmarks,
           message: "Event code has been sent for approval."
         };
@@ -761,6 +763,61 @@ module.exports = {
       }
     },
 
+    async bookmarkTask(
+      _, {
+        bookmarkTaskInput: {
+          name,
+          username
+        }
+      }
+    ){
+      var errors = {};
+
+      const task = await Task.findOne({
+        name
+      });
+
+
+      var updatedUser = await User.findOneAndUpdate({
+        username
+      }, {
+        $push: {
+          bookmarkedTasks: task.name
+        }
+      }, {
+        new: true
+      });
+
+      return updatedUser;
+    },
+
+    async unBookmarkTask(
+      _, {
+        unBookmarkTaskInput: {
+          name,
+          username
+        }
+      }
+    ){
+      var errors = {};
+
+      const task = await Task.findOne({
+        name
+      });
+
+      var updatedUser = await User.findOneAndUpdate({
+        username
+      }, {
+        $pull: {
+          bookmarkedTasks: task.name
+        }
+      }, {
+        new: true
+      });
+
+      return updatedUser;
+    },
+
     async redeemTasksPoints(
       _, {
         redeemTasksPointsInput: {
@@ -840,6 +897,7 @@ module.exports = {
         listServ: user.listServ,
         events: user.events,
         tasks: user.tasks,
+        bookmarkedtasks: user.bookmarkedTasks,
         message: "Task has been sent for approval."
 
       };
@@ -1017,7 +1075,7 @@ module.exports = {
 
       return updatedUser;
     },
-    
+
     async editUserProfile(
       _,
       {
