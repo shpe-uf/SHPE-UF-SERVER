@@ -94,7 +94,7 @@ module.exports = {
                       `Event: ${event}\n` +
                       `Event description: ${description}\n` +
                       `Amount: $${amount}\n\n` +
-                      "You will get a confirmation email when your request is approved."
+                      "You will get a confirmation email when your request is approved. If you have any questions, send us an email at treasurer.shpeuf@gmail.com!"
                 };
             
                 transporter.sendMail(requesterMail, (err, response) => {
@@ -159,7 +159,7 @@ module.exports = {
                     text:
                       "Your request for a reimbursement:\n\n" +
                       `Reimbursement ID: ${id} \n\n` +
-                      "has been has been resolved."
+                      "has been has been resolved. If you have any questions, send us an email at treasurer.shpeuf@gmail.com!"
                 };
             
                 transporter.sendMail(requesterMail, (err, response) => {
@@ -201,7 +201,7 @@ module.exports = {
                     text:
                       "Your request for a reimbursement:\n\n" +
                       `Reimbursement ID: ${id} \n\n` +
-                      "has been has been unresolved."
+                      "has been has been unresolved. If you have any questions, send us an email at treasurer.shpeuf@gmail.com!"
                 };
             
                 transporter.sendMail(requesterMail, (err, response) => {
@@ -243,7 +243,7 @@ module.exports = {
                     text:
                       "Your request for a reimbursement:\n\n" +
                       `Reimbursement ID: ${id} \n\n` +
-                      "has been has been cancelled."
+                      "has been has been cancelled. If you have any questions, send us an email at treasurer.shpeuf@gmail.com!"
                 };
             
                 transporter.sendMail(requesterMail, (err, response) => {
@@ -285,7 +285,7 @@ module.exports = {
                     text:
                       "Your request for a reimbursement:\n\n" +
                       `Reimbursement ID: ${id} \n\n` +
-                      "has been has been uncancelled."
+                      "has been has been uncancelled. If you have any questions, send us an email at treasurer.shpeuf@gmail.com!"
                 };
             
                 transporter.sendMail(requesterMail, (err, response) => {
