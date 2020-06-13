@@ -35,6 +35,7 @@ module.exports = gql`
     springPercentile: Int!
     summerPercentile: Int!
     bookmarks: [String]!
+    classes: [String]
   }
 
   type Event {
@@ -354,6 +355,7 @@ module.exports = gql`
     getYearStat: [StatData]
     getSexStat: [StatData]
     getEthnicityStat: [StatData]
+    getShpeitos(name: [String]!, major: [String]!, year: [String]!, graduating: [String]!, country: [String]!, classes: [String]!): [User]
     getAlumnis: [Alumni]
     getInventory: [Rentable]
     getItem(item: String): Rentable
