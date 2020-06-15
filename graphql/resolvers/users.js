@@ -100,7 +100,9 @@ module.exports = {
             tasks: user.tasks,
             bookmarkedTasks: user.bookmarkedTasks,
             bookmarks: user.bookmarks,
-            classes: user.classes
+            classes: user.classes,
+            internships: user.internships,
+            socialMedia: user.socialMedia,
           };
 
           return newUser;
@@ -538,7 +540,10 @@ module.exports = {
         events: [],
         tasks: [],
         bookmarkedTasks: [],
-        bookmarks: []
+        bookmarks: [],
+        classes: [],
+        internships: "",
+        socialMedia: ""
       });
 
       const res = await newUser.save();

@@ -36,6 +36,8 @@ module.exports = gql`
     summerPercentile: Int!
     bookmarks: [String]!
     classes: [String]
+    internships: String
+    socialMedia: String
   }
 
   type Event {
