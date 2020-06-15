@@ -82,11 +82,11 @@ const userSchema = new Schema({
   listServ: Boolean,
   internships: {
     type: String,
-    default: "Capital Two",
+    default: "Add internships here...",
   },
   socialMedia: {
     type: String,
-    default: "none",
+    default: "Add social media here...",
   },
 
   events: [
