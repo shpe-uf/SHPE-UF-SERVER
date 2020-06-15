@@ -81,6 +81,7 @@ module.exports = {
         manualTaskInputInput: { username, taskName }
       }
     ) {
+
       const { valid, errors } = validateManualTaskInputInput(username);
 
       if (!valid) {
@@ -211,9 +212,12 @@ module.exports = {
           new: true
         }
       );
-      const updatedTasks = await Task.find();
+      const newTask = await Task.findOne({
+        name: taskName
+      });
 
-      return updatedTasks;
+      console.log(newTask);
+      return newTask;
     }
   }
 };
