@@ -114,6 +114,20 @@ module.exports = gql`
     linkedin: String!
   }
 
+  type Reimbursement {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    studentId: Int!
+    address: String!
+    company: String!
+    event: String!
+    description: String!
+    reimbursed: String!
+    amount: String!
+  }
+  
   type Rentable{
     item: String!
     quantity: Int!
@@ -321,6 +335,20 @@ module.exports = gql`
     sex: String!
   }
 
+  input ReimbursementInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    studentId: String!
+    address: String!
+    company: String!
+    event: String!
+    description: String!
+    reimbursed: String!
+    amount: String!
+    execute: Boolean!
+  }
+
   ### AUXILIARY INPUTS ###
   input UndergradInput {
     university: String!
@@ -356,6 +384,7 @@ module.exports = gql`
     getSexStat: [StatData]
     getEthnicityStat: [StatData]
     getAlumnis: [Alumni]
+    getReimbursements: [Reimbursement]
     getInventory: [Rentable]
     getItem(item: String): Rentable
   }
@@ -394,6 +423,11 @@ module.exports = gql`
     registerAlumni(registerAlumniInput: RegisterAlumniInput): Alumni!
     changePermission(email: String!, currentEmail: String!, permission: String!): Boolean!
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
+    reimbursementRequest(reimbursementInput: ReimbursementInput): Reimbursement!
+    resolveReimbursement(id: ID!, email: String!): Reimbursement!
+    unresolveReimbursement(id: ID!, email: String!): Reimbursement!
+    cancelReimbursement(id: ID!, email: String!): Reimbursement!
+    uncancelReimbursement(id: ID!, email: String!): Reimbursement!
     checkOut(data: TransactionData): [Receipt],
     return(data: TransactionData): [Receipt]
   }

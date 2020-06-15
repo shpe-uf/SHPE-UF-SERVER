@@ -4,6 +4,7 @@ const requestsResolvers = require("./requests.js");
 const tasksResolvers = require("./tasks.js");
 const corporationResolvers = require("./corporations.js");
 const alumnisResolvers = require("./alumnis.js");
+const reimbursementsResolvers = require("./reimbursements.js");
 const shpeRentalsResolvers = require("./rentables.js")
 
 module.exports = {
@@ -14,6 +15,7 @@ module.exports = {
     ...tasksResolvers.Query,
     ...corporationResolvers.Query,
     ...alumnisResolvers.Query,
+    ...reimbursementsResolvers.Query,
     ...shpeRentalsResolvers.Query
   },
 
@@ -24,6 +26,7 @@ module.exports = {
     ...tasksResolvers.Mutation,
     ...corporationResolvers.Mutation,
     ...alumnisResolvers.Mutation,
+    ...reimbursementsResolvers.Mutation,
     ...shpeRentalsResolvers.Mutation
   }
 };
