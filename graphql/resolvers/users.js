@@ -545,8 +545,8 @@ module.exports = {
         bookmarkedTasks: [],
         bookmarks: [],
         classes: [],
-        internships: "",
-        socialMedia: "",
+        internships: [],
+        socialMedia: [],
       });
 
       const res = await newUser.save();
