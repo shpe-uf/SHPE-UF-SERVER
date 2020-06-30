@@ -1174,7 +1174,7 @@ module.exports = {
           errors
         });
       }
-      if(adminUser.permission != 'admin'){
+      if(!adminUser.permission.includes('admin')){
         valid = false;
         errors.general = "Must be an admin to change permission";
         throw new UserInputError("Must be an admin to change permission", {
