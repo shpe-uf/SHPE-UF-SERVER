@@ -64,7 +64,6 @@ module.exports = {
         }
       }
     ) {
-      console.log('here')
       const event = await Event.findOne({
         name: name
       });
@@ -78,6 +77,7 @@ module.exports = {
       var pointsIncrease = {};
 
       if (type != "Task") {
+        console.log('test')
         if (event.semester === "Fall Semester") {
           pointsIncrease = {
             points: event.points,
