@@ -166,7 +166,6 @@ module.exports.validateCreateEventInput = (
 
   const nameValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
   const codeValidator = /^[a-zA-Z0-9]{6,50}$/i;
-  const pointsValidator = /^[1-9][0-9]*$/i;
 
   if (name.trim() === "") {
     errors.name = "Name is required.";
@@ -195,7 +194,7 @@ module.exports.validateCreateEventInput = (
   }
 
   if (category.trim() === "Miscellaneous") {
-    if (!points.match(pointsValidator)) {
+    if (points < 0 || points > 10) {
       errors.points = "Points must be a whole number greater than 0.";
     }
   }
@@ -216,7 +215,6 @@ module.exports.validateCreateTaskInput = (
   const errors = {};
 
   const nameValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
-  const pointsValidator = /^[1-9][0-9]*$/i;
 
   if(name.trim() === ""){
     errors.name = "Name is required.";
@@ -230,7 +228,7 @@ module.exports.validateCreateTaskInput = (
     errors.description = "Description must be between 1 and 280 characters."
   }
 
-  if(!points.match(pointsValidator)) {
+  if(points < 0 || points > 10) {
     errors.points = "Points must be a whole number greater than 0.";
   }
 
@@ -354,7 +352,6 @@ module.exports.validateCreateTaskInput = (
   const errors = {};
 
   const nameValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
-  const pointsValidator = /^[1-9][0-9]*$/i;
 
   if (name.trim() === "") {
     errors.name = "Name is required.";
@@ -377,7 +374,7 @@ module.exports.validateCreateTaskInput = (
     errors.description = "Description must be between 1 and 280 characters.";
   }
 
-  if (!points.match(pointsValidator)) {
+  if (points < 0 || points > 10) {
     errors.points = "Points must be a whole number greater than 0.";
   }
 
