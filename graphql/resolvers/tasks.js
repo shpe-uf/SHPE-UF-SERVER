@@ -29,13 +29,16 @@ module.exports = {
         createTaskInput: { name, startDate, endDate, description, points }
       }
     ) {
-      const { valid, errors } = validateCreateTaskInput(
+
+      const { errors, valid } = validateCreateTaskInput(
         name,
         startDate,
         endDate,
         description,
         points
       );
+      console.log('errors', errors)
+      console.log('valid', valid)
 
       if (!valid) {
         throw new UserInputError("Errors", { errors });
@@ -55,6 +58,9 @@ module.exports = {
           }
         });
       }
+
+      startDate = new Date(startDate).toDateString()
+      endDate = new Date(endDate).toDateString()
 
       const newTask = new Task({
         name,
@@ -317,14 +323,45 @@ module.exports = {
         });
       }
 
-      await Task.remove({name: taskName})
+      var pointsDecrease = {};
 
-      await User.updateMany({}, {
+      if (task.semester === "Fall Semester") {
+        pointsDecrease = {
+          points: -task.points,
+          fallPoints: -task.points
+        };
+      } else if (task.semester === "Spring Semester") {
+        pointsDecrease = {
+          points: -task.points,
+          springPoints: -task.points
+        };
+      } else if (task.semester === "Summer Semester") {
+        pointsDecrease = {
+          points: -task.points,
+          summerPoints: -task.points
+        };
+      } else {
+        errors.general = "Invalid task.";
+        throw new UserInputError("Invalid task.", {
+          errors
+        });
+      }
+
+      await Task.deleteOne({name: taskName})
+
+      await User.updateMany({
+        tasks: {
+          $elemMatch: {
+            name: taskName
+          }
+        }
+      }, {
         $pull: {
           tasks: {
             name: taskName
           }
-        }
+        },
+        $inc: pointsDecrease
       })
       
       tasks = await Task.find();

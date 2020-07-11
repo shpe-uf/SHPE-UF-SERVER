@@ -212,6 +212,7 @@ module.exports.validateCreateTaskInput = (
   description,
   points
 ) => {
+
   const errors = {};
 
   const nameValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
@@ -221,6 +222,25 @@ module.exports.validateCreateTaskInput = (
   } else {
     if(!name.match(nameValidator)) {
       errors.name =  "Task name must be at least 6 characters, max 50. No special characters, except for hyphens (-) and dashes (/).";
+    }
+  }
+
+  console.log(new Date(Date.parse(endDate)))
+
+  if(isNaN(Date.parse(startDate)) || isNaN(Date.parse(endDate))) {
+    errors.date = "Invalid date, please enter a 'MM/DD/YYYY' format"
+  } else {
+    let start = new Date(Date.parse(startDate))
+    let end = new Date(Date.parse(endDate))
+    let d = new Date()
+    let futureLimit = new Date(d.getFullYear()+1,d.getMonth(),d.getDay())
+    let pastLimit = new Date(d.getFullYear()-1,d.getMonth(),d.getDay())
+    if(start > futureLimit || end > futureLimit) {
+      errors.date = "Invalid date, too far into the future"
+    } else if(start < pastLimit || end < pastLimit) {
+      errors.date = "Invalid date, too far into the past"
+    } else if(end <= start) {
+      errors.date = "End date needs to be after start date"
     }
   }
 
@@ -334,48 +354,6 @@ module.exports.validateCreateEditCorporationInput = (
 
   if (applyLink.trim() === "") {
     errors.applyLink = "No apply link was provided.";
-  }
-
-  return {
-    errors,
-    valid: Object.keys(errors).length < 1
-  };
-};
-
-module.exports.validateCreateTaskInput = (
-  name,
-  startDate,
-  endDate,
-  description,
-  points
-) => {
-  const errors = {};
-
-  const nameValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
-
-  if (name.trim() === "") {
-    errors.name = "Name is required.";
-  } else {
-    if (!name.match(nameValidator)) {
-      errors.name =
-        "Task name must be at least 6 characters, max 50. No special characters, except for hyphens (-) and dashes (/).";
-    }
-  }
-
-  if (startDate.trim() === "") {
-    errors.startDate = "Start date is required.";
-  }
-
-  if (endDate.trim() === "") {
-    errors.endDate = "End date is required.";
-  }
-
-  if (description.trim() === "" || description.length > 280) {
-    errors.description = "Description must be between 1 and 280 characters.";
-  }
-
-  if (points < 0 || points > 10) {
-    errors.points = "Points must be a whole number greater than 0.";
   }
 
   return {
