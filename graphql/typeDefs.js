@@ -411,6 +411,8 @@ module.exports = gql`
     ): [Request]
     manualInput(manualInputInput: ManualInputInput): [Event]
     manualTaskInput(manualTaskInputInput: ManualTaskInputInput): Task
+    removeUserFromTask(manualTaskInputInput: ManualTaskInputInput): Task
+    deleteTask(taskName: String!): [Task]
     forgotPassword(email: String!): User!
     resetPassword(
       password: String!
