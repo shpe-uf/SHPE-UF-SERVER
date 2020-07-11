@@ -77,7 +77,6 @@ module.exports = {
       var pointsIncrease = {};
 
       if (type != "Task") {
-        console.log('test')
         if (event.semester === "Fall Semester") {
           pointsIncrease = {
             points: event.points,
