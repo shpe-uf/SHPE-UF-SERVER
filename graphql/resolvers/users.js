@@ -25,7 +25,8 @@ function generateToken(user, time) {
       id: user.id,
       email: user.email,
       username: user.username,
-      permission: user.permission,
+      firstName: user.firstName,
+      lastName: user.lastName
     },
     process.env.SECRET,
     {
