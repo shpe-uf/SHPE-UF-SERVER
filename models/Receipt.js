@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose');
+const { Schema } = require('mongoose');
 const mongoose = require('mongoose');
 
 const receiptSchema = new Schema({
@@ -10,26 +10,35 @@ const receiptSchema = new Schema({
     type: String,
     required: true
   },
+  quantity: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
     required: false
   },
-  dateOpened: {
+  dateCheckedOut: {
     type: String,
     required: true
+  },
+  datePickedUp: {
+    type: String,
+    required: false
   },
   dateClosed: {
     type: String,
     required: false
   },
-  open: {
+  deleted: {
     type: Boolean,
-    required: true
+    required: true,
+    default: false
   }
 }, {
   collection: 'Receipts'
 });
 
-const switchDB = mongoose.createConnection(process.env.DB_URI,{ useNewUrlParser: true, useUnifiedTopology: true });
+const switchDB = mongoose.createConnection(process.env.DB_URI,{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true });
 
-module.exports = switchDB.model('User', receiptSchema);
+module.exports = switchDB.model('Receipt', receiptSchema);
