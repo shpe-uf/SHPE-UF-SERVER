@@ -16,7 +16,7 @@ module.exports.validateRegisterInput = (
 ) => {
   const errors = {};
 
-  const nameValidator = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+  const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
   const usernameValidator = /^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i;
   const emailRegex = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
   const passwordValidator = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
@@ -26,7 +26,7 @@ module.exports.validateRegisterInput = (
   } else {
     if (!firstName.match(nameValidator)) {
       errors.firstName =
-        "First Name must be at least 3 character, max 20. No special characters or numbers.";
+        "First Name must be at least 3 characters, max 20. No special characters or numbers.";
     }
   }
 
@@ -35,7 +35,7 @@ module.exports.validateRegisterInput = (
   } else {
     if (!lastName.match(nameValidator)) {
       errors.lastName =
-        "Last name must be at least 3 character, max 20. No special characters or numbers.";
+        "Last name must be at least 3 characters, max 20. No special characters or numbers.";
     }
   }
 
@@ -166,7 +166,6 @@ module.exports.validateCreateEventInput = (
 
   const nameValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
   const codeValidator = /^[a-zA-Z0-9]{6,50}$/i;
-  const pointsValidator = /^[1-9][0-9]*$/i;
 
   if (name.trim() === "") {
     errors.name = "Name is required.";
@@ -195,7 +194,7 @@ module.exports.validateCreateEventInput = (
   }
 
   if (category.trim() === "Miscellaneous") {
-    if (!points.match(pointsValidator)) {
+    if (points < 0 || points > 10) {
       errors.points = "Points must be a whole number greater than 0.";
     }
   }
@@ -213,10 +212,10 @@ module.exports.validateCreateTaskInput = (
   description,
   points
 ) => {
+
   const errors = {};
 
   const nameValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
-  const pointsValidator = /^[1-9][0-9]*$/i;
 
   if(name.trim() === ""){
     errors.name = "Name is required.";
@@ -226,11 +225,28 @@ module.exports.validateCreateTaskInput = (
     }
   }
 
+  if(isNaN(Date.parse(startDate)) || isNaN(Date.parse(endDate))) {
+    errors.date = "Invalid date, please enter a 'MM/DD/YYYY' format"
+  } else {
+    let start = new Date(Date.parse(startDate))
+    let end = new Date(Date.parse(endDate))
+    let d = new Date()
+    let futureLimit = new Date(d.getFullYear()+1,d.getMonth(),d.getDay())
+    let pastLimit = new Date(d.getFullYear()-1,d.getMonth(),d.getDay())
+    if(start > futureLimit || end > futureLimit) {
+      errors.date = "Invalid date, too far into the future"
+    } else if(start < pastLimit || end < pastLimit) {
+      errors.date = "Invalid date, too far into the past"
+    } else if(end <= start) {
+      errors.date = "End date needs to be after start date"
+    }
+  }
+
   if(description.trim() === "" && description.length > 280){
     errors.description = "Description must be between 1 and 280 characters."
   }
 
-  if(!points.match(pointsValidator)) {
+  if(points < 0 || points > 10) {
     errors.points = "Points must be a whole number greater than 0.";
   }
 
@@ -299,7 +315,7 @@ module.exports.validateCreateEditCorporationInput = (
   }
 
   if (logo.trim() === "") {
-    errors.slogan = "No logo was provided.";
+    errors.logo = "No logo was provided.";
   }
 
   if (slogan.trim() === "") {
@@ -344,49 +360,6 @@ module.exports.validateCreateEditCorporationInput = (
   };
 };
 
-module.exports.validateCreateTaskInput = (
-  name,
-  startDate,
-  endDate,
-  description,
-  points
-) => {
-  const errors = {};
-
-  const nameValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
-  const pointsValidator = /^[1-9][0-9]*$/i;
-
-  if (name.trim() === "") {
-    errors.name = "Name is required.";
-  } else {
-    if (!name.match(nameValidator)) {
-      errors.name =
-        "Task name must be at least 6 characters, max 50. No special characters, except for hyphens (-) and dashes (/).";
-    }
-  }
-
-  if (startDate.trim() === "") {
-    errors.startDate = "Start date is required.";
-  }
-
-  if (endDate.trim() === "") {
-    errors.endDate = "End date is required.";
-  }
-
-  if (description.trim() === "" || description.length > 280) {
-    errors.description = "Description must be between 1 and 280 characters.";
-  }
-
-  if (!points.match(pointsValidator)) {
-    errors.points = "Points must be a whole number greater than 0.";
-  }
-
-  return {
-    errors,
-    valid: Object.keys(errors).length < 1
-  };
-};
-
 module.exports.validateEditUserProfile = (
   firstName,
   lastName,
@@ -400,14 +373,14 @@ module.exports.validateEditUserProfile = (
 ) => {
   const errors = {};
 
-  const nameValidator = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+  const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
 
   if (firstName.trim() === "") {
     errors.firstName = "First name is required.";
   } else {
     if (!firstName.match(nameValidator)) {
       errors.firstName =
-        "First Name must be at least 3 character, max 20. No special characters or numbers.";
+        "First Name must be at least 3 characters, max 20. No special characters or numbers.";
     }
   }
 
@@ -416,7 +389,7 @@ module.exports.validateEditUserProfile = (
   } else {
     if (!lastName.match(nameValidator)) {
       errors.lastName =
-        "Last name must be at least 3 character, max 20. No special characters or numbers.";
+        "Last name must be at least 3 characters, max 20. No special characters or numbers.";
     }
   }
 
@@ -472,7 +445,7 @@ module.exports.validateRegisterAlumniInput = (
 ) => {
   const errors = {};
 
-  const nameValidator = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+  const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
   const emailValidator = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
   const yearValidator = /^\d{4}$/;
 
@@ -481,7 +454,7 @@ module.exports.validateRegisterAlumniInput = (
   } else {
     if (!firstName.match(nameValidator)) {
       errors.firstName =
-        "First Name must be at least 3 character, max 20. No special characters or numbers.";
+        "First Name must be at least 3 characters, max 20. No special characters or numbers.";
     }
   }
 
@@ -490,7 +463,7 @@ module.exports.validateRegisterAlumniInput = (
   } else {
     if (!lastName.match(nameValidator)) {
       errors.lastName =
-        "Last name must be at least 3 character, max 20. No special characters or numbers.";
+        "Last name must be at least 3 characters, max 20. No special characters or numbers.";
     }
   }
 
@@ -596,4 +569,112 @@ module.exports.validateCreateClassInput = (code) => {
     errors,
     valid: Object.keys(errors).length < 1
   }
+};
+
+module.exports.validateReimbursementRequest = (
+  firstName,
+  lastName,
+  email,
+  studentId,
+  address,
+  company,
+  event,
+  description,
+  reimbursed,
+  amount
+) => {
+  const errors = {};
+
+  const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
+  const emailValidator = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
+
+  if (firstName.trim() === "") {
+    errors.firstName = "First name is required.";
+  } else {
+    if (!firstName.match(nameValidator)) {
+      errors.firstName =
+        "First Name must be at least 3 characters, max 20. No special characters or numbers.";
+    }
+  }
+
+  if (lastName.trim() === "") {
+    errors.lastName = "Last Name is required.";
+  } else {
+    if (!lastName.match(nameValidator)) {
+      errors.lastName =
+        "Last name must be at least 3 character, max 20. No special characters or numbers.";
+    }
+  }
+
+  if (email.trim() === "") {
+    errors.email = "Email is required.";
+  } else {
+    if (!email.match(emailValidator)) {
+      errors.email = "Invalid email address.";
+    }
+  }
+
+  if (studentId.trim() === "") {
+    errors.studentId = "Student ID is required."
+  } else if (isNaN(studentId)) {
+    errors.studentId = "Student ID can only be numbers."
+  }else {
+    if (studentId > 99999999 || studentId < 10000000) {
+      errors.studentId = "Invalid student ID.";
+    }
+  }
+
+  if (amount.trim() === "") {
+    errors.amount = "Amount is required."
+  } else if (isNaN(amount)) {
+    errors.amount = "For amount only enter numbers."
+  } else {
+    if (amount < 0) {
+      errors.amount = "Amount cannot be negative.";
+    }
+  }
+
+  if (address.trim() === "") {
+    errors.address = "Address is required."
+  }
+
+  if (company.trim() === "") {
+    errors.company = "Company is required."
+  }
+
+  if (event.trim() === "") {
+    errors.event = "Event is required."
+  }
+
+  if (description.trim() === "") {
+    errors.description = "Description is required."
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1
+  };
+};
+
+module.exports.validateRentalRequest = (
+  numberRequested,
+  totalQuantity,
+  currentRenters
+) => {
+
+  let errors = {};
+
+  //is in stock?
+  if((totalQuantity - (currentRenters.length + numberRequested)) < 0) {
+    errors.availability = 'The requested number is too high for the current stock';
+  }
+
+  if(numberRequested === 0) {
+    errors.invalid = 'The requested number must be greater than 0';
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1
+  };
 };

@@ -27,19 +27,15 @@ module.exports = gql`
     listServ: Boolean!
     events: [Event]!
     tasks: [Task]!
+    bookmarkedTasks: [String]!
     token: String!
     message: String!
-    classes: [Class]!
     confirmed: Boolean!
     fallPercentile: Int!
     springPercentile: Int!
     summerPercentile: Int!
     bookmarks: [String]!
-  }
-
-  type Class {
-    code: String!
-    users: [User]!
+    classes: [String]
   }
 
   type Event {
@@ -70,6 +66,7 @@ module.exports = gql`
 
 
   type Corporation {
+    id: ID!
     name: String!
     logo: String!
     slogan: String!
@@ -94,8 +91,8 @@ module.exports = gql`
 
   type Request {
     id: ID!
-    eventName: String!
-    category: String!
+    name: String!
+    type: String!
     points: String!
     firstName: String!
     lastName: String!
@@ -115,6 +112,43 @@ module.exports = gql`
     location: Location
     coordinates: Coordinates!
     linkedin: String!
+  }
+
+  type Reimbursement {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    studentId: Int!
+    address: String!
+    company: String!
+    event: String!
+    description: String!
+    reimbursed: String!
+    amount: String!
+  }
+  
+  type Rentable{
+    item: String!
+    quantity: Int!
+    level: Int!
+    description: String
+    link: String
+    renters: [String]!
+    category: String!
+    image: String!
+  }
+
+  type Receipt{
+    id: ID!
+    username: String!
+    item: String!
+    quantity: Int!
+    email: String!
+    dateCheckedOut: String!
+    datePickedUp: String
+    dateClosed: String
+    deleted: Boolean
   }
 
   ### AUXILIARY TYPES ###
@@ -185,14 +219,11 @@ module.exports = gql`
     points: Int!
   }
 
-  input CreateClassInput {
-    code: String!
-    username: String!
-  }
-
-  input DeleteClassInput {
-    code: String!
-    username: String!
+  input TransactionData {
+    item: String!,
+    username: String!,
+    numberOfItems: Int!,
+    email: String!
   }
 
   input CreateCorporationInput {
@@ -218,8 +249,10 @@ module.exports = gql`
     nationalConvention: String!
   }
 
-  input EditCorporationProfileInput {
+  input EditCorporationInput {
+    id: ID!
     name: String!
+    logo: String!
     slogan: String!
     majors: [String!]!
     industries: [String!]!
@@ -241,11 +274,21 @@ module.exports = gql`
   }
 
   input DeleteCorporationInput {
-    name: String!
+    id: ID!
   }
 
   input RedeemPointsInput {
     code: String!
+    username: String!
+  }
+
+  input bookmarkTaskInput {
+    name: String!
+    username: String!
+  }
+
+  input unBookmarkTaskInput {
+    name: String!
     username: String!
   }
 
@@ -256,7 +299,8 @@ module.exports = gql`
 
   input ApproveRejectRequestInput {
     username: String!
-    eventName: String!
+    name: String!
+    type: String!
   }
 
   input ManualInputInput {
@@ -294,6 +338,20 @@ module.exports = gql`
     sex: String!
   }
 
+  input ReimbursementInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    studentId: String!
+    address: String!
+    company: String!
+    event: String!
+    description: String!
+    reimbursed: String!
+    amount: String!
+    execute: Boolean!
+  }
+
   ### AUXILIARY INPUTS ###
   input UndergradInput {
     university: String!
@@ -329,6 +387,10 @@ module.exports = gql`
     getSexStat: [StatData]
     getEthnicityStat: [StatData]
     getAlumnis: [Alumni]
+    getReimbursements: [Reimbursement]
+    getInventory: [Rentable]
+    getItem(item: String): Rentable
+    getReceipts: [Receipt]
   }
 
   ### MUTATIONS LIST ###
@@ -337,11 +399,13 @@ module.exports = gql`
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!, remember: String!): User!
     createCorporation(createCorporationInput: CreateCorporationInput): [Corporation]
-    updateCorporation(editCorporationProfileInput: EditCorporationProfileInput): [Corporation]
-    deleteCorporation(name: String!): Boolean!
+    editCorporation(editCorporationInput: EditCorporationInput): Corporation!
+    deleteCorporation(deleteCorporationInput: DeleteCorporationInput): [Corporation]!
     createEvent(createEventInput: CreateEventInput): [Event]
     redeemPoints(redeemPointsInput: RedeemPointsInput): User!
     createTask(createTaskInput: CreateTaskInput): Task!
+    bookmarkTask(bookmarkTaskInput: bookmarkTaskInput): User!
+    unBookmarkTask(unBookmarkTaskInput: unBookmarkTaskInput): User!
     redeemTasksPoints(redeemTasksPointsInput: RedeemTasksPointsInput): User!
     approveRequest(
       approveRejectRequestInput: ApproveRejectRequestInput
@@ -351,9 +415,8 @@ module.exports = gql`
     ): [Request]
     manualInput(manualInputInput: ManualInputInput): [Event]
     manualTaskInput(manualTaskInputInput: ManualTaskInputInput): Task
-    createClass(createClassInput: CreateClassInput): [Class]
-    deleteClass(deleteClassInput: DeleteClassInput): [Class]
-    getClass(code: String!): Class!
+    removeUserFromTask(manualTaskInputInput: ManualTaskInputInput): Task
+    deleteTask(taskName: String!): [Task]
     forgotPassword(email: String!): User!
     resetPassword(
       password: String!
@@ -366,5 +429,16 @@ module.exports = gql`
     registerAlumni(registerAlumniInput: RegisterAlumniInput): Alumni!
     changePermission(email: String!, currentEmail: String!, permission: String!): Boolean!
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
+    reimbursementRequest(reimbursementInput: ReimbursementInput): Reimbursement!
+    resolveReimbursement(id: ID!, email: String!): Reimbursement!
+    unresolveReimbursement(id: ID!, email: String!): Reimbursement!
+    cancelReimbursement(id: ID!, email: String!): Reimbursement!
+    uncancelReimbursement(id: ID!, email: String!): Reimbursement!
+    checkOutItem(data: TransactionData): [Rentable]
+    pickUpItem(receiptID: ID!): Receipt
+    returnItem(receiptID: ID!): Receipt
+    unPickUpItem(receiptID: ID!): Receipt
+    unReturnItem(receiptID: ID!): Receipt
+    deleteReceipt(receiptID: ID!): Receipt
   }
 `;

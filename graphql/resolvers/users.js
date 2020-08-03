@@ -25,7 +25,8 @@ function generateToken(user, time) {
       id: user.id,
       email: user.email,
       username: user.username,
-      permission: user.permission
+      firstName: user.firstName,
+      lastName: user.lastName
     },
     process.env.SECRET,
     {
@@ -51,7 +52,6 @@ module.exports = {
     async getUser(_, { userId }) {
       try {
         var user = await User.findById(userId);
-
         if (user) {
 
           const users = await User.find();
@@ -99,6 +99,7 @@ module.exports = {
             listServ: user.listServ,
             events: user.events,
             tasks: user.tasks,
+            bookmarkedTasks: user.bookmarkedTasks,
             bookmarks: user.bookmarks,
             classes: user.classes
           };
@@ -383,7 +384,7 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
-    }
+    },
   },
 
   Mutation: {
@@ -537,6 +538,7 @@ module.exports = {
         listServ,
         events: [],
         tasks: [],
+        bookmarkedTasks: [],
         bookmarks: []
       });
 
@@ -588,8 +590,6 @@ module.exports = {
         .replace(/ /g, "");
 
       const { valid, errors } = validateRedeemPointsInput(code);
-
-      console.log(errors);
 
       if (!valid) {
         throw new UserInputError("Errors", {
@@ -681,6 +681,7 @@ module.exports = {
           listServ: user.listServ,
           events: user.events,
           tasks: user.tasks,
+          bookmarkedTasks: user.bookmarkedTasks,
           bookmarks: user.bookmarks,
           message: "Event code has been sent for approval."
         };
@@ -762,6 +763,61 @@ module.exports = {
       }
     },
 
+    async bookmarkTask(
+      _, {
+        bookmarkTaskInput: {
+          name,
+          username
+        }
+      }
+    ){
+      var errors = {};
+
+      const task = await Task.findOne({
+        name
+      });
+
+
+      var updatedUser = await User.findOneAndUpdate({
+        username
+      }, {
+        $push: {
+          bookmarkedTasks: task.name
+        }
+      }, {
+        new: true
+      });
+
+      return updatedUser;
+    },
+
+    async unBookmarkTask(
+      _, {
+        unBookmarkTaskInput: {
+          name,
+          username
+        }
+      }
+    ){
+      var errors = {};
+
+      const task = await Task.findOne({
+        name
+      });
+
+      var updatedUser = await User.findOneAndUpdate({
+        username
+      }, {
+        $pull: {
+          bookmarkedTasks: task.name
+        }
+      }, {
+        new: true
+      });
+
+      return updatedUser;
+    },
+
     async redeemTasksPoints(
       _, {
         redeemTasksPointsInput: {
@@ -796,8 +852,6 @@ module.exports = {
         }
       });
 
-      console.log(task);
-
       const request = await Request.findOne({
         name: task.name,
         username: user.username
@@ -820,10 +874,7 @@ module.exports = {
         createdAt: new Date().toISOString()
       });
 
-      console.log(newTaskRequest);
-
-
-      const res = await newTaskRequest.save();
+      await newTaskRequest.save();
 
       var newUser = {
         firstName: user.firstName,
@@ -846,6 +897,7 @@ module.exports = {
         listServ: user.listServ,
         events: user.events,
         tasks: user.tasks,
+        bookmarkedtasks: user.bookmarkedTasks,
         message: "Task has been sent for approval."
 
       };
@@ -1023,7 +1075,7 @@ module.exports = {
 
       return updatedUser;
     },
-    
+
     async editUserProfile(
       _,
       {
@@ -1105,7 +1157,7 @@ module.exports = {
         });
       }
 
-      if(email === currentEmail){
+      if(email === currentEmail) {
         valid = false;
         errors.general = "Can't change your own permissions";
         throw new UserInputError("Can't change your own permissions", {
@@ -1122,7 +1174,8 @@ module.exports = {
           errors
         });
       }
-      if(adminUser.permission != 'admin'){
+
+      if(!adminUser.permission.includes('admin')){
         valid = false;
         errors.general = "Must be an admin to change permission";
         throw new UserInputError("Must be an admin to change permission", {
@@ -1141,9 +1194,7 @@ module.exports = {
           errors
         });
       }
-
       return valid;
-
     }
   }
 };

@@ -1,0 +1,666 @@
+[
+  {
+    "key": "",
+    "value": ""
+  },
+  {
+    "key": "Accounting, Fisher School of",
+    "value": "17030000"
+  },
+  {
+    "key": "Advertising",
+    "value": "23020000"
+  },
+  {
+    "key": "African American Studies",
+    "value": "16620000"
+  },
+  {
+    "key": "African Studies",
+    "value": "16600000"
+  },
+  {
+    "key": "Agricultural & Life Sciences-General",
+    "value": "60030000"
+  },
+  {
+    "key": "Agricultural Education and Communication",
+    "value": "60260000"
+  },
+  {
+    "key": "Agricultural Operations Management",
+    "value": "60079998"
+  },
+  {
+    "key": "Agricultural and Biological Engineering",
+    "value": "60070000"
+  },
+  {
+    "key": "Agronomy",
+    "value": "60080000"
+  },
+  {
+    "key": "Animal Sciences",
+    "value": "60090000"
+  },
+  {
+    "key": "Anthropology",
+    "value": "16040000"
+  },
+  {
+    "key": "Applied Physiology & Kinesiology",
+    "value": "26030000"
+  },
+  {
+    "key": "Architecture, School of",
+    "value": "15020000"
+  },
+  {
+    "key": "Art and Art History",
+    "value": "13020000"
+  },
+  {
+    "key": "Arts-General",
+    "value": "13010000"
+  },
+  {
+    "key": "Astronomy",
+    "value": "16060000"
+  },
+  {
+    "key": "Behavioral Science & Community Health",
+    "value": "33040000"
+  },
+  {
+    "key": "Biological Sciences",
+    "value": "16900300"
+  },
+  {
+    "key": "Biomedical Engineering",
+    "value": "19340000"
+  },
+  {
+    "key": "Biostatistics",
+    "value": "36010000"
+  },
+  {
+    "key": "Botany",
+    "value": "16900500"
+  },
+  {
+    "key": "Business Admin-General",
+    "value": "17010000"
+  },
+  {
+    "key": "Chemical Engineering",
+    "value": "19030000"
+  },
+  {
+    "key": "Chemistry",
+    "value": "16120000"
+  },
+  {
+    "key": "Civil and Coastal Engineering",
+    "value": "19040000"
+  },
+  {
+    "key": "Classics",
+    "value": "16140000"
+  },
+  {
+    "key": "Clinical Health Psychology",
+    "value": "33070000"
+  },
+  {
+    "key": "College of Public Health & Health Professions",
+    "value": "33000000"
+  },
+  {
+    "key": "Comparative, Diagnostic & Population Medicine",
+    "value": "28060000"
+  },
+  {
+    "key": "Computer & Information Science & Engineering",
+    "value": "19140000"
+  },
+  {
+    "key": "Construction Management, Rinker School of",
+    "value": "15030000"
+  },
+  {
+    "key": "Criminology",
+    "value": "16920300"
+  },
+  {
+    "key": "Dentistry-General",
+    "value": "34010000"
+  },
+  {
+    "key": "Dentistry-Endodontics",
+    "value": "34110000"
+  },
+  {
+    "key": "Dentistry-Oral & Maxillofacial Diagnostic Science",
+    "value": "34160000"
+  },
+  {
+    "key": "Dentistry-Oral Biology",
+    "value": "34030000"
+  },
+  {
+    "key": "Dentistry-Orthodontics",
+    "value": "34070000"
+  },
+  {
+    "key": "Dentistry-Periodontics",
+    "value": "34130000"
+  },
+  {
+    "key": "Dentistry-Prosthodontics",
+    "value": "34140000"
+  },
+  {
+    "key": "Design, Construction & Planning-General",
+    "value": "15010000"
+  },
+  {
+    "key": "Digital Worlds Institute",
+    "value": "13050000"
+  },
+  {
+    "key": "Economics",
+    "value": "17050000"
+  },
+  {
+    "key": "Education-Human Devel and Org Studies in Ed",
+    "value": "18070000"
+  },
+  {
+    "key": "Education-Spec Ed Schl Psych Early Child Stu",
+    "value": "18080000"
+  },
+  {
+    "key": "Education-Teaching and Learning",
+    "value": "18050000"
+  },
+  {
+    "key": "Electrical and Computer Engineering",
+    "value": "19050000"
+  },
+  {
+    "key": "Engineering-General",
+    "value": "19400000"
+  },
+  {
+    "key": "English",
+    "value": "16200000"
+  },
+  {
+    "key": "Entomology and Nematology",
+    "value": "60140000"
+  },
+  {
+    "key": "Environmental Engineering Science",
+    "value": "19100000"
+  },
+  {
+    "key": "Environmental Horticulture",
+    "value": "60180000"
+  },
+  {
+    "key": "Environmental and Global Health",
+    "value": "33160000"
+  },
+  {
+    "key": "Epidemiology",
+    "value": "36020000"
+  },
+  {
+    "key": "European Studies",
+    "value": "16660000"
+  },
+  {
+    "key": "Family, Youth, and Community Sciences",
+    "value": "60320000"
+  },
+  {
+    "key": "Finance",
+    "value": "17060000"
+  },
+  {
+    "key": "Fisheries & Aquatic Science - SFRC",
+    "value": "60469000"
+  },
+  {
+    "key": "Flexible Learning",
+    "value": "52033000"
+  },
+  {
+    "key": "Food Science and Human Nutrition",
+    "value": "60150000"
+  },
+  {
+    "key": "Food and Resource Economics",
+    "value": "60060000"
+  },
+  {
+    "key": "Forest Resources and Conservation - SFRC",
+    "value": "60460000"
+  },
+  {
+    "key": "Geography",
+    "value": "16220000"
+  },
+  {
+    "key": "Geology",
+    "value": "16240000"
+  },
+  {
+    "key": "Geomatics - SFRC",
+    "value": "60466000"
+  },
+  {
+    "key": "Health Education and Behavior",
+    "value": "26050000"
+  },
+  {
+    "key": "Health Services Administration",
+    "value": "33080000"
+  },
+  {
+    "key": "History",
+    "value": "16280000"
+  },
+  {
+    "key": "Horticultural Sciences",
+    "value": "60230000"
+  },
+  {
+    "key": "Industrial and Systems Engineering",
+    "value": "19060000"
+  },
+  {
+    "key": "Infectious Diseases & Immunology",
+    "value": "28100800"
+  },
+  {
+    "key": "Info Systems and Operations Management",
+    "value": "17070000"
+  },
+  {
+    "key": "Interdisciplinary Studies",
+    "value": "16000000"
+  },
+  {
+    "key": "Interior Design",
+    "value": "15050000"
+  },
+  {
+    "key": "Jewish Studies",
+    "value": "16740000"
+  },
+  {
+    "key": "Journalism",
+    "value": "23040000"
+  },
+  {
+    "key": "Landscape Architecture",
+    "value": "15040000"
+  },
+  {
+    "key": "Languages, Literatures & Cultures",
+    "value": "16860000"
+  },
+  {
+    "key": "Large Animal Clinical Science",
+    "value": "28040000"
+  },
+  {
+    "key": "Latin American Studies",
+    "value": "57140000"
+  },
+  {
+    "key": "Law",
+    "value": "24010000"
+  },
+  {
+    "key": "Law-Taxation",
+    "value": "24050000"
+  },
+  {
+    "key": "Linguistics",
+    "value": "16300000"
+  },
+  {
+    "key": "Management",
+    "value": "17020000"
+  },
+  {
+    "key": "Marketing",
+    "value": "17080000"
+  },
+  {
+    "key": "Mass Communication",
+    "value": "23200000"
+  },
+  {
+    "key": "Materials Science and Engineering",
+    "value": "19090000"
+  },
+  {
+    "key": "Mathematics",
+    "value": "16320000"
+  },
+  {
+    "key": "Mechanical Aerospace Engineering",
+    "value": "19020000"
+  },
+  {
+    "key": "Medicine-General",
+    "value": "29010000"
+  },
+  {
+    "key": "Medicine-Aging Geriatric Research",
+    "value": "29310000"
+  },
+  {
+    "key": "Medicine-Anatomy",
+    "value": "29260000"
+  },
+  {
+    "key": "Medicine-Anesthesiology",
+    "value": "29040000"
+  },
+  {
+    "key": "Medicine-Biochemistry Molecular Biology",
+    "value": "29030000"
+  },
+  {
+    "key": "Medicine-Community Health and Family Medicine",
+    "value": "29160000"
+  },
+  {
+    "key": "Medicine-Emergency Medicine",
+    "value": "29290200"
+  },
+  {
+    "key": "Medicine-Health Outcomes & Biomedical Informat",
+    "value": "29240100"
+  },
+  {
+    "key": "Medicine-Molecular Genetics & Microbiology",
+    "value": "29060000"
+  },
+  {
+    "key": "Medicine-Neurological Surgery",
+    "value": "29190000"
+  },
+  {
+    "key": "Medicine-Neurology",
+    "value": "29180000"
+  },
+  {
+    "key": "Medicine-Neuroscience",
+    "value": "29020000"
+  },
+  {
+    "key": "Medicine-Obstetrics & Gynecology",
+    "value": "29070000"
+  },
+  {
+    "key": "Medicine-Ophthalmology",
+    "value": "29150000"
+  },
+  {
+    "key": "Medicine-Orthopaedics and Rehabilitation",
+    "value": "29170000"
+  },
+  {
+    "key": "Medicine-Otolaryngology",
+    "value": "29210000"
+  },
+  {
+    "key": "Medicine-Pathology",
+    "value": "29080000"
+  },
+  {
+    "key": "Medicine-Pediatrics",
+    "value": "29090000"
+  },
+  {
+    "key": "Medicine-Pharmacology & Therapeutics",
+    "value": "29100000"
+  },
+  {
+    "key": "Medicine-Physiology",
+    "value": "29110000"
+  },
+  {
+    "key": "Medicine-Psychiatry",
+    "value": "29120000"
+  },
+  {
+    "key": "Medicine-Radiation Oncology",
+    "value": "29200000"
+  },
+  {
+    "key": "Medicine-Radiology",
+    "value": "29130000"
+  },
+  {
+    "key": "Medicine-School of Physician Assistant Studies",
+    "value": "29710000"
+  },
+  {
+    "key": "Medicine-Surgery",
+    "value": "29140000"
+  },
+  {
+    "key": "Medieval & Early Modern Studies",
+    "value": "16820000"
+  },
+  {
+    "key": "Microbiology and Cell Science",
+    "value": "60100000"
+  },
+  {
+    "key": "Military Science-Air Force",
+    "value": "25020000"
+  },
+  {
+    "key": "Military Science-Army",
+    "value": "25010000"
+  },
+  {
+    "key": "Military Science-Navy",
+    "value": "25050000"
+  },
+  {
+    "key": "Music",
+    "value": "13030000"
+  },
+  {
+    "key": "Natural Resources and Environment, School of",
+    "value": "60170000"
+  },
+  {
+    "key": "New World School of the Arts-Dance",
+    "value": "13100500"
+  },
+  {
+    "key": "New World School of the Arts-Music",
+    "value": "13100300"
+  },
+  {
+    "key": "New World School of the Arts-Theatre",
+    "value": "13100400"
+  },
+  {
+    "key": "New World School of the Arts-Visual Arts",
+    "value": "13100200"
+  },
+  {
+    "key": "Nuclear and Radiological Engineering",
+    "value": "19080000"
+  },
+  {
+    "key": "Nursing",
+    "value": "31010000"
+  },
+  {
+    "key": "Occupational Therapy",
+    "value": "33030000"
+  },
+  {
+    "key": "Packaging Sciences",
+    "value": "60079999"
+  },
+  {
+    "key": "Pathobiology",
+    "value": "28100000"
+  },
+  {
+    "key": "Pharmacy-Pharmaceutics",
+    "value": "32020000"
+  },
+  {
+    "key": "Pharmacy-Medicinal Chemistry",
+    "value": "32030000"
+  },
+  {
+    "key": "Pharmacy-Pharmacodynamics",
+    "value": "32040000"
+  },
+  {
+    "key": "Pharmacy-Pharmacy Outcomes and Policy",
+    "value": "32050000"
+  },
+  {
+    "key": "Pharmacy-Pharmacy Practice",
+    "value": "32060000"
+  },
+  {
+    "key": "Philosophy",
+    "value": "16340000"
+  },
+  {
+    "key": "Physical Therapy",
+    "value": "33050000"
+  },
+  {
+    "key": "Physics",
+    "value": "16360000"
+  },
+  {
+    "key": "Physiological Science",
+    "value": "28050000"
+  },
+  {
+    "key": "Plant Pathology",
+    "value": "60190000"
+  },
+  {
+    "key": "Political Science",
+    "value": "16380000"
+  },
+  {
+    "key": "Portuguese",
+    "value": "16880500"
+  },
+  {
+    "key": "Psychology",
+    "value": "16400000"
+  },
+  {
+    "key": "Public Health & Health Professions - Undergrad",
+    "value": "33010000"
+  },
+  {
+    "key": "Public Relations",
+    "value": "23060000"
+  },
+  {
+    "key": "Rehabilitation Science Doctoral Program",
+    "value": "33120000"
+  },
+  {
+    "key": "Religion",
+    "value": "16420000"
+  },
+  {
+    "key": "Small Animal Clinic Science",
+    "value": "28090000"
+  },
+  {
+    "key": "Sociology",
+    "value": "16920500"
+  },
+  {
+    "key": "Soil and Water Sciences",
+    "value": "60210000"
+  },
+  {
+    "key": "Spanish",
+    "value": "16880300"
+  },
+  {
+    "key": "Speech, Language, and Hearing Sciences",
+    "value": "33060000"
+  },
+  {
+    "key": "Sport Management",
+    "value": "26040000"
+  },
+  {
+    "key": "Statistics",
+    "value": "16480000"
+  },
+  {
+    "key": "Telecommunication",
+    "value": "23030000"
+  },
+  {
+    "key": "Theatre and Dance",
+    "value": "13040000"
+  },
+  {
+    "key": "Tourism Recreation and Sport Management",
+    "value": "26020000"
+  },
+  {
+    "key": "Tourism, Hospitality & Event Management",
+    "value": "26090000"
+  },
+  {
+    "key": "Undergraduate Studies -SFCC",
+    "value": "02070000"
+  },
+  {
+    "key": "Urban and Regional Planning",
+    "value": "15060000"
+  },
+  {
+    "key": "Veterinary Medical Sciences",
+    "value": "28011100"
+  },
+  {
+    "key": "Wildlife Ecology and Conservation",
+    "value": "60470000"
+  },
+  {
+    "key": "Womens Studies",
+    "value": "16800000"
+  },
+  {
+    "key": "Written & Oral Communication",
+    "value": "16580100"
+  },
+  {
+    "key": "Zoology",
+    "value": "16900700"
+  },
+  {
+    "key": "Other",
+    "value": "00000000"
+  }
+]
