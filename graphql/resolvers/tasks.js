@@ -37,8 +37,6 @@ module.exports = {
         description,
         points
       );
-      console.log('errors', errors)
-      console.log('valid', valid)
 
       if (!valid) {
         throw new UserInputError("Errors", { errors });

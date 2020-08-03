@@ -140,12 +140,15 @@ module.exports = gql`
   }
 
   type Receipt{
-    username: String!,
-    item: String!,
-    email: String!,
-    dateOpened: String!,
-    dateClosed: String,
-    open: Boolean!
+    id: ID!
+    username: String!
+    item: String!
+    quantity: Int!
+    email: String!
+    dateCheckedOut: String!
+    datePickedUp: String
+    dateClosed: String
+    deleted: Boolean
   }
 
   ### AUXILIARY TYPES ###
@@ -387,6 +390,7 @@ module.exports = gql`
     getReimbursements: [Reimbursement]
     getInventory: [Rentable]
     getItem(item: String): Rentable
+    getReceipts: [Receipt]
   }
 
   ### MUTATIONS LIST ###
@@ -430,7 +434,11 @@ module.exports = gql`
     unresolveReimbursement(id: ID!, email: String!): Reimbursement!
     cancelReimbursement(id: ID!, email: String!): Reimbursement!
     uncancelReimbursement(id: ID!, email: String!): Reimbursement!
-    checkOut(data: TransactionData): [Receipt],
-    return(data: TransactionData): [Receipt]
+    checkOutItem(data: TransactionData): [Rentable]
+    pickUpItem(receiptID: ID!): Receipt
+    returnItem(receiptID: ID!): Receipt
+    unPickUpItem(receiptID: ID!): Receipt
+    unReturnItem(receiptID: ID!): Receipt
+    deleteReceipt(receiptID: ID!): Receipt
   }
 `;
