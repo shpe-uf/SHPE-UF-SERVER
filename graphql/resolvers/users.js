@@ -1158,7 +1158,7 @@ module.exports = {
         });
       }
 
-      if (email === currentEmail) {
+      if(email === currentEmail) {
         valid = false;
         errors.general = "Can't change your own permissions";
         throw new UserInputError("Can't change your own permissions", {
@@ -1175,7 +1175,8 @@ module.exports = {
           errors,
         });
       }
-      if (adminUser.permission != "admin") {
+
+      if(!adminUser.permission.includes('admin')){
         valid = false;
         errors.general = "Must be an admin to change permission";
         throw new UserInputError("Must be an admin to change permission", {
@@ -1197,8 +1198,7 @@ module.exports = {
           errors,
         });
       }
-
       return valid;
-    },
-  },
+    }
+  }
 };

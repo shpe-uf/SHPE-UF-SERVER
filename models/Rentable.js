@@ -38,6 +38,6 @@ const rentableSchema = new Schema({
   collection: 'Inventory'
 });
 
-const switchDB = mongoose.createConnection(process.env.DB_URI,{ useNewUrlParser: true, useUnifiedTopology: true });
+const switchDB = mongoose.createConnection(process.env.DB_URI,{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true });
 
-module.exports = switchDB.model('User', rentableSchema);
+module.exports = switchDB.model('Rentable', rentableSchema);
