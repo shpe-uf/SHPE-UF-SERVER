@@ -77,12 +77,16 @@ module.exports.validateRegisterInput = (
   } else {
     if (!email.match(emailRegex)) {
       errors.email = "Invalid email address.";
-    } else if(email.length > 7){
-        var indexUF = email.length - 8;
-        var indexSF = email.length - 14;
-        if(email.substring(indexUF) != "@ufl.edu" && email.substring(indexSF) != "@sfcollege.edu"){
-          errors.email = "University of Florida or Santa Fe College email required.";
-        }
+    } else if (email.length > 7) {
+      var indexUF = email.length - 8;
+      var indexSF = email.length - 14;
+      if (
+        email.substring(indexUF) != "@ufl.edu" &&
+        email.substring(indexSF) != "@sfcollege.edu"
+      ) {
+        errors.email =
+          "University of Florida or Santa Fe College email required.";
+      }
     }
   }
 
@@ -97,7 +101,7 @@ module.exports.validateRegisterInput = (
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
@@ -114,7 +118,7 @@ module.exports.validateLoginInput = (username, password) => {
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
@@ -133,11 +137,11 @@ module.exports.validatePasswordInput = (password, confirmPassword) => {
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
-module.exports.validateEmailInput = email => {
+module.exports.validateEmailInput = (email) => {
   const emailRegex = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
   const errors = {};
 
@@ -151,7 +155,7 @@ module.exports.validateEmailInput = email => {
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
@@ -201,7 +205,7 @@ module.exports.validateCreateEventInput = (
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
@@ -217,11 +221,12 @@ module.exports.validateCreateTaskInput = (
 
   const nameValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
 
-  if(name.trim() === ""){
+  if (name.trim() === "") {
     errors.name = "Name is required.";
   } else {
-    if(!name.match(nameValidator)) {
-      errors.name =  "Task name must be at least 6 characters, max 50. No special characters, except for hyphens (-) and dashes (/).";
+    if (!name.match(nameValidator)) {
+      errors.name =
+        "Task name must be at least 6 characters, max 50. No special characters, except for hyphens (-) and dashes (/).";
     }
   }
 
@@ -252,11 +257,11 @@ module.exports.validateCreateTaskInput = (
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
-module.exports.validateRedeemPointsInput = code => {
+module.exports.validateRedeemPointsInput = (code) => {
   const errors = {};
 
   if (code.trim() === "") {
@@ -265,11 +270,11 @@ module.exports.validateRedeemPointsInput = code => {
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
-module.exports.validateManualInputInput = username => {
+module.exports.validateManualInputInput = (username) => {
   const errors = {};
 
   if (username.trim() === "") {
@@ -278,11 +283,11 @@ module.exports.validateManualInputInput = username => {
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
-module.exports.validateManualTaskInputInput = username => {
+module.exports.validateManualTaskInputInput = (username) => {
   const errors = {};
 
   if (username.trim() === "") {
@@ -291,7 +296,7 @@ module.exports.validateManualTaskInputInput = username => {
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
@@ -356,7 +361,7 @@ module.exports.validateCreateEditCorporationInput = (
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
@@ -393,14 +398,16 @@ module.exports.validateEditUserProfile = (
     }
   }
 
-  const dataUrlData = parseDataURL(photo);
-
-  if (dataUrlData.mimeType.toString().slice(0, 6) !== "image/") {
-    errors.photo = "Please use a valid image file for photo.";
-  } else if (Buffer.byteLength(dataUrlData.body) > 102400) {
-    errors.photo =
-      "Please use an image file that doesn't exceed the maximum file size (100 KB)";
+  if(photo) {
+    const dataUrlData = parseDataURL(photo);
+    if (dataUrlData.mimeType.toString().slice(0, 6) !== "image/") {
+      errors.photo = "Please use a valid image file for photo.";
+    } else if (Buffer.byteLength(dataUrlData.body) > 102400) {
+      errors.photo =
+        "Please use an image file that doesn't exceed the maximum file size (100 KB)";
+    }
   }
+  
 
   if (major.trim() === "") {
     errors.major = "Major is required.";
@@ -428,7 +435,7 @@ module.exports.validateEditUserProfile = (
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
@@ -547,7 +554,7 @@ module.exports.validateRegisterAlumniInput = (
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
@@ -557,7 +564,7 @@ module.exports.validateCreateClassInput = (code) => {
   const codeValidator = /^[a-zA-Z0-9]*$/i;
 
   if (code.trim() === "") {
-    errors.code = "No code was provided."
+    errors.code = "No code was provided.";
   } else {
     if (!code.match(codeValidator)) {
       errors.code =
@@ -567,8 +574,8 @@ module.exports.validateCreateClassInput = (code) => {
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
-  }
+    valid: Object.keys(errors).length < 1,
+  };
 };
 
 module.exports.validateReimbursementRequest = (
@@ -661,12 +668,12 @@ module.exports.validateRentalRequest = (
   totalQuantity,
   currentRenters
 ) => {
-
   let errors = {};
 
   //is in stock?
-  if((totalQuantity - (currentRenters.length + numberRequested)) < 0) {
-    errors.availability = 'The requested number is too high for the current stock';
+  if (totalQuantity - (currentRenters.length + numberRequested) < 0) {
+    errors.availability =
+      "The requested number is too high for the current stock";
   }
 
   if(numberRequested === 0) {
@@ -675,6 +682,6 @@ module.exports.validateRentalRequest = (
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
