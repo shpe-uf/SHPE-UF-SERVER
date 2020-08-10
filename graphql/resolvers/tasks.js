@@ -29,7 +29,8 @@ module.exports = {
         createTaskInput: { name, startDate, endDate, description, points }
       }
     ) {
-      const { valid, errors } = validateCreateTaskInput(
+
+      const { errors, valid } = validateCreateTaskInput(
         name,
         startDate,
         endDate,
@@ -56,6 +57,9 @@ module.exports = {
         });
       }
 
+      startDate = new Date(startDate).toDateString()
+      endDate = new Date(endDate).toDateString()
+
       const newTask = new Task({
         name,
         startDate,
@@ -71,7 +75,7 @@ module.exports = {
 
       await newTask.save();
 
-      const res = Task.find();
+      const res = Task.findOne({ name })
 
       return res;
     },
@@ -85,7 +89,7 @@ module.exports = {
       const { valid, errors } = validateManualTaskInputInput(username);
 
       if (!valid) {
-        throw new UserInputError("Errors", {
+        throw new UserInputError("User input errors.", {
           errors
         });
       }
@@ -212,12 +216,155 @@ module.exports = {
           new: true
         }
       );
+      
       const newTask = await Task.findOne({
         name: taskName
       });
 
-      console.log(newTask);
       return newTask;
+    },
+    async removeUserFromTask(
+      _,
+      {
+        manualTaskInputInput: { username, taskName }
+      }
+    ) {
+
+      const { valid, errors } = validateManualTaskInputInput(username);
+
+      if (!valid) {
+        throw new UserInputError("User input errors.", {
+          errors
+        });
+      }
+
+      const user = await User.findOne({
+        username
+      });
+
+      const task = await Task.findOne({
+        name: taskName
+      });
+
+      if (!user) {
+        errors.general = "User not found.";
+        throw new UserInputError("User not found.", {
+          errors
+        });
+      }
+
+      if (!task) {
+        errors.general = "Task not found.";
+        throw new UserInputError("Task not found.", {
+          errors
+        });
+      }
+
+      if(!user.tasks.map(e => e.name).includes(task.name)) {
+        errors.general = "User is not member of task.";
+        throw new UserInputError("User is not member of Task.", {
+          errors
+        });
+      }
+
+      newTasks = user.tasks.filter(e => e.name !== task.name)
+      newUsers = task.users.filter(e => e.username !== user.username)
+
+      if (task.semester === "Fall Semester") {
+        await User.findOneAndUpdate({username},{
+          tasks: newTasks,
+          points: user.points + task.points,
+          fallPoints: user.fallPoints + task.points
+        });
+      } else if (task.semester === "Spring Semester") {
+        await User.findOneAndUpdate({username},{
+          tasks: newTasks,
+          points: user.points + task.points,
+          springPoints: user.springPoints + task.points
+        });
+      } else if (task.semester === "Summer Semester") {
+        await User.findOneAndUpdate({username},{
+          tasks: newTasks,
+          points: user.points + task.points,
+          summerPoints: user.summerPoints + task.points
+        });
+      } else {
+        errors.general = "Invalid task.";
+        throw new UserInputError("Invalid task.", {
+          errors
+        });
+      }
+      
+      newTask = await Task.findOneAndUpdate({name: taskName},{users: newUsers, attendance: task.attendance - 1},{new: true});
+
+      return newTask;
+    },
+    async deleteTask(_,{taskName}) {
+
+      const users = await User.find()
+
+      const task = await Task.findOne({
+        name: taskName
+      });
+
+      if (!users || !users.length || users.length === 0) {
+        errors.general = "User not found.";
+        throw new UserInputError("User not found.", {
+          errors
+        });
+      }
+
+      if (!task) {
+        errors.general = "Task not found.";
+        throw new UserInputError("Task not found.", {
+          errors
+        });
+      }
+
+      var pointsDecrease = {};
+
+      if (task.semester === "Fall Semester") {
+        pointsDecrease = {
+          points: -task.points,
+          fallPoints: -task.points
+        };
+      } else if (task.semester === "Spring Semester") {
+        pointsDecrease = {
+          points: -task.points,
+          springPoints: -task.points
+        };
+      } else if (task.semester === "Summer Semester") {
+        pointsDecrease = {
+          points: -task.points,
+          summerPoints: -task.points
+        };
+      } else {
+        errors.general = "Invalid task.";
+        throw new UserInputError("Invalid task.", {
+          errors
+        });
+      }
+
+      await Task.deleteOne({name: taskName})
+
+      await User.updateMany({
+        tasks: {
+          $elemMatch: {
+            name: taskName
+          }
+        }
+      }, {
+        $pull: {
+          tasks: {
+            name: taskName
+          }
+        },
+        $inc: pointsDecrease
+      })
+      
+      tasks = await Task.find();
+
+      return tasks;
     }
   }
 };

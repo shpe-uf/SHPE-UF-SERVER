@@ -1,6 +1,5 @@
 const gql = require("graphql-tag");
 
-
 module.exports = gql`
   ### MAIN MODEL TYPES ###
 
@@ -36,6 +35,8 @@ module.exports = gql`
     summerPercentile: Int!
     bookmarks: [String]!
     classes: [String]
+    internships: [String]
+    socialMedia: [String]
   }
 
   type Event {
@@ -50,20 +51,19 @@ module.exports = gql`
     semester: String!
     createdAt: String!
     users: [User]!
-  },
-
-  type Task {
-  name: String!
-  startDate: String!
-  endDate: String!
-  description: String!
-  points: Int!
-  attendance: Int!
-  semester: String!
-  createdAt: String!
-  users: [User]
   }
 
+  type Task {
+    name: String!
+    startDate: String!
+    endDate: String!
+    description: String!
+    points: Int!
+    attendance: Int!
+    semester: String!
+    createdAt: String!
+    users: [User]
+  }
 
   type Corporation {
     id: ID!
@@ -127,7 +127,7 @@ module.exports = gql`
     reimbursed: String!
     amount: String!
   }
-  
+
   type Rentable{
     item: String!
     quantity: Int!
@@ -140,12 +140,15 @@ module.exports = gql`
   }
 
   type Receipt{
-    username: String!,
-    item: String!,
-    email: String!,
-    dateOpened: String!,
-    dateClosed: String,
-    open: Boolean!
+    id: ID!
+    username: String!
+    item: String!
+    quantity: Int!
+    email: String!
+    dateCheckedOut: String!
+    datePickedUp: String
+    dateClosed: String
+    deleted: Boolean
   }
 
   ### AUXILIARY TYPES ###
@@ -217,9 +220,9 @@ module.exports = gql`
   }
 
   input TransactionData {
-    item: String!,
-    username: String!,
-    numberOfItems: Int!,
+    item: String!
+    username: String!
+    numberOfItems: Int!
     email: String!
   }
 
@@ -260,7 +263,7 @@ module.exports = gql`
     newsLink: String!
     applyLink: String!
     academia: String!
-    govContractor: String!,
+    govContractor: String!
     nonProfit: String!
     visaSponsor: String!
     shpeSponsor: String!
@@ -333,6 +336,9 @@ module.exports = gql`
     country: String!
     ethnicity: String!
     sex: String!
+    classes: [String]
+    internships: [String]
+    socialMedia: [String]
   }
 
   input ReimbursementInput {
@@ -387,6 +393,7 @@ module.exports = gql`
     getReimbursements: [Reimbursement]
     getInventory: [Rentable]
     getItem(item: String): Rentable
+    getReceipts: [Receipt]
   }
 
   ### MUTATIONS LIST ###
@@ -394,9 +401,13 @@ module.exports = gql`
   type Mutation {
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!, remember: String!): User!
-    createCorporation(createCorporationInput: CreateCorporationInput): [Corporation]
+    createCorporation(
+      createCorporationInput: CreateCorporationInput
+    ): [Corporation]
     editCorporation(editCorporationInput: EditCorporationInput): Corporation!
-    deleteCorporation(deleteCorporationInput: DeleteCorporationInput): [Corporation]!
+    deleteCorporation(
+      deleteCorporationInput: DeleteCorporationInput
+    ): [Corporation]!
     createEvent(createEventInput: CreateEventInput): [Event]
     redeemPoints(redeemPointsInput: RedeemPointsInput): User!
     createTask(createTaskInput: CreateTaskInput): Task!
@@ -411,6 +422,8 @@ module.exports = gql`
     ): [Request]
     manualInput(manualInputInput: ManualInputInput): [Event]
     manualTaskInput(manualTaskInputInput: ManualTaskInputInput): Task
+    removeUserFromTask(manualTaskInputInput: ManualTaskInputInput): Task
+    deleteTask(taskName: String!): [Task]
     forgotPassword(email: String!): User!
     resetPassword(
       password: String!
@@ -421,14 +434,22 @@ module.exports = gql`
     bookmark(company: String!, username: String!): User!
     deleteBookmark(company: String!, username: String!): User!
     registerAlumni(registerAlumniInput: RegisterAlumniInput): Alumni!
-    changePermission(email: String!, currentEmail: String!, permission: String!): Boolean!
+    changePermission(
+      email: String!
+      currentEmail: String!
+      permission: String!
+    ): Boolean!
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
     reimbursementRequest(reimbursementInput: ReimbursementInput): Reimbursement!
     resolveReimbursement(id: ID!, email: String!): Reimbursement!
     unresolveReimbursement(id: ID!, email: String!): Reimbursement!
     cancelReimbursement(id: ID!, email: String!): Reimbursement!
     uncancelReimbursement(id: ID!, email: String!): Reimbursement!
-    checkOut(data: TransactionData): [Receipt],
-    return(data: TransactionData): [Receipt]
+    checkOutItem(data: TransactionData): [Rentable]
+    pickUpItem(receiptID: ID!): Receipt
+    returnItem(receiptID: ID!): Receipt
+    unPickUpItem(receiptID: ID!): Receipt
+    unReturnItem(receiptID: ID!): Receipt
+    deleteReceipt(receiptID: ID!): Receipt
   }
 `;

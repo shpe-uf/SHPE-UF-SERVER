@@ -1,12 +1,13 @@
+const { UserInputError } = require("apollo-server");
 const Rentable = require("../../models/Rentable.js")
 const Receipt = require("../../models/Receipt.js")
 const User = require("../../models/User.js")
+const nodemailer = require("nodemailer");
 
 require("dotenv").config();
 
 const { 
-  validateRentalRequest,
-  validateReturnRequest
+  validateRentalRequest
  } = require("../../util/validators");
 
 module.exports = {
@@ -28,6 +29,15 @@ module.exports = {
       } catch(err) {
         throw new Error(err);
       }
+    },
+
+    async getReceipts(_,{item}) {
+      try{
+        const receipts = await Receipt.find()
+        return receipts;
+      } catch(err) {
+        throw new Error(err);
+      }
     }
   },
   
@@ -37,55 +47,140 @@ module.exports = {
     //========================= Checking out an item ======================
     //=====================================================================
   
-    async checkOut(_, data) {
+    async checkOutItem(_, data) {
       try{
         //fixes bug where Object Null is received
         const {item, username, numberOfItems, email } = JSON.parse(JSON.stringify(data)).data;
-  
+
         const rentable = await Rentable.findOne({'item':item});
         const user = await User.findOne({'username': username});
-  
+
+        if(!user){
+          throw new UserInputError("That's not a valid user.", {
+            errors: {
+              name: "That's not a valid user."
+            }
+          });
+        }
+
+        if(!rentable){
+          throw new UserInputError("That's not a valid rental item.", {
+            errors: {
+              name: "That's not a valid rental item."
+            }
+          });
+        }
+
         let { errors, valid } = validateRentalRequest(
-          item,
-          username,
           numberOfItems,
           rentable.quantity,
-          rentable.renters,
-          rentable.level,
-          user
+          rentable.renters
         );
   
         if (!valid) {
-          errors = JSON.stringify(errors);
-          throw new Error(errors);
+          throw new UserInputError("Errors", { errors });
         }
         
         for(var i = 1; i <= numberOfItems; i++) {
-          if (!rentable.renters || (rentable.renters.length < 1)){
-            rentable.renters = [username];
-          } else {
+          if (rentable.renters){
             rentable.renters.push(username);
+          } else {
+            rentable.renters = [username];
           }
         }
   
         await rentable.save();
+
+        const newDate = JSON.stringify(new Date())
+        const receipt = new Receipt({
+          username: username,
+          item: item,
+          quantity: numberOfItems,
+          email: email,
+          dateCheckedOut: newDate,
+        })
+        await receipt.save()
+
+        const transporter = nodemailer.createTransport({
+            service: process.env.EMAIL_SERVICE,
+            auth: {
+              user: process.env.EMAIL,
+              pass: process.env.EMAIL_PASSWORD
+            }
+        });
+    
+        const requesterMail = {
+            from: process.env.EMAIL,
+            to: `${email}`,
+            subject: "Rental Request",
+            text:
+              "You made a request to rent from SHPE UF.\n\n" +
+              `Username: ${username}\n` +
+              `Email: ${email}\n` +
+              `Item: ${item}\n` +
+              `Quantity: ${numberOfItems}\n` +
+              `Date: ${newDate}\n` +
+              "This will have an official message later"
+        };
+    
+        transporter.sendMail(requesterMail, (err, response) => {
+            if (err) {
+              console.error("there was an error: ", err);
+            } else {
+              res.status(200).json('recovery email sent');
+            }
+        });
+
+        const rentalAdminMail = {
+            from: process.env.EMAIL,
+            to: `juansuhr@gmail.com`,
+            subject: "Rental Request - " + `${username} ${item}`,
+            text:
+              "There is a new request for rental.\n\n" +
+              `Username: ${username}\n` +
+              `Email: ${email}\n` +
+              `Item: ${item}\n` +
+              `Quantity: ${numberOfItems}\n` +
+              `Date: ${newDate}\n`
+        };
+
+        transporter.sendMail(rentalAdminMail, (err, response) => {
+            if (err) {
+              console.error("there was an error: ", err);
+            } else {
+              res.status(200).json('recovery email sent');
+            }
+        });
   
-        receipts = [];
-        const dateOpened = JSON.stringify(new Date());
+        return await Rentable.find();
   
-        for(var i = 1; i <= numberOfItems; i++) {
-          const receipt = new Receipt({
-            username,
-            email,
-            item,
-            dateOpened,
-            open: true
-          })
-          receipts.push(await receipt.save());
+      } catch(err) {
+        throw new Error(err);
+      }
+    },
+
+    //=====================================================================
+    //========================= Picking up an item =========================
+    //=====================================================================
+
+    async pickUpItem(_, {receiptID}) {
+      try{
+        const receipt = await Receipt.findOne({'_id': receiptID})
+
+        if(!receipt) {
+          throw new UserInputError("That's not a valid receipt.", {
+            errors: {
+              name: "That's not a valid receipt."
+            }
+          });
         }
-  
-        return receipts;
-  
+
+        const newReceipt = await Receipt.findOneAndUpdate({'_id': receiptID}, {
+          datePickedUp: JSON.stringify(new Date())
+        },{new: true})
+
+        return newReceipt
+
       } catch(err) {
         throw new Error(err);
       }
@@ -95,51 +190,220 @@ module.exports = {
     //========================= Returning an item =========================
     //=====================================================================
   
-    async return(_, data) {
+    async returnItem(_, {receiptID}) {
       try{
-  
-        const {item, username, numberOfItems} = JSON.parse(JSON.stringify(data)).data;
+
+        const receipt = await Receipt.findById(receiptID);
+
+        if(!receipt) {
+          throw new UserInputError("That's not a valid receipt.", {
+            errors: {
+              name: "That's not a valid receipt."
+            }
+          });
+        }
+
+        const item = receipt.item
+        const username = receipt.username
   
         const rentable = await Rentable.findOne({'item':item});
         const user = await User.findOne({'username': username});
-        const receipts = await Receipt.find({'username': username});
-        let { errors, valid } = validateReturnRequest(
-          item,
-          username,
-          numberOfItems,
-          rentable.quantity,
-          rentable.renters,
-          user,
-          receipts.filter((e) => {return e.open == true})
-        );
-  
-        if (!valid) {
-          errors = JSON.stringify(errors);
-          throw new Error(errors);
+
+        if(!rentable) {
+          throw new UserInputError("Receipt contained an invalid rental item.", {
+            errors: {
+              name: "Receipt contained an invalid rental item."
+            }
+          });
+        }
+
+        if(!user) {
+          throw new UserInputError("Receipt contained an invalid user.", {
+            errors: {
+              name: "Receipt contained an invalid user."
+            }
+          });
         }
         
-        const dateClosed = JSON.stringify(new Date());
-        for(var i = 0; i < numberOfItems; i++) {
-          
-          //Delete name entries from renters array
-          var pos = rentable.renters.indexOf(username);
-          if (pos > -1) {
-            rentable.renters.splice(pos,1);
-          }
-  
-          //Stamp receipts as complete
-          var receiptShift = i;
-          while(receipts[receiptShift].open == false) {
-            receiptShift++; //looking for empty receipts
-          }
-          receipts[receiptShift].open = false;
-          receipts[receiptShift].dateClosed = dateClosed;
-          receipts[receiptShift].save();
+        let newRenters = rentable.renters;
+        for(let i = 0; i < receipt.quantity; i++) {
+          newRenters.splice(rentable.renters.findIndex(e => e === receipt.username),1)
         }
+        
+        await Rentable.findOneAndUpdate({item: item}, {
+          renters: newRenters
+        });
+
+        const newReceipt = await Receipt.findOneAndUpdate({'_id':receiptID}, {
+          dateClosed: JSON.stringify(new Date())
+        }, {new: true})
+
+        return newReceipt;
   
-        rentable.save();
+      } catch(err) {
+        throw new Error(err);
+      }
+    },
+    //=====================================================================
+    //========================= unPicking up an item =======================
+    //=====================================================================
+
+    async unPickUpItem(_, {receiptID}) {
+      try{
+        const receipt = await Receipt.findOne({'_id': receiptID})
+
+        if(!receipt) {
+          throw new UserInputError("That's not a valid receipt.", {
+            errors: {
+              name: "That's not a valid receipt."
+            }
+          });
+        }
+
+        if(!receipt.datePickedUp) {
+          throw new UserInputError("That's not a valid receipt.", {
+            errors: {
+              name: "That's not a closed receipt."
+            }
+          });
+        }
+
+        const newReceipt = await Receipt.findOneAndUpdate({'_id': receiptID}, {
+          datePickedUp: null
+        },{new: true})
+
+        return newReceipt
+
+      } catch(err) {
+        throw new Error(err);
+      }
+    },
+    
+    //=====================================================================
+    //========================= unReturning an item =======================
+    //=====================================================================
   
-        return receipts;
+    async unReturnItem(_, {receiptID}) {
+      try{
+
+        const receipt = await Receipt.findById(receiptID);
+
+        if(!receipt) {
+          throw new UserInputError("That's not a valid receipt.", {
+            errors: {
+              name: "That's not a valid receipt."
+            }
+          });
+        }
+
+        if(!receipt.dateClosed) {
+          throw new UserInputError("That's not a valid receipt.", {
+            errors: {
+              name: "That's not a closed receipt."
+            }
+          });
+        }
+
+        const item = receipt.item
+        const username = receipt.username
+  
+        const rentable = await Rentable.findOne({'item':item});
+        const user = await User.findOne({'username': username});
+
+        if(!rentable) {
+          throw new UserInputError("Receipt contained an invalid rental item.", {
+            errors: {
+              name: "Receipt contained an invalid rental item."
+            }
+          });
+        }
+
+        if(!user) {
+          throw new UserInputError("Receipt contained an invalid user.", {
+            errors: {
+              name: "Receipt contained an invalid user."
+            }
+          });
+        }
+
+        const users = []
+        for(let i = 0; i < receipt.quantity; i++) {
+          users.push(receipt.username);
+        }
+
+        await Rentable.findOneAndUpdate({item: item}, {
+          $push: {
+            renters: users
+          },
+        });
+
+        const newReceipt = await Receipt.findOneAndUpdate({'_id':receiptID}, {
+          dateClosed: null
+        }, {new: true})
+
+        return newReceipt;
+  
+      } catch(err) {
+        throw new Error(err);
+      }
+    },
+    //=====================================================================
+    //========================= deleting a receipt =======================
+    //=====================================================================
+  
+    async deleteReceipt(_, {receiptID}) {
+      try{
+
+        const receipt = await Receipt.findById(receiptID);
+
+        if(!receipt) {
+          throw new UserInputError("That's not a valid receipt.", {
+            errors: {
+              name: "That's not a valid receipt."
+            }
+          });
+        }
+
+        if(!receipt.dateClosed) {
+
+          const item = receipt.item
+          const username = receipt.username
+    
+          const rentable = await Rentable.findOne({'item':item});
+          const user = await User.findOne({'username': username});
+
+          if(!rentable) {
+            throw new UserInputError("Receipt contained an invalid rental item.", {
+              errors: {
+                name: "Receipt contained an invalid rental item."
+              }
+            });
+          }
+
+          if(!user) {
+            throw new UserInputError("Receipt contained an invalid user.", {
+              errors: {
+                name: "Receipt contained an invalid user."
+              }
+            });
+          }
+
+          let newRenters = rentable.renters;
+          for(let i = 0; i < receipt.quantity; i++) {
+            newRenters.splice(rentable.renters.findIndex(e => e === receipt.username),1)
+          }
+          
+          await Rentable.findOneAndUpdate({item: item}, {
+            renters: newRenters
+          });
+          
+        }
+
+        const newReceipt = await Receipt.findOneAndUpdate({'_id':receiptID}, {
+          deleted: true
+        }, {new: true})
+
+        return newReceipt;
   
       } catch(err) {
         throw new Error(err);
