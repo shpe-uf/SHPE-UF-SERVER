@@ -422,6 +422,7 @@ module.exports = gql`
     ): [Request]
     manualInput(manualInputInput: ManualInputInput): [Event]
     deleteEvent(eventName: String!): [Event]
+    removeUserFromEvent(manualInputInput: ManualInputInput): Event
     manualTaskInput(manualTaskInputInput: ManualTaskInputInput): Task
     removeUserFromTask(manualTaskInputInput: ManualTaskInputInput): Task
     deleteTask(taskName: String!): [Task]
