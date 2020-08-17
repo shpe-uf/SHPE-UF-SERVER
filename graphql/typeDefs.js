@@ -421,6 +421,7 @@ module.exports = gql`
       approveRejectRequestInput: ApproveRejectRequestInput
     ): [Request]
     manualInput(manualInputInput: ManualInputInput): [Event]
+    deleteEvent(eventName: String!): [Event]
     manualTaskInput(manualTaskInputInput: ManualTaskInputInput): Task
     removeUserFromTask(manualTaskInputInput: ManualTaskInputInput): Task
     deleteTask(taskName: String!): [Task]

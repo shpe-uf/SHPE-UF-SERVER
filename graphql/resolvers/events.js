@@ -10,6 +10,7 @@ const {
 
 const categoryOptions = require('../../json/category.json');
 const monthOptions = require("../../json/month.json");
+var { events } = require("react-mapbox-gl/lib/map-events");
 
 module.exports = {
   Query: {
@@ -239,6 +240,75 @@ module.exports = {
       const updatedEvents = await Event.find();
 
       return updatedEvents;
+    },
+    async deleteEvent(_,{eventName}) {
+
+      const errors = ""
+      const users = await User.find()
+      const event = await Event.findOne({
+        name: eventName
+      });
+
+      if (!users || !users.length || users.length === 0) {
+        errors.general = "User not found.";
+        throw new UserInputError("User not found.", {
+          errors
+        });
+      }
+      
+      if (!event) {
+        errors.general = "Event not found.";
+        throw new UserInputError("Event not found.", {
+          errors
+        });
+      }
+    
+
+      var pointsDecrease = {};
+
+      if (event.semester === "Fall Semester") {
+        pointsDecrease = {
+          points: -event.points,
+          fallPoints: -event.points
+        };
+      } else if (event.semester === "Spring Semester") {
+        pointsDecrease = {
+          points: -event.points,
+          springPoints: -event.points
+        };
+      } else if (event.semester === "Summer Semester") {
+        pointsDecrease = {
+          points: -event.points,
+          summerPoints: -event.points
+        };
+      } else {
+        errors.general = "Invalid event.";
+        throw new UserInputError("Invalid event.", {
+          errors
+        });
+      }
+
+      await Event.deleteOne({name: eventName})
+
+      await User.updateMany({
+        events: {
+          $elemMatch: {
+            name: eventName
+          }
+        }
+      }, {
+        $pull: {
+          events: {
+            name: eventName
+          }
+        },
+        $inc: pointsDecrease
+      })
+      
+      events = await Event.find();
+
+      return events;
     }
+
   }
 };
