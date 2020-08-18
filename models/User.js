@@ -5,106 +5,116 @@ const Task = require("./Task").schema;
 const userSchema = new Schema({
   firstName: {
     type: String,
-    required: true
+    required: true,
   },
   lastName: {
     type: String,
-    required: true
+    required: true,
   },
   photo: {
     type: String,
-    default: ""
+    default: "",
   },
   major: {
     type: String,
-    required: true
+    required: true,
   },
   year: {
     type: String,
-    required: true
+    required: true,
   },
   graduating: {
     type: String,
-    required: true
+    required: true,
   },
   country: {
     type: String,
-    required: true
+    required: true,
   },
   ethnicity: {
     type: String,
-    required: true
+    required: true,
   },
   sex: {
     type: String,
-    required: true
+    required: true,
   },
   username: {
     type: String,
     required: true,
     lowercase: true,
-    unique: true
+    unique: true,
   },
   email: {
     type: String,
     required: true,
     lowercase: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   createdAt: {
     type: String,
-    required: true
+    required: true,
   },
   points: {
     type: Number,
-    default: 0
+    default: 0,
   },
   fallPoints: {
     type: Number,
-    default: 0
+    default: 0,
   },
   springPoints: {
     type: Number,
-    default: 0
+    default: 0,
   },
   summerPoints: {
     type: Number,
-    default: 0
+    default: 0,
   },
   permission: {
     type: String,
-    default: "member"
+    default: "member",
   },
   listServ: Boolean,
+  internships: {
+    type: [String],
+  },
+  socialMedia: {
+    type: [String],
+  },
 
-  events: [{
-    name: String,
-    category: String,
-    createdAt: String,
-    points: Number,
-  }],
+  events: [
+    {
+      name: String,
+      category: String,
+      createdAt: String,
+      points: Number,
+    },
+  ],
 
-  tasks: [{
-    name: String,
-    createdAt: String,
-    points: Number,
-  }],
+  tasks: [
+    {
+      name: String,
+      createdAt: String,
+      points: Number,
+    },
+  ],
   bookmarkedTasks: [String],
   classes: {
-    type: [String]
+    type: [String],
   },
   token: {
-    type: String
+    type: String,
   },
   confirmed: {
     type: Boolean,
-    default: false
+    default: false,
   },
-  bookmarks: [String]
+  bookmarks: [String],
 });
 
 module.exports = model("User", userSchema);

@@ -273,19 +273,19 @@ module.exports = {
       if (task.semester === "Fall Semester") {
         await User.findOneAndUpdate({username},{
           tasks: newTasks,
-          points: user.points + task.points,
+          points: user.points - task.points,
           fallPoints: user.fallPoints + task.points
         });
       } else if (task.semester === "Spring Semester") {
         await User.findOneAndUpdate({username},{
           tasks: newTasks,
-          points: user.points + task.points,
+          points: user.points - task.points,
           springPoints: user.springPoints + task.points
         });
       } else if (task.semester === "Summer Semester") {
         await User.findOneAndUpdate({username},{
           tasks: newTasks,
-          points: user.points + task.points,
+          points: user.points - task.points,
           summerPoints: user.summerPoints + task.points
         });
       } else {

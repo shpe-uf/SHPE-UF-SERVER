@@ -1,6 +1,5 @@
 const gql = require("graphql-tag");
 
-
 module.exports = gql`
   ### MAIN MODEL TYPES ###
 
@@ -36,6 +35,8 @@ module.exports = gql`
     summerPercentile: Int!
     bookmarks: [String]!
     classes: [String]
+    internships: [String]
+    socialMedia: [String]
   }
 
   type Event {
@@ -50,20 +51,19 @@ module.exports = gql`
     semester: String!
     createdAt: String!
     users: [User]!
-  },
-
-  type Task {
-  name: String!
-  startDate: String!
-  endDate: String!
-  description: String!
-  points: Int!
-  attendance: Int!
-  semester: String!
-  createdAt: String!
-  users: [User]
   }
 
+  type Task {
+    name: String!
+    startDate: String!
+    endDate: String!
+    description: String!
+    points: Int!
+    attendance: Int!
+    semester: String!
+    createdAt: String!
+    users: [User]
+  }
 
   type Corporation {
     id: ID!
@@ -127,7 +127,7 @@ module.exports = gql`
     reimbursed: String!
     amount: String!
   }
-  
+
   type Rentable{
     item: String!
     quantity: Int!
@@ -220,9 +220,9 @@ module.exports = gql`
   }
 
   input TransactionData {
-    item: String!,
-    username: String!,
-    numberOfItems: Int!,
+    item: String!
+    username: String!
+    numberOfItems: Int!
     email: String!
   }
 
@@ -263,7 +263,7 @@ module.exports = gql`
     newsLink: String!
     applyLink: String!
     academia: String!
-    govContractor: String!,
+    govContractor: String!
     nonProfit: String!
     visaSponsor: String!
     shpeSponsor: String!
@@ -336,6 +336,9 @@ module.exports = gql`
     country: String!
     ethnicity: String!
     sex: String!
+    classes: [String]
+    internships: [String]
+    socialMedia: [String]
   }
 
   input ReimbursementInput {
@@ -398,9 +401,13 @@ module.exports = gql`
   type Mutation {
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!, remember: String!): User!
-    createCorporation(createCorporationInput: CreateCorporationInput): [Corporation]
+    createCorporation(
+      createCorporationInput: CreateCorporationInput
+    ): [Corporation]
     editCorporation(editCorporationInput: EditCorporationInput): Corporation!
-    deleteCorporation(deleteCorporationInput: DeleteCorporationInput): [Corporation]!
+    deleteCorporation(
+      deleteCorporationInput: DeleteCorporationInput
+    ): [Corporation]!
     createEvent(createEventInput: CreateEventInput): [Event]
     redeemPoints(redeemPointsInput: RedeemPointsInput): User!
     createTask(createTaskInput: CreateTaskInput): Task!
@@ -427,7 +434,11 @@ module.exports = gql`
     bookmark(company: String!, username: String!): User!
     deleteBookmark(company: String!, username: String!): User!
     registerAlumni(registerAlumniInput: RegisterAlumniInput): Alumni!
-    changePermission(email: String!, currentEmail: String!, permission: String!): Boolean!
+    changePermission(
+      email: String!
+      currentEmail: String!
+      permission: String!
+    ): Boolean!
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
     reimbursementRequest(reimbursementInput: ReimbursementInput): Reimbursement!
     resolveReimbursement(id: ID!, email: String!): Reimbursement!
