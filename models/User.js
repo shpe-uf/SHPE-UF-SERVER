@@ -99,7 +99,7 @@ const userSchema = new Schema({
   tasks: [
     {
       name: String,
-      createdAt: String,
+      startDate: String,
       points: Number,
     },
   ],
