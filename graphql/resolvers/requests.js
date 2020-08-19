@@ -99,7 +99,7 @@ module.exports = {
           });
         }
 
-        var updatedUser = await User.findOneAndUpdate({
+        await User.findOneAndUpdate({
           username
         }, {
           $push: {
@@ -169,7 +169,7 @@ module.exports = {
           });
         }
 
-        var updatedUser = await User.findOneAndUpdate({
+        await User.findOneAndUpdate({
           username
         }, {
           $push: {
@@ -177,7 +177,6 @@ module.exports = {
               $each: [{
                 name: task.name,
                 startDate: task.startDate,
-                endDate: task.endDate,
                 points: task.points
               }],
               $sort: {

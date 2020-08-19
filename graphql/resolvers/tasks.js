@@ -299,12 +299,12 @@ module.exports = {
 
       return newTask;
     },
-    async deleteTask(_,{taskName}) {
+    async deleteTask(_,{taskId}) {
 
       const users = await User.find()
 
       const task = await Task.findOne({
-        name: taskName
+        _id: taskId
       });
 
       if (!users || !users.length || users.length === 0) {
@@ -345,18 +345,18 @@ module.exports = {
         });
       }
 
-      await Task.deleteOne({name: taskName})
+      await Task.deleteOne({_id: taskId})
 
       await User.updateMany({
         tasks: {
           $elemMatch: {
-            name: taskName
+            name: task.name
           }
         }
       }, {
         $pull: {
           tasks: {
-            name: taskName
+            name: task.name
           }
         },
         $inc: pointsDecrease
