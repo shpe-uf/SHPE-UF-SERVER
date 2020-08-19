@@ -54,6 +54,7 @@ module.exports = gql`
   }
 
   type Task {
+    id: ID!
     name: String!
     startDate: String!
     endDate: String!
@@ -273,10 +274,6 @@ module.exports = gql`
     nationalConvention: String!
   }
 
-  input DeleteCorporationInput {
-    id: ID!
-  }
-
   input RedeemPointsInput {
     code: String!
     username: String!
@@ -405,9 +402,7 @@ module.exports = gql`
       createCorporationInput: CreateCorporationInput
     ): [Corporation]
     editCorporation(editCorporationInput: EditCorporationInput): Corporation!
-    deleteCorporation(
-      deleteCorporationInput: DeleteCorporationInput
-    ): [Corporation]!
+    deleteCorporation(corporationId: ID!): [Corporation]!
     createEvent(createEventInput: CreateEventInput): [Event]
     redeemPoints(redeemPointsInput: RedeemPointsInput): User!
     createTask(createTaskInput: CreateTaskInput): Task!
@@ -423,7 +418,7 @@ module.exports = gql`
     manualInput(manualInputInput: ManualInputInput): [Event]
     manualTaskInput(manualTaskInputInput: ManualTaskInputInput): Task
     removeUserFromTask(manualTaskInputInput: ManualTaskInputInput): Task
-    deleteTask(taskName: String!): [Task]
+    deleteTask(taskId: ID!): [Task]
     forgotPassword(email: String!): User!
     resetPassword(
       password: String!
