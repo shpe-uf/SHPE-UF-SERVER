@@ -53,6 +53,7 @@ module.exports = gql`
     users: [User]!
   }
 
+
   type Task {
     id: ID!
     name: String!
@@ -416,6 +417,8 @@ module.exports = gql`
       approveRejectRequestInput: ApproveRejectRequestInput
     ): [Request]
     manualInput(manualInputInput: ManualInputInput): [Event]
+    deleteEvent(eventName: String!): [Event]
+    removeUserFromEvent(manualInputInput: ManualInputInput): Event
     manualTaskInput(manualTaskInputInput: ManualTaskInputInput): Task
     removeUserFromTask(manualTaskInputInput: ManualTaskInputInput): Task
     deleteTask(taskId: ID!): [Task]

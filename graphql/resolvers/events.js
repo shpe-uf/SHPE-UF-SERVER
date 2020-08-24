@@ -10,6 +10,7 @@ const {
 
 const categoryOptions = require('../../json/category.json');
 const monthOptions = require("../../json/month.json");
+var { events } = require("react-mapbox-gl/lib/map-events");
 
 module.exports = {
   Query: {
@@ -239,6 +240,151 @@ module.exports = {
       const updatedEvents = await Event.find();
 
       return updatedEvents;
+    },
+    async removeUserFromEvent(
+      _,
+      {
+        manualInputInput: { username, eventName }
+      }
+    ) {
+
+      const { valid, errors } = validateManualInputInput(username);
+
+      if (!valid) {
+        throw new UserInputError("User input errors.", {
+          errors
+        });
+      }
+
+      const user = await User.findOne({
+        username
+      });
+
+      const event = await Event.findOne({
+        name: eventName
+      });
+
+      if (!user) {
+        errors.general = "User not found.";
+        throw new UserInputError("User not found.", {
+          errors
+        });
+      }
+
+      if (!event) {
+        errors.general = "Event not found.";
+        throw new UserInputError("Event not found.", {
+          errors
+        });
+      }
+
+      if(!user.events.map(e => e.name).includes(event.name)) {
+        errors.general = "User is not member of event.";
+        throw new UserInputError("User is not member of Event.", {
+          errors
+        });
+      }
+
+      newEvents = user.events.filter(e => e.name !== event.name)
+      newUsers = event.users.filter(e => e.username !== user.username)
+
+      if (event.semester === "Fall Semester") {
+        await User.findOneAndUpdate({username},{
+          events: newEvents,
+          points: user.points - event.points,
+          fallPoints: user.fallPoints - event.points
+        });
+      } else if (event.semester === "Spring Semester") {
+        await User.findOneAndUpdate({username},{
+          events: newEvents,
+          points: user.points - event.points,
+          springPoints: user.springPoints - event.points
+        });
+      } else if (event.semester === "Summer Semester") {
+        await User.findOneAndUpdate({username},{
+          events: newEvents,
+          points: user.points - event.points,
+          summerPoints: user.summerPoints - event.points
+        });
+      } else {
+        errors.general = "Invalid event.";
+        throw new UserInputError("Invalid event.", {
+          errors
+        });
+      }
+      
+      newEvent = await Event.findOneAndUpdate({name: eventName},{users: newUsers, attendance: event.attendance - 1},{new: true});
+
+      return newEvent;
+    },
+    async deleteEvent(_,{eventName}) {
+
+      const errors = ""
+      const users = await User.find()
+      const event = await Event.findOne({
+        name: eventName
+      });
+
+      if (!users || !users.length || users.length === 0) {
+        errors.general = "User not found.";
+        throw new UserInputError("User not found.", {
+          errors
+        });
+      }
+      
+      if (!event) {
+        errors.general = "Event not found.";
+        throw new UserInputError("Event not found.", {
+          errors
+        });
+      }
+    
+
+      var pointsDecrease = {};
+
+      if (event.semester === "Fall Semester") {
+        pointsDecrease = {
+          points: -event.points,
+          fallPoints: -event.points
+        };
+      } else if (event.semester === "Spring Semester") {
+        pointsDecrease = {
+          points: -event.points,
+          springPoints: -event.points
+        };
+      } else if (event.semester === "Summer Semester") {
+        pointsDecrease = {
+          points: -event.points,
+          summerPoints: -event.points
+        };
+      } else {
+        errors.general = "Invalid event.";
+        throw new UserInputError("Invalid event.", {
+          errors
+        });
+      }
+
+      await Event.deleteOne({name: eventName})
+
+      await User.updateMany({
+        events: {
+          $elemMatch: {
+            name: eventName
+          }
+        }
+      }, {
+        $pull: {
+          events: {
+            name: eventName
+          }
+        },
+        $inc: pointsDecrease
+      })
+      
+      events = await Event.find();
+
+      return events;
     }
+
   }
 };
