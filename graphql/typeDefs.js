@@ -438,7 +438,7 @@ module.exports = gql`
       email: String!
       currentEmail: String!
       permission: String!
-    ): Boolean!
+    ): User!
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
     reimbursementRequest(reimbursementInput: ReimbursementInput): Reimbursement!
     resolveReimbursement(id: ID!, email: String!): Reimbursement!
