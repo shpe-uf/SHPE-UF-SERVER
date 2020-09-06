@@ -1197,8 +1197,9 @@ module.exports = {
         throw new UserInputError("User not found", {
           errors,
         });
+      } else {
+        return user;
       }
-      return valid;
     }
   }
 };
