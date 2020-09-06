@@ -1194,13 +1194,16 @@ module.exports = {
         });
       }
 
+      const options = {new: true}
+
       const user = await User.findOneAndUpdate(
         {
           email,
         },
         {
           permission,
-        }
+        },
+        options
       );
       if (!user) {
         errors.general = "User not found";
@@ -1208,7 +1211,6 @@ module.exports = {
           errors,
         });
       } else {
-        console.log(user.permission)
         return user;
       }
     }
