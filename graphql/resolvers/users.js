@@ -1150,15 +1150,23 @@ module.exports = {
       }
     },
 
-    async changePermission(_, { email, currentEmail, permission }) {
-      var { errors, valid } = validateEmailInput(email);
+    async changePermission(_, 
+      { 
+        email, 
+        currentEmail, 
+        permission 
+      }
+    ) {
+
+      let { errors, valid } = validateEmailInput(email);
+
       if (!valid) {
         throw new UserInputError("Errors.", {
           errors,
         });
       }
 
-      if(email === currentEmail) {
+      if (email === currentEmail) {
         valid = false;
         errors.general = "Can't change your own permissions";
         throw new UserInputError("Can't change your own permissions", {
@@ -1166,17 +1174,19 @@ module.exports = {
         });
       }
 
-      const adminUser = await User.findOne({
+      //loggedInUser is the current user that's trying to change another user's permissions
+      const loggedInUser = await User.findOne({
         email: currentEmail,
       });
-      if (!adminUser) {
+
+      if (!loggedInUser) {
         errors.general = "User not found";
         throw new UserInputError("User not found", {
           errors,
         });
       }
 
-      if(!adminUser.permission.includes('admin')){
+      if(!loggedInUser.permission.includes('admin')){
         valid = false;
         errors.general = "Must be an admin to change permission";
         throw new UserInputError("Must be an admin to change permission", {
@@ -1184,21 +1194,25 @@ module.exports = {
         });
       }
 
+      const options = {new: true}
+
       const user = await User.findOneAndUpdate(
         {
           email,
         },
         {
           permission,
-        }
+        },
+        options
       );
       if (!user) {
         errors.general = "User not found";
         throw new UserInputError("User not found", {
           errors,
         });
+      } else {
+        return user;
       }
-      return valid;
     }
   }
 };
