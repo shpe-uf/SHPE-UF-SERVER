@@ -569,7 +569,7 @@ module.exports = {
         to: `${user.email}`,
         subject: "Confirm Email",
         text:
-          "Thank you for registering, please click in the link below to complete your registration\n\n" +
+          "Thank you for registering, please click on the link below to complete your registration\n\n" +
           `${process.env.CLIENT_ORIGIN}/confirm/${user._id}\n\n`,
       };
 
