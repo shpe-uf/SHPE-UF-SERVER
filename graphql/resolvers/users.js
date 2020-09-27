@@ -836,11 +836,8 @@ module.exports = {
       const task = await Task.findOne({
         name,
       });
-
-      let expDate = Date.now()
-      expDate.setDate(expDate.getDate() + 1)
       
-      if (Date.parse(task.endDate) < expDate) {
+      if (Date.parse(task.endDate) < Date.now()) {
         errors.general = "Task Expired";
         throw new UserInputError("Task Expired", {
           errors,
