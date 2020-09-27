@@ -569,7 +569,7 @@ module.exports = {
         to: `${user.email}`,
         subject: "Confirm Email",
         text:
-          "Thank you for registering, please click in the link below to complete your registration\n\n" +
+          "Thank you for registering, please click on the link below to complete your registration\n\n" +
           `${process.env.CLIENT_ORIGIN}/confirm/${user._id}\n\n`,
       };
 
@@ -837,7 +837,10 @@ module.exports = {
         name,
       });
 
-      if (Date.parse(task.endDate) < Date.now()) {
+      let expDate = new Date()
+      expDate.setDate(expDate.getDate() + 1)
+      
+      if (Date.parse(task.endDate) < expDate) {
         errors.general = "Task Expired";
         throw new UserInputError("Task Expired", {
           errors,

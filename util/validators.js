@@ -250,6 +250,9 @@ module.exports.validateCreateTaskInput = (
   if(description.trim() === "" && description.length > 280){
     errors.description = "Description must be between 1 and 280 characters."
   }
+  if(typeof(points) !== 'number') {
+    errors.points = "Points must be a whole number greater than 0.";
+  }
 
   if(points < 0 || points > 10) {
     errors.points = "Points must be a whole number greater than 0.";
@@ -400,6 +403,9 @@ module.exports.validateEditUserProfile = (
 
   if(photo) {
     const dataUrlData = parseDataURL(photo);
+
+    console.log("FileSize: ", Buffer.byteLength(dataUrlData.body));
+
     if (dataUrlData.mimeType.toString().slice(0, 6) !== "image/") {
       errors.photo = "Please use a valid image file for photo.";
     } else if (Buffer.byteLength(dataUrlData.body) > 102400) {
