@@ -837,7 +837,10 @@ module.exports = {
         name,
       });
 
-      if (Date.parse(task.endDate) < Date.now()) {
+      let expDate = new Date()
+      expDate.setDate(expDate.getDate() + 1)
+      
+      if (Date.parse(task.endDate) < expDate) {
         errors.general = "Task Expired";
         throw new UserInputError("Task Expired", {
           errors,
