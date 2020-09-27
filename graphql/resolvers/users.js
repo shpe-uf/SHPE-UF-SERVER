@@ -780,10 +780,16 @@ module.exports = {
         name
       });
 
-      if (Date.parse(task.endDate) < Date.now()) {
+      const today = new Date(Date.now());
+      
+      //recalculate dates to set time to default
+      const currentdate = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+      const endDate = new Date(Date.parse(task.endDate))
+
+      if (endDate < currentdate) {
         errors.general = "Task Expired";
         throw new UserInputError("Task Expired", {
-          errors
+          errors,
         });
       }
 
