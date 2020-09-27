@@ -404,8 +404,6 @@ module.exports.validateEditUserProfile = (
   if(photo) {
     const dataUrlData = parseDataURL(photo);
 
-    console.log("FileSize: ", Buffer.byteLength(dataUrlData.body));
-
     if (dataUrlData.mimeType.toString().slice(0, 6) !== "image/") {
       errors.photo = "Please use a valid image file for photo.";
     } else if (Buffer.byteLength(dataUrlData.body) > 102400) {
