@@ -837,7 +837,7 @@ module.exports = {
         name,
       });
 
-      let expDate = new Date()
+      let expDate = Date.now()
       expDate.setDate(expDate.getDate() + 1)
       
       if (Date.parse(task.endDate) < expDate) {
