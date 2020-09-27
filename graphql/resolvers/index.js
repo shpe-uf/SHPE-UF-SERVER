@@ -3,8 +3,9 @@ const eventsResolvers = require("./events.js");
 const requestsResolvers = require("./requests.js");
 const tasksResolvers = require("./tasks.js");
 const corporationResolvers = require("./corporations.js");
-const classResolvers = require("./classes.js");
 const alumnisResolvers = require("./alumnis.js");
+const reimbursementsResolvers = require("./reimbursements.js");
+const shpeRentalsResolvers = require("./rentables.js")
 
 module.exports = {
   Query: {
@@ -14,7 +15,8 @@ module.exports = {
     ...tasksResolvers.Query,
     ...corporationResolvers.Query,
     ...alumnisResolvers.Query,
-    ...classResolvers.Query
+    ...reimbursementsResolvers.Query,
+    ...shpeRentalsResolvers.Query
   },
 
   Mutation: {
@@ -24,6 +26,7 @@ module.exports = {
     ...tasksResolvers.Mutation,
     ...corporationResolvers.Mutation,
     ...alumnisResolvers.Mutation,
-    ...classResolvers.Mutation
+    ...reimbursementsResolvers.Mutation,
+    ...shpeRentalsResolvers.Mutation
   }
 };

@@ -6,7 +6,7 @@ const nodemailer = require("nodemailer");
 const User = require("../../models/User.js");
 const Event = require("../../models/Event.js");
 const Request = require("../../models/Request.js");
-const Task = require("../../models/Task.js")
+const Task = require("../../models/Task.js");
 
 require("dotenv").config();
 
@@ -16,7 +16,7 @@ const {
   validateRedeemPointsInput,
   validateEmailInput,
   validatePasswordInput,
-  validateEditUserProfile
+  validateEditUserProfile,
 } = require("../../util/validators");
 
 function generateToken(user, time) {
@@ -25,11 +25,12 @@ function generateToken(user, time) {
       id: user.id,
       email: user.email,
       username: user.username,
-      permission: user.permission
+      firstName: user.firstName,
+      lastName: user.lastName
     },
     process.env.SECRET,
     {
-      expiresIn: time
+      expiresIn: time,
     }
   );
 }
@@ -40,7 +41,7 @@ module.exports = {
       try {
         const users = await User.find().sort({
           lastName: 1,
-          firstName: 1
+          firstName: 1,
         });
         return users;
       } catch (err) {
@@ -51,9 +52,7 @@ module.exports = {
     async getUser(_, { userId }) {
       try {
         var user = await User.findById(userId);
-
         if (user) {
-
           const users = await User.find();
           const fallBelowUsers = await User.find()
             .where("fallPoints")
@@ -99,8 +98,11 @@ module.exports = {
             listServ: user.listServ,
             events: user.events,
             tasks: user.tasks,
+            bookmarkedTasks: user.bookmarkedTasks,
             bookmarks: user.bookmarks,
-            classes: user.classes
+            classes: user.classes,
+            internships: user.internships,
+            socialMedia: user.socialMedia,
           };
 
           return newUser;
@@ -119,15 +121,15 @@ module.exports = {
             $group: {
               _id: "$major",
               value: {
-                $sum: 1
-              }
-            }
+                $sum: 1,
+              },
+            },
           },
           {
             $sort: {
-              value: -1
-            }
-          }
+              value: -1,
+            },
+          },
         ]);
 
         if (data) {
@@ -147,15 +149,15 @@ module.exports = {
             $group: {
               _id: "$year",
               value: {
-                $sum: 1
-              }
-            }
+                $sum: 1,
+              },
+            },
           },
           {
             $sort: {
-              _id: 1
-            }
-          }
+              _id: 1,
+            },
+          },
         ]);
 
         if (data) {
@@ -175,15 +177,15 @@ module.exports = {
             $group: {
               _id: "$year",
               value: {
-                $sum: 1
-              }
-            }
+                $sum: 1,
+              },
+            },
           },
           {
             $sort: {
-              _id: 1
-            }
-          }
+              _id: 1,
+            },
+          },
         ]);
 
         if (data) {
@@ -198,30 +200,31 @@ module.exports = {
 
     async getYearStat() {
       try {
-        const data = await User.aggregate([{
-          $group: {
-            _id: '$year',
-            value: {
-              $sum: 1
-            }
-          }
-        },
-        {
-          $sort: {
-            _id: 1
-          }
-        }
-      ]);
+        const data = await User.aggregate([
+          {
+            $group: {
+              _id: "$year",
+              value: {
+                $sum: 1,
+              },
+            },
+          },
+          {
+            $sort: {
+              _id: 1,
+            },
+          },
+        ]);
 
-      if (data) {
-        return data;
-      } else {
-        throw new Error("Data not found.");
+        if (data) {
+          return data;
+        } else {
+          throw new Error("Data not found.");
+        }
+      } catch (err) {
+        throw new Error(err);
       }
-    } catch (err) {
-      throw new Error(err);
-    }
-  },
+    },
     async getCountryStat() {
       try {
         const data = await User.aggregate([
@@ -229,15 +232,15 @@ module.exports = {
             $group: {
               _id: "$country",
               value: {
-                $sum: 1
-              }
-            }
+                $sum: 1,
+              },
+            },
           },
           {
             $sort: {
-              value: -1
-            }
-          }
+              value: -1,
+            },
+          },
         ]);
 
         if (data) {
@@ -257,15 +260,15 @@ module.exports = {
             $group: {
               _id: "$sex",
               value: {
-                $sum: 1
-              }
-            }
+                $sum: 1,
+              },
+            },
           },
           {
             $sort: {
-              value: -1
-            }
-          }
+              value: -1,
+            },
+          },
         ]);
 
         if (data) {
@@ -280,19 +283,20 @@ module.exports = {
 
     async getCountryStat() {
       try {
-        const data = await User.aggregate([{
-          $group: {
-            _id: '$country',
-            value: {
-              $sum: 1
-            }
-          }
-        },
-        {
-          $sort: {
-            value: -1
-          }
-        }
+        const data = await User.aggregate([
+          {
+            $group: {
+              _id: "$country",
+              value: {
+                $sum: 1,
+              },
+            },
+          },
+          {
+            $sort: {
+              value: -1,
+            },
+          },
         ]);
 
         if (data) {
@@ -307,19 +311,20 @@ module.exports = {
 
     async getSexStat() {
       try {
-        const data = await User.aggregate([{
-          $group: {
-            _id: '$sex',
-            value: {
-              $sum: 1
-            }
-          }
-        },
-        {
-          $sort: {
-            value: -1
-          }
-        }
+        const data = await User.aggregate([
+          {
+            $group: {
+              _id: "$sex",
+              value: {
+                $sum: 1,
+              },
+            },
+          },
+          {
+            $sort: {
+              value: -1,
+            },
+          },
         ]);
 
         if (data) {
@@ -338,15 +343,15 @@ module.exports = {
             $group: {
               _id: "$ethnicity",
               value: {
-                $sum: 1
-              }
-            }
+                $sum: 1,
+              },
+            },
           },
           {
             $sort: {
-              value: -1
-            }
-          }
+              value: -1,
+            },
+          },
         ]);
 
         if (data) {
@@ -360,19 +365,20 @@ module.exports = {
     },
     async getEthnicityStat() {
       try {
-        const data = await User.aggregate([{
-          $group: {
-            _id: '$ethnicity',
-            value: {
-              $sum: 1
-            }
-          }
-        },
-        {
-          $sort: {
-            value: -1
-          }
-        }
+        const data = await User.aggregate([
+          {
+            $group: {
+              _id: "$ethnicity",
+              value: {
+                $sum: 1,
+              },
+            },
+          },
+          {
+            $sort: {
+              value: -1,
+            },
+          },
         ]);
 
         if (data) {
@@ -383,7 +389,7 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
-    }
+    },
   },
 
   Mutation: {
@@ -394,18 +400,18 @@ module.exports = {
 
       if (!valid) {
         throw new UserInputError("Errors", {
-          errors
+          errors,
         });
       }
 
       const user = await User.findOne({
-        username
+        username,
       });
 
       if (!user) {
         errors.general = "User not found.";
         throw new UserInputError("User not found.", {
-          errors
+          errors,
         });
       }
 
@@ -414,7 +420,7 @@ module.exports = {
       if (!match) {
         errors.general = "Wrong credentials.";
         throw new UserInputError("Wrong credentials.", {
-          errors
+          errors,
         });
       }
 
@@ -423,7 +429,7 @@ module.exports = {
       if (!isConfirmed) {
         errors.general = "User not confirmed.";
         throw new UserInputError("User not confirmed.", {
-          errors
+          errors,
         });
       }
 
@@ -433,7 +439,7 @@ module.exports = {
       return {
         ...user._doc,
         id: user._id,
-        token
+        token,
       };
     },
 
@@ -453,8 +459,8 @@ module.exports = {
           email,
           password,
           confirmPassword,
-          listServ
-        }
+          listServ,
+        },
       }
     ) {
       firstName = firstName.trim();
@@ -479,12 +485,12 @@ module.exports = {
 
       if (!valid) {
         throw new UserInputError("Errors", {
-          errors
+          errors,
         });
       }
 
       const isUsernameDuplicate = await User.findOne({
-        username
+        username,
       });
 
       if (isUsernameDuplicate) {
@@ -492,14 +498,14 @@ module.exports = {
           "An account with that username already exists.",
           {
             errors: {
-              username: "An account with that username already exists."
-            }
+              username: "An account with that username already exists.",
+            },
           }
         );
       }
 
       const isEmailDuplicate = await User.findOne({
-        email
+        email,
       });
 
       if (isEmailDuplicate) {
@@ -507,8 +513,8 @@ module.exports = {
           "An account with that e-mail already exists.",
           {
             errors: {
-              email: "An account with that email already exists."
-            }
+              email: "An account with that email already exists.",
+            },
           }
         );
       }
@@ -537,21 +543,25 @@ module.exports = {
         listServ,
         events: [],
         tasks: [],
-        bookmarks: []
+        bookmarkedTasks: [],
+        bookmarks: [],
+        classes: [],
+        internships: [],
+        socialMedia: [],
       });
 
       const res = await newUser.save();
 
       const user = await User.findOne({
-        email
+        email,
       });
 
       const transporter = nodemailer.createTransport({
         service: process.env.EMAIL_SERVICE,
         auth: {
           user: process.env.EMAIL,
-          pass: process.env.EMAIL_PASSWORD
-        }
+          pass: process.env.EMAIL_PASSWORD,
+        },
       });
 
       const mailOptions = {
@@ -559,78 +569,68 @@ module.exports = {
         to: `${user.email}`,
         subject: "Confirm Email",
         text:
-          "Thank you for registering, please click in the link below to complete your registration\n\n" +
-          `${process.env.CLIENT_ORIGIN}/confirm/${user._id}\n\n`
+          "Thank you for registering, please click on the link below to complete your registration\n\n" +
+          `${process.env.CLIENT_ORIGIN}/confirm/${user._id}\n\n`,
       };
 
       transporter.sendMail(mailOptions, (err, response) => {
         if (err) {
           console.error("there was an error: ", err);
         } else {
-          res.status(200).json('recovery email sent');
+          res.status(200).json("recovery email sent");
         }
       });
       return {
         ...res._doc,
-        id: res._id
+        id: res._id,
       };
     },
 
-    async redeemPoints(
-      _,
-      {
-        redeemPointsInput: { code, username }
-      }
-    ) {
-      code = code
-        .toLowerCase()
-        .trim()
-        .replace(/ /g, "");
+    async redeemPoints(_, { redeemPointsInput: { code, username } }) {
+      code = code.toLowerCase().trim().replace(/ /g, "");
 
       const { valid, errors } = validateRedeemPointsInput(code);
 
-      console.log(errors);
-
       if (!valid) {
         throw new UserInputError("Errors", {
-          errors
+          errors,
         });
       }
 
       const event = await Event.findOne({
-        code
+        code,
       });
 
       const user = await User.findOne({
-        username
+        username,
       });
 
       if (!event) {
         errors.general = "Event not found.";
         throw new UserInputError("Event not found.", {
-          errors
+          errors,
         });
       }
 
       if (!user) {
         errors.general = "User not found.";
         throw new UserInputError("User not found.", {
-          errors
+          errors,
         });
       }
 
       if (Date.parse(event.expiration) < Date.now()) {
         errors.general = "Event code expired";
         throw new UserInputError("Event code expired", {
-          errors
+          errors,
         });
       }
 
-      user.events.map(userEvent => {
+      user.events.map((userEvent) => {
         if (String(userEvent.name) == String(event.name)) {
           errors.general = "Event code already redeemed.";
           throw new UserInputError("Event code already redeemed.", {
-            errors
+            errors,
           });
         }
       });
@@ -638,13 +638,13 @@ module.exports = {
       if (event.request) {
         const request = await Request.findOne({
           name: event.name,
-          username: user.username
+          username: user.username,
         });
 
         if (request) {
           errors.general = "Event code already sent for approval.";
           throw new UserInputError("Event code already sent for approval.", {
-            errors
+            errors,
           });
         }
 
@@ -655,7 +655,7 @@ module.exports = {
           firstName: user.firstName,
           lastName: user.lastName,
           username: user.username,
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
         });
 
         const res = await newRequest.save();
@@ -679,10 +679,14 @@ module.exports = {
           createdAt: user.createdAt,
           permission: user.permission,
           listServ: user.listServ,
+          classes: user.classes,
+          internships: user.internships,
+          socialMedia: user.socialMedia,
           events: user.events,
           tasks: user.tasks,
+          bookmarkedTasks: user.bookmarkedTasks,
           bookmarks: user.bookmarks,
-          message: "Event code has been sent for approval."
+          message: "Event code has been sent for approval.",
         };
 
         return newUser;
@@ -692,92 +696,145 @@ module.exports = {
         if (event.semester === "Fall Semester") {
           pointsIncrease = {
             points: event.points,
-            fallPoints: event.points
+            fallPoints: event.points,
           };
         } else if (event.semester === "Spring Semester") {
           pointsIncrease = {
             points: event.points,
-            springPoints: event.points
+            springPoints: event.points,
           };
         } else if (event.semester === "Summer Semester") {
           pointsIncrease = {
             points: event.points,
-            summerPoints: event.points
+            summerPoints: event.points,
           };
         } else {
           errors.general = "Invalid event.";
           throw new UserInputError("Invalid event.", {
-            errors
+            errors,
           });
         }
 
-        var updatedUser = await User.findOneAndUpdate({
-          username
-        }, {
+        var updatedUser = await User.findOneAndUpdate(
+          {
+            username,
+          },
+          {
             $push: {
               events: {
-                $each: [{
-                  name: event.name,
-                  category: event.category,
-                  createdAt: event.createdAt,
-                  points: event.points
-                }],
+                $each: [
+                  {
+                    name: event.name,
+                    category: event.category,
+                    createdAt: event.createdAt,
+                    points: event.points,
+                  },
+                ],
                 $sort: {
-                  createdAt: 1
-                }
-              }
+                  createdAt: 1,
+                },
+              },
             },
-            $inc: pointsIncrease
-          }, {
-            new: true
-          });
+            $inc: pointsIncrease,
+          },
+          {
+            new: true,
+          }
+        );
 
         updatedUser.message = "";
 
-        await Event.findOneAndUpdate({
-          code
-        }, {
+        await Event.findOneAndUpdate(
+          {
+            code,
+          },
+          {
             $push: {
               users: {
-                $each: [{
-                  firstName: user.firstName,
-                  lastName: user.lastName,
-                  username: user.username,
-                  email: user.email
-                }],
+                $each: [
+                  {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    username: user.username,
+                    email: user.email,
+                  },
+                ],
                 $sort: {
                   lastName: 1,
-                  firstName: 1
-                }
-              }
+                  firstName: 1,
+                },
+              },
             },
             $inc: {
-              attendance: 1
-            }
-          }, {
-            new: true
-          });
+              attendance: 1,
+            },
+          },
+          {
+            new: true,
+          }
+        );
 
         return updatedUser;
       }
     },
 
-    async redeemTasksPoints(
-      _, {
-        redeemTasksPointsInput: {
-          name,
-          username
+    async bookmarkTask(_, { bookmarkTaskInput: { name, username } }) {
+      var errors = {};
+
+      const task = await Task.findOne({
+        name,
+      });
+
+      var updatedUser = await User.findOneAndUpdate(
+        {
+          username,
+        },
+        {
+          $push: {
+            bookmarkedTasks: task.name,
+          },
+        },
+        {
+          new: true,
         }
-      }
-    ) {
+      );
+
+      return updatedUser;
+    },
+
+    async unBookmarkTask(_, { unBookmarkTaskInput: { name, username } }) {
+      var errors = {};
+
+      const task = await Task.findOne({
+        name,
+      });
+
+      var updatedUser = await User.findOneAndUpdate(
+        {
+          username,
+        },
+        {
+          $pull: {
+            bookmarkedTasks: task.name,
+          },
+        },
+        {
+          new: true,
+        }
+      );
+
+      return updatedUser;
+    },
+
+    async redeemTasksPoints(_, { redeemTasksPointsInput: { name, username } }) {
       var errors = {};
 
       const user = await User.findOne({
-        username
+        username,
       });
 
       const task = await Task.findOne({
-        name
+        name,
       });
 
       const today = new Date(Date.now());
@@ -793,26 +850,24 @@ module.exports = {
         });
       }
 
-      user.tasks.map(userTask => {
+      user.tasks.map((userTask) => {
         if (String(userTask.name) == String(task.name)) {
-          errors.general = "Task already redeeemed by the user."
+          errors.general = "Task already redeeemed by the user.";
           throw new UserInputError("Task already redeemed by the user.", {
-            errors
+            errors,
           });
         }
       });
 
-      console.log(task);
-
       const request = await Request.findOne({
         name: task.name,
-        username: user.username
+        username: user.username,
       });
 
       if (request) {
         errors.general = "Task already sent for approval.";
         throw new UserInputError("Task already sent for approval.", {
-          errors
+          errors,
         });
       }
 
@@ -823,13 +878,10 @@ module.exports = {
         firstName: user.firstName,
         lastName: user.lastName,
         username: user.username,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       });
 
-      console.log(newTaskRequest);
-
-
-      const res = await newTaskRequest.save();
+      await newTaskRequest.save();
 
       var newUser = {
         firstName: user.firstName,
@@ -850,30 +902,31 @@ module.exports = {
         createdAt: user.createdAt,
         permission: user.permission,
         listServ: user.listServ,
+        classes: user.classes,
+        internships: user.internships,
+        socialMedia: user.socialMedia,
         events: user.events,
         tasks: user.tasks,
-        message: "Task has been sent for approval."
-
+        bookmarkedtasks: user.bookmarkedTasks,
+        message: "Task has been sent for approval.",
       };
       return newUser;
-
     },
 
-    async confirmUser(
-      _, {
-        id
-      }
-    ) {
-      const user = await User.findOneAndUpdate({
-        _id: id
-      }, {
-          confirmed: true
-        });
+    async confirmUser(_, { id }) {
+      const user = await User.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        {
+          confirmed: true,
+        }
+      );
 
       if (!user) {
         errors.general = "User not found.";
         throw new UserInputError("User not found.", {
-          errors
+          errors,
         });
       }
 
@@ -884,17 +937,17 @@ module.exports = {
       const { errors, valid } = validateEmailInput(email);
       if (!valid) {
         throw new UserInputError("Errors", {
-          errors
+          errors,
         });
       }
 
       const user = await User.findOne({
-        email
+        email,
       });
       if (!user) {
         errors.general = "User not found.";
         throw new UserInputError("User not found.", {
-          errors
+          errors,
         });
       }
 
@@ -904,7 +957,7 @@ module.exports = {
 
       while (!uniqueToken) {
         const user = await User.findOne({
-          token
+          token,
         });
         if (user) {
           token = generateToken(user, time);
@@ -913,18 +966,21 @@ module.exports = {
         }
       }
 
-      const newUser = await User.findOneAndUpdate({
-        email
-      }, {
-          token
-        });
+      const newUser = await User.findOneAndUpdate(
+        {
+          email,
+        },
+        {
+          token,
+        }
+      );
 
       const transporter = nodemailer.createTransport({
         service: process.env.EMAIL_SERVICE,
         auth: {
           user: process.env.EMAIL,
-          pass: process.env.EMAIL_PASSWORD
-        }
+          pass: process.env.EMAIL_PASSWORD,
+        },
       });
 
       const mailOptions = {
@@ -935,21 +991,21 @@ module.exports = {
           "You have requested the reset of the password for your account for shpe.com\n\n" +
           "Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n" +
           `${process.env.CLIENT_ORIGIN}/reset/${token}\n\n` +
-          "If you did not request this, please ignore this email and your password will remain unchanged.\n"
+          "If you did not request this, please ignore this email and your password will remain unchanged.\n",
       };
 
       transporter.sendMail(mailOptions, (err, response) => {
         if (err) {
           console.error("there was an error: ", err);
         } else {
-          res.status(200).json('recovery email sent');
+          res.status(200).json("recovery email sent");
         }
       });
 
       return {
         ...newUser._doc,
         id: newUser._id,
-        token
+        token,
       };
     },
 
@@ -961,75 +1017,74 @@ module.exports = {
 
       if (!valid) {
         throw new UserInputError("Errors", {
-          errors
+          errors,
         });
       }
 
       const user = await User.findOne({
-        token
+        token,
       });
       if (!user) {
         errors.general = "Invalid Token";
         throw new UserInputError("Invalid Token", {
-          errors
+          errors,
         });
       }
 
       password = await bcrypt.hash(password, 12);
 
-      const newUser = await User.findOneAndUpdate({
-        email: user.email
-      }, {
+      const newUser = await User.findOneAndUpdate(
+        {
+          email: user.email,
+        },
+        {
           password,
-          token: ""
-        });
+          token: "",
+        }
+      );
 
       var Token = {
-        token: token
+        token: token,
       };
       return Token;
     },
 
-    async bookmark(
-      _, {
-        company,
-        username
-      }
-    ) {
-
-      var updatedUser = await User.findOneAndUpdate({
-        username
-      }, {
-        $push: {
-          bookmarks: company
+    async bookmark(_, { company, username }) {
+      var updatedUser = await User.findOneAndUpdate(
+        {
+          username,
+        },
+        {
+          $push: {
+            bookmarks: company,
+          },
+        },
+        {
+          new: true,
         }
-      }, {
-        new: true
-      });
+      );
 
       return updatedUser;
     },
 
-    async deleteBookmark(
-      _, {
-        company,
-        username
-      }
-    ) {
-
-      var updatedUser = await User.findOneAndUpdate({
-        username
-      }, {
-        $pull: {
-          bookmarks: company
+    async deleteBookmark(_, { company, username }) {
+      var updatedUser = await User.findOneAndUpdate(
+        {
+          username,
+        },
+        {
+          $pull: {
+            bookmarks: company,
+          },
+        },
+        {
+          new: true,
         }
-      }, {
-        new: true
-      });
+      );
 
       return updatedUser;
     },
-    
+
     async editUserProfile(
       _,
       {
@@ -1043,8 +1098,11 @@ module.exports = {
           graduating,
           country,
           ethnicity,
-          sex
-        }
+          sex,
+          classes,
+          internships,
+          socialMedia,
+        },
       }
     ) {
       const { errors, valid } = validateEditUserProfile(
@@ -1056,12 +1114,15 @@ module.exports = {
         graduating,
         country,
         ethnicity,
-        sex
+        sex,
+        classes,
+        internships,
+        socialMedia
       );
 
       if (!valid) {
         throw new UserInputError("Errors", {
-          errors
+          errors,
         });
       }
 
@@ -1079,10 +1140,13 @@ module.exports = {
             graduating,
             country,
             ethnicity,
-            sex
+            sex,
+            classes,
+            internships,
+            socialMedia,
           },
           {
-            new: true
+            new: true,
           }
         );
 
@@ -1092,64 +1156,69 @@ module.exports = {
       }
     },
 
-    async changePermission(
-      _,
-      {
-        email,
-        currentEmail,
-        permission
+    async changePermission(_, 
+      { 
+        email, 
+        currentEmail, 
+        permission 
       }
     ) {
 
-      var {
-        errors,
-        valid
-      } = validateEmailInput(email);
+      let { errors, valid } = validateEmailInput(email);
+
       if (!valid) {
         throw new UserInputError("Errors.", {
-          errors
+          errors,
         });
       }
 
-      if(email === currentEmail){
+      if (email === currentEmail) {
         valid = false;
         errors.general = "Can't change your own permissions";
         throw new UserInputError("Can't change your own permissions", {
-          errors
+          errors,
         });
       }
 
-      const adminUser = await User.findOne({
-        email: currentEmail
+      //loggedInUser is the current user that's trying to change another user's permissions
+      const loggedInUser = await User.findOne({
+        email: currentEmail,
       });
-      if (!adminUser) {
+
+      if (!loggedInUser) {
         errors.general = "User not found";
         throw new UserInputError("User not found", {
-          errors
+          errors,
         });
       }
-      if(adminUser.permission != 'admin'){
+
+      if(!loggedInUser.permission.includes('admin')){
         valid = false;
         errors.general = "Must be an admin to change permission";
         throw new UserInputError("Must be an admin to change permission", {
-          errors
+          errors,
         });
       }
 
-      const user = await User.findOneAndUpdate({
-        email
-      }, {
-        permission
-      });
+      const options = {new: true}
+
+      const user = await User.findOneAndUpdate(
+        {
+          email,
+        },
+        {
+          permission,
+        },
+        options
+      );
       if (!user) {
         errors.general = "User not found";
         throw new UserInputError("User not found", {
-          errors
+          errors,
         });
+      } else {
+        return user;
       }
-
-      return valid;
-
     }
   }
 };
