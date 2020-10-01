@@ -175,7 +175,7 @@ module.exports = {
               $each: [
                 {
                   name: task.name,
-                  createdAt: task.startDate,
+                  startDate: task.startDate,
                   points: task.points
                 }
               ],
