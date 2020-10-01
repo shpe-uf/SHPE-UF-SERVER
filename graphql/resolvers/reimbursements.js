@@ -107,7 +107,7 @@ module.exports = {
 
                 const treasuryMail = {
                     from: process.env.EMAIL,
-                    to: `covielladiego@gmail.com`,
+                    to: process.env.TREASURY_EMAIL,
                     subject: "Reimbursement Request - " + `${firstName} ${lastName}`,
                     text:
                       "There is a new request for a reimbursement.\n\n" +

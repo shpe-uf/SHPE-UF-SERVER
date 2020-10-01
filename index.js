@@ -23,4 +23,7 @@ mongoose
   })
   .then(res => {
     console.log(`SERVER RUNNING AT ${res.url}\n`);
+  })
+  .catch(err => {
+    console.error(err);
   });
