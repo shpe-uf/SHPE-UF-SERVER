@@ -838,11 +838,14 @@ module.exports = {
       });
 
 
-      const today = new Date(Date.now());
-      
-      //recalculate dates to set time to default
-      const currentdate = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-      const endDate = new Date(Date.parse(task.endDate))
+      const currentdate = new Date(); //gets ouput in UTC timezone
+      //convert the end date string to a proper date object
+      const temp = new Date(Date.parse(task.endDate))
+      /*
+      Set the end date until this end of this day. Because UTC is 4 hours ahead, that means that the end date
+      will be 4hrs after midnight of the day specified by the deadline
+      */
+      const endDate = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate(), 23, 59,59,999)
 
       if (endDate < currentdate) {
         errors.general = "Task Expired";
