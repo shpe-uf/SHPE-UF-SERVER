@@ -153,6 +153,10 @@ module.exports = gql`
     deleted: Boolean
   }
 
+  type BugReport {
+    report: String!
+  }
+
   ### AUXILIARY TYPES ###
   type StatData {
     _id: String!
@@ -449,5 +453,6 @@ module.exports = gql`
     unPickUpItem(receiptID: ID!): Receipt
     unReturnItem(receiptID: ID!): Receipt
     deleteReceipt(receiptID: ID!): Receipt
+    reportBug(report: String!): BugReport!
   }
 `;
