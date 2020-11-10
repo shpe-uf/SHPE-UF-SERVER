@@ -1,80 +1,80 @@
-const { UserInputError } = require("apollo-server");
-const Event = require("../../models/Event.js");
-const User = require("../../models/User.js");
-const Request = require("../../models/Request.js");
+const {UserInputError} = require('apollo-server');
+const Event = require('../../models/Event.js');
+const User = require('../../models/User.js');
+const Request = require('../../models/Request.js');
 
 const {
   validateCreateEventInput,
-  validateManualInputInput
-} = require("../../util/validators");
+  validateManualInputInput,
+} = require('../../util/validators');
 
 const categoryOptions = require('../../json/category.json');
-const monthOptions = require("../../json/month.json");
-var { events } = require("react-mapbox-gl/lib/map-events");
+const monthOptions = require('../../json/month.json');
+let {events} = require('react-mapbox-gl/lib/map-events');
 
 module.exports = {
   Query: {
     async getEvents() {
       try {
-        const events = await Event.find().sort({ createdAt: 1 });
+        const events = await Event.find().sort({createdAt: 1});
         return events;
       } catch (err) {
         throw new Error(err);
       }
-    }
+    },
   },
 
   Mutation: {
     async createEvent(
-      _,
-      {
-        createEventInput: { name, code, category, expiration, request, points }
-      }
+        _,
+        {
+          createEventInput: {name, code, category, expiration, request, points},
+        },
     ) {
-      const { valid, errors } = validateCreateEventInput(
-        name,
-        code,
-        category,
-        points,
-        expiration
+      const {valid, errors} = validateCreateEventInput(
+          name,
+          code,
+          category,
+          points,
+          expiration,
       );
 
       if (!valid) {
-        throw new UserInputError("Errors", { errors });
+        throw new UserInputError('Errors', {errors});
       }
 
-      const findPoints = categoryOptions.find(({ key }) => key === category);
+      const findPoints = categoryOptions.find(({key}) => key === category);
       const month = new Date().getMonth();
 
       code = code
-        .toLowerCase()
-        .trim()
-        .replace(/ /g, "");
-      points = category === "Miscellaneous" ? points : findPoints.points;
+          .toLowerCase()
+          .trim()
+          .replace(/ /g, '');
+      points = category === 'Miscellaneous' ? points : findPoints.points;
 
       semester = monthOptions[month].value;
       expiration = new Date(
-        new Date().getTime() + parseInt(expiration, 10) * 60 * 60 * 1000
+          new Date().getTime() + parseInt(expiration, 10) * 60 * 60 * 1000,
       );
-      request = request === "true" || request === true ? true : false;
+      request = request === 'true' || request === true ? true : false;
 
-      isEventNameDuplicate = await Event.findOne({ name });
+      isEventNameDuplicate = await Event.findOne({name});
 
       if (isEventNameDuplicate) {
-        throw new UserInputError("An event with that name already exists.", {
+        throw new UserInputError('An event with that name already exists.', {
           errors: {
-            name: "An event with that name already exists."
-          }
+            name: 'An event with that name already exists.',
+          },
         });
       }
 
-      isEventCodeDuplicate = await Event.findOne({ code });
+      isEventCodeDuplicate = await Event.findOne({code});
 
       if (isEventCodeDuplicate) {
-        throw new UserInputError("An event with that code already exists.", {
+        throw new UserInputError('An event with that code already exists.', {
           errors: {
-            code: "An event with that code already exists."
-          }
+            code: 'An event with that code already exists.',
+          },
         });
       }
 
@@ -88,7 +88,7 @@ module.exports = {
         semester,
         request,
         users: [],
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       });
 
       await newEvent.save();
@@ -99,142 +99,142 @@ module.exports = {
     },
 
     async manualInput(
-      _,
-      {
-        manualInputInput: { username, eventName }
-      }
+        _,
+        {
+          manualInputInput: {username, eventName},
+        },
     ) {
-      const { valid, errors } = validateManualInputInput(username);
+      const {valid, errors} = validateManualInputInput(username);
 
       if (!valid) {
-        throw new UserInputError("Errors", {
-          errors
+        throw new UserInputError('Errors', {
+          errors,
         });
       }
 
       const user = await User.findOne({
-        username
+        username,
       });
 
       const event = await Event.findOne({
-        name: eventName
+        name: eventName,
       });
 
       const request = await Request.findOne({
         username: username,
-        eventName: eventName
+        eventName: eventName,
       });
 
       if (!user) {
-        errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors
+        errors.general = 'User not found.';
+        throw new UserInputError('User not found.', {
+          errors,
         });
       }
 
       if (!event) {
-        errors.general = "Event not found.";
-        throw new UserInputError("Event not found.", {
-          errors
+        errors.general = 'Event not found.';
+        throw new UserInputError('Event not found.', {
+          errors,
         });
       }
 
       if (request) {
         errors.general =
-          "This member has sent a request for this event code. Check the Requests tab.";
+          'This member has sent a request for this event code. Check the Requests tab.';
         throw new UserInputError(
-          "This member has sent a request for this event code. Check the Requests tab.",
-          {
-            errors
-          }
+            'This member has sent a request for this event code. Check the Requests tab.',
+            {
+              errors,
+            },
         );
       }
 
-      user.events.map(userEvent => {
+      user.events.map((userEvent) => {
         if (String(userEvent.name) == String(event.name)) {
-          errors.general = "Event code already redeemed by the user.";
-          throw new UserInputError("Event code already redeemed by the user.", {
-            errors
+          errors.general = 'Event code already redeemed by the user.';
+          throw new UserInputError('Event code already redeemed by the user.', {
+            errors,
           });
         }
       });
 
-      var pointsIncrease = {};
+      let pointsIncrease = {};
 
-      if (event.semester === "Fall Semester") {
+      if (event.semester === 'Fall Semester') {
         pointsIncrease = {
           points: event.points,
-          fallPoints: event.points
+          fallPoints: event.points,
         };
-      } else if (event.semester === "Spring Semester") {
+      } else if (event.semester === 'Spring Semester') {
         pointsIncrease = {
           points: event.points,
-          springPoints: event.points
+          springPoints: event.points,
         };
-      } else if (event.semester === "Summer Semester") {
+      } else if (event.semester === 'Summer Semester') {
         pointsIncrease = {
           points: event.points,
-          summerPoints: event.points
+          summerPoints: event.points,
         };
       } else {
-        errors.general = "Invalid event.";
-        throw new UserInputError("Invalid event.", {
-          errors
+        errors.general = 'Invalid event.';
+        throw new UserInputError('Invalid event.', {
+          errors,
         });
       }
 
-      var updatedUser = await User.findOneAndUpdate(
-        {
-          username
-        },
-        {
-          $push: {
-            events: {
-              $each: [
-                {
-                  name: event.name,
-                  category: event.category,
-                  createdAt: event.createdAt,
-                  points: event.points
-                }
-              ],
-              $sort: { createdAt: 1 }
-            }
+      const updatedUser = await User.findOneAndUpdate(
+          {
+            username,
           },
-          $inc: pointsIncrease
-        },
-        {
-          new: true
-        }
+          {
+            $push: {
+              events: {
+                $each: [
+                  {
+                    name: event.name,
+                    category: event.category,
+                    createdAt: event.createdAt,
+                    points: event.points,
+                  },
+                ],
+                $sort: {createdAt: 1},
+              },
+            },
+            $inc: pointsIncrease,
+          },
+          {
+            new: true,
+          },
       );
 
-      updatedUser.message = "";
+      updatedUser.message = '';
 
       await Event.findOneAndUpdate(
-        {
-          name: eventName
-        },
-        {
-          $push: {
-            users: {
-              $each: [
-                {
-                  firstName: user.firstName,
-                  lastName: user.lastName,
-                  username: user.username,
-                  email: user.email
-                }
-              ],
-              $sort: { lastName: 1, firstName: 1 }
-            }
+          {
+            name: eventName,
           },
-          $inc: {
-            attendance: 1
-          }
-        },
-        {
-          new: true
-        }
+          {
+            $push: {
+              users: {
+                $each: [
+                  {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    username: user.username,
+                    email: user.email,
+                  },
+                ],
+                $sort: {lastName: 1, firstName: 1},
+              },
+            },
+            $inc: {
+              attendance: 1,
+            },
+          },
+          {
+            new: true,
+          },
       );
 
       const updatedEvents = await Event.find();
@@ -242,149 +242,147 @@ module.exports = {
       return updatedEvents;
     },
     async removeUserFromEvent(
-      _,
-      {
-        manualInputInput: { username, eventName }
-      }
+        _,
+        {
+          manualInputInput: {username, eventName},
+        },
     ) {
-
-      const { valid, errors } = validateManualInputInput(username);
+      const {valid, errors} = validateManualInputInput(username);
 
       if (!valid) {
-        throw new UserInputError("User input errors.", {
-          errors
+        throw new UserInputError('User input errors.', {
+          errors,
         });
       }
 
       const user = await User.findOne({
-        username
+        username,
       });
 
       const event = await Event.findOne({
-        name: eventName
+        name: eventName,
       });
 
       if (!user) {
-        errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors
+        errors.general = 'User not found.';
+        throw new UserInputError('User not found.', {
+          errors,
         });
       }
 
       if (!event) {
-        errors.general = "Event not found.";
-        throw new UserInputError("Event not found.", {
-          errors
+        errors.general = 'Event not found.';
+        throw new UserInputError('Event not found.', {
+          errors,
         });
       }
 
-      if(!user.events.map(e => e.name).includes(event.name)) {
-        errors.general = "User is not member of event.";
-        throw new UserInputError("User is not member of Event.", {
-          errors
+      if (!user.events.map((e) => e.name).includes(event.name)) {
+        errors.general = 'User is not member of event.';
+        throw new UserInputError('User is not member of Event.', {
+          errors,
         });
       }
 
-      newEvents = user.events.filter(e => e.name !== event.name)
-      newUsers = event.users.filter(e => e.username !== user.username)
+      newEvents = user.events.filter((e) => e.name !== event.name);
+      newUsers = event.users.filter((e) => e.username !== user.username);
 
-      if (event.semester === "Fall Semester") {
-        await User.findOneAndUpdate({username},{
+      if (event.semester === 'Fall Semester') {
+        await User.findOneAndUpdate({username}, {
           events: newEvents,
           points: user.points - event.points,
-          fallPoints: user.fallPoints - event.points
+          fallPoints: user.fallPoints - event.points,
         });
-      } else if (event.semester === "Spring Semester") {
-        await User.findOneAndUpdate({username},{
+      } else if (event.semester === 'Spring Semester') {
+        await User.findOneAndUpdate({username}, {
           events: newEvents,
           points: user.points - event.points,
-          springPoints: user.springPoints - event.points
+          springPoints: user.springPoints - event.points,
         });
-      } else if (event.semester === "Summer Semester") {
-        await User.findOneAndUpdate({username},{
+      } else if (event.semester === 'Summer Semester') {
+        await User.findOneAndUpdate({username}, {
           events: newEvents,
           points: user.points - event.points,
-          summerPoints: user.summerPoints - event.points
+          summerPoints: user.summerPoints - event.points,
         });
       } else {
-        errors.general = "Invalid event.";
-        throw new UserInputError("Invalid event.", {
-          errors
+        errors.general = 'Invalid event.';
+        throw new UserInputError('Invalid event.', {
+          errors,
         });
       }
-      
-      newEvent = await Event.findOneAndUpdate({name: eventName},{users: newUsers, attendance: event.attendance - 1},{new: true});
+
+      newEvent = await Event.findOneAndUpdate({name: eventName}, {users: newUsers, attendance: event.attendance - 1}, {new: true});
 
       return newEvent;
     },
-    async deleteEvent(_,{eventName}) {
-
-      const errors = ""
-      const users = await User.find()
+    async deleteEvent(_, {eventName}) {
+      const errors = '';
+      const users = await User.find();
       const event = await Event.findOne({
-        name: eventName
+        name: eventName,
       });
 
       if (!users || !users.length || users.length === 0) {
-        errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors
+        errors.general = 'User not found.';
+        throw new UserInputError('User not found.', {
+          errors,
         });
       }
-      
+
       if (!event) {
-        errors.general = "Event not found.";
-        throw new UserInputError("Event not found.", {
-          errors
+        errors.general = 'Event not found.';
+        throw new UserInputError('Event not found.', {
+          errors,
         });
       }
-    
 
-      var pointsDecrease = {};
 
-      if (event.semester === "Fall Semester") {
+      let pointsDecrease = {};
+
+      if (event.semester === 'Fall Semester') {
         pointsDecrease = {
           points: -event.points,
-          fallPoints: -event.points
+          fallPoints: -event.points,
         };
-      } else if (event.semester === "Spring Semester") {
+      } else if (event.semester === 'Spring Semester') {
         pointsDecrease = {
           points: -event.points,
-          springPoints: -event.points
+          springPoints: -event.points,
         };
-      } else if (event.semester === "Summer Semester") {
+      } else if (event.semester === 'Summer Semester') {
         pointsDecrease = {
           points: -event.points,
-          summerPoints: -event.points
+          summerPoints: -event.points,
         };
       } else {
-        errors.general = "Invalid event.";
-        throw new UserInputError("Invalid event.", {
-          errors
+        errors.general = 'Invalid event.';
+        throw new UserInputError('Invalid event.', {
+          errors,
         });
       }
 
-      await Event.deleteOne({name: eventName})
+      await Event.deleteOne({name: eventName});
 
       await User.updateMany({
         events: {
           $elemMatch: {
-            name: eventName
-          }
-        }
+            name: eventName,
+          },
+        },
       }, {
         $pull: {
           events: {
-            name: eventName
-          }
+            name: eventName,
+          },
         },
-        $inc: pointsDecrease
-      })
-      
+        $inc: pointsDecrease,
+      });
+
       events = await Event.find();
 
       return events;
-    }
+    },
 
-  }
+  },
 };

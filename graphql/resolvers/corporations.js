@@ -1,89 +1,88 @@
-const { UserInputError } = require("apollo-server");
-const Corporation = require("../../models/Corporation.js");
+const {UserInputError} = require('apollo-server');
+const Corporation = require('../../models/Corporation.js');
 
-require("dotenv").config();
+require('dotenv').config();
 
 const {
-  validateCreateEditCorporationInput: validateCreateEditCorporationInput
-} = require("../../util/validators");
+  validateCreateEditCorporationInput: validateCreateEditCorporationInput,
+} = require('../../util/validators');
 
 module.exports = {
   Query: {
     async getCorporations() {
       try {
-        const corporations = await Corporation.find().sort({ createdAt: 1 });
+        const corporations = await Corporation.find().sort({createdAt: 1});
         return corporations;
       } catch (err) {
         throw new Error(err);
       }
-    }, 
+    },
   },
   Mutation: {
     async createCorporation(
-      _,
-      {
-        createCorporationInput: { 
+        _,
+        {
+          createCorporationInput: {
+            name,
+            logo,
+            slogan,
+            majors,
+            industries,
+            overview,
+            mission,
+            goals,
+            businessModel,
+            newsLink,
+            applyLink,
+            academia,
+            govContractor,
+            nonProfit,
+            visaSponsor,
+            shpeSponsor,
+            industryPartnership,
+            fallBBQ,
+            springBBQ,
+            nationalConvention,
+          },
+        },
+    ) {
+      const {valid, errors} = validateCreateEditCorporationInput(
           name,
           logo,
-          slogan, 
-          majors, 
-          industries, 
-          overview, 
-          mission, 
-          goals, 
-          businessModel, 
-          newsLink,       
-          applyLink, 
-          academia, 
-          govContractor, 
-          nonProfit, 
-          visaSponsor, 
-          shpeSponsor, 
-          industryPartnership,
-          fallBBQ, 
-          springBBQ, 
-          nationalConvention 
-        }
-      }
-    ) {
-
-      const { valid, errors } = validateCreateEditCorporationInput(
-        name,
-        logo,
-        slogan,
-        majors,
-        industries,
-        overview,
-        mission,
-        goals,
-        businessModel,
-        newsLink,
-        applyLink
+          slogan,
+          majors,
+          industries,
+          overview,
+          mission,
+          goals,
+          businessModel,
+          newsLink,
+          applyLink,
       );
-      
+
       if (!valid) {
-        throw new UserInputError("Errors", { errors });
+        throw new UserInputError('Errors', {errors});
       }
 
-      isCorporationNameDuplicate = await Corporation.findOne({ name });
+      isCorporationNameDuplicate = await Corporation.findOne({name});
 
       if (isCorporationNameDuplicate) {
-        throw new UserInputError("This corporation is already in our database.", {
+        throw new UserInputError('This corporation is already in our database.', {
           errors: {
-            name: "This corporation is already in our database."
-          }
+            name: 'This corporation is already in our database.',
+          },
         });
       }
 
-      academia = academia === "true" || academia === true ? true : false;
-      govContractor = govContractor === "true" || govContractor === true ? true : false;
-      nonProfit = nonProfit === "true" || nonProfit === true ? true : false;
-      visaSponsor = visaSponsor === "true" || visaSponsor === true ? true : false;
-      shpeSponsor = shpeSponsor === "true" || shpeSponsor === true ? true : false;
-      industryPartnership = industryPartnership === "true" || industryPartnership === true ? true : false;
-      fallBBQ = fallBBQ === "true" || fallBBQ === true ? true : false;
-      springBBQ = springBBQ === "true" || springBBQ === true ? true : false;
-      nationalConvention = nationalConvention === "true" || nationalConvention === true ? true : false;
+      academia = academia === 'true' || academia === true ? true : false;
+      govContractor = govContractor === 'true' || govContractor === true ? true : false;
+      nonProfit = nonProfit === 'true' || nonProfit === true ? true : false;
+      visaSponsor = visaSponsor === 'true' || visaSponsor === true ? true : false;
+      shpeSponsor = shpeSponsor === 'true' || shpeSponsor === true ? true : false;
+      industryPartnership = industryPartnership === 'true' || industryPartnership === true ? true : false;
+      fallBBQ = fallBBQ === 'true' || fallBBQ === true ? true : false;
+      springBBQ = springBBQ === 'true' || springBBQ === true ? true : false;
+      nationalConvention = nationalConvention === 'true' || nationalConvention === true ? true : false;
 
       const newCorporation = new Corporation({
         name,
@@ -97,15 +96,15 @@ module.exports = {
         businessModel,
         newsLink,
         applyLink,
-        academia, 
-        govContractor, 
-        nonProfit, 
-        visaSponsor, 
-        shpeSponsor, 
+        academia,
+        govContractor,
+        nonProfit,
+        visaSponsor,
+        shpeSponsor,
         industryPartnership,
-        fallBBQ, 
-        springBBQ, 
-        nationalConvention
+        fallBBQ,
+        springBBQ,
+        nationalConvention,
       });
 
       await newCorporation.save();
@@ -116,68 +115,9 @@ module.exports = {
     },
 
     async editCorporation(
-      _,
-      {
-        editCorporationInput: {
-          id,
-          name,
-          logo,
-          slogan, 
-          majors, 
-          industries, 
-          overview, 
-          mission, 
-          goals, 
-          businessModel, 
-          newsLink,       
-          applyLink, 
-          academia, 
-          govContractor, 
-          nonProfit, 
-          visaSponsor, 
-          shpeSponsor, 
-          industryPartnership,
-          fallBBQ, 
-          springBBQ, 
-          nationalConvention 
-        }
-      }
-    ){
-
-      const { valid, errors } = validateCreateEditCorporationInput(
-        name,
-        logo,
-        slogan,
-        majors,
-        industries,
-        overview,
-        mission,
-        goals,
-        businessModel,
-        newsLink,
-        applyLink
-      );
-
-      if (!valid) {
-        throw new UserInputError("Errors", {errors});
-      }
-
-      academia = (academia === "true" || academia === true) ? true : false;
-      govContractor = (govContractor === "true" || govContractor === true) ? true : false;
-      nonProfit = (nonProfit === "true" || nonProfit === true) ? true : false;
-      visaSponsor = (visaSponsor === "true" || visaSponsor === true) ? true : false;
-      shpeSponsor = (shpeSponsor === "true" || shpeSponsor === true) ? true : false;
-      industryPartnership = (industryPartnership === "true" || industryPartnership === true) ? true : false;
-      fallBBQ = (fallBBQ === "true" || fallBBQ === true) ? true : false;
-      springBBQ = (springBBQ === "true" || springBBQ === true) ? true : false;
-      nationalConvention = (nationalConvention === "true" || nationalConvention === true) ? true : false;
-    
-      const companyExists = await Corporation.findOne({'_id': id});
-
-      if (companyExists) {
-        const updatedCorporation = await Corporation.findOneAndUpdate(
-          {'_id': id},
-          {
+        _,
+        {
+          editCorporationInput: {
             id,
             name,
             logo,
@@ -190,36 +130,93 @@ module.exports = {
             businessModel,
             newsLink,
             applyLink,
-            academia, 
-            govContractor, 
-            nonProfit, 
-            visaSponsor, 
-            shpeSponsor, 
+            academia,
+            govContractor,
+            nonProfit,
+            visaSponsor,
+            shpeSponsor,
             industryPartnership,
-            fallBBQ, 
-            springBBQ, 
-            nationalConvention          
+            fallBBQ,
+            springBBQ,
+            nationalConvention,
           },
-          {
-            //Returns the updated object, instead of the old one
-            new: true
-          }
-          );
+        },
+    ) {
+      const {valid, errors} = validateCreateEditCorporationInput(
+          name,
+          logo,
+          slogan,
+          majors,
+          industries,
+          overview,
+          mission,
+          goals,
+          businessModel,
+          newsLink,
+          applyLink,
+      );
+
+      if (!valid) {
+        throw new UserInputError('Errors', {errors});
+      }
+
+      academia = (academia === 'true' || academia === true) ? true : false;
+      govContractor = (govContractor === 'true' || govContractor === true) ? true : false;
+      nonProfit = (nonProfit === 'true' || nonProfit === true) ? true : false;
+      visaSponsor = (visaSponsor === 'true' || visaSponsor === true) ? true : false;
+      shpeSponsor = (shpeSponsor === 'true' || shpeSponsor === true) ? true : false;
+      industryPartnership = (industryPartnership === 'true' || industryPartnership === true) ? true : false;
+      fallBBQ = (fallBBQ === 'true' || fallBBQ === true) ? true : false;
+      springBBQ = (springBBQ === 'true' || springBBQ === true) ? true : false;
+      nationalConvention = (nationalConvention === 'true' || nationalConvention === true) ? true : false;
+
+      const companyExists = await Corporation.findOne({'_id': id});
+
+      if (companyExists) {
+        const updatedCorporation = await Corporation.findOneAndUpdate(
+            {'_id': id},
+            {
+              id,
+              name,
+              logo,
+              slogan,
+              majors,
+              industries,
+              overview,
+              mission,
+              goals,
+              businessModel,
+              newsLink,
+              applyLink,
+              academia,
+              govContractor,
+              nonProfit,
+              visaSponsor,
+              shpeSponsor,
+              industryPartnership,
+              fallBBQ,
+              springBBQ,
+              nationalConvention,
+            },
+            {
+            // Returns the updated object, instead of the old one
+              new: true,
+            },
+        );
         return updatedCorporation;
       } else {
-        throw new Error("Company not found.");
+        throw new Error('Company not found.');
       }
     },
 
     async deleteCorporation(
-      _,
-      { 
-        corporationId
-       }
-    ){
-
-      await Corporation.deleteOne({ '_id': corporationId }, (err) => {
-        if (err){
+        _,
+        {
+          corporationId,
+        },
+    ) {
+      await Corporation.deleteOne({'_id': corporationId}, (err) => {
+        if (err) {
           throw err;
         }
       });
@@ -227,6 +224,6 @@ module.exports = {
       const corporations = await Corporation.find();
 
       return corporations;
-    }
-  }
+    },
+  },
 };

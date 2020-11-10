@@ -1,14 +1,14 @@
-const { UserInputError } = require("apollo-server");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
+const {UserInputError} = require('apollo-server');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
-const User = require("../../models/User.js");
-const Event = require("../../models/Event.js");
-const Request = require("../../models/Request.js");
-const Task = require("../../models/Task.js");
+const User = require('../../models/User.js');
+const Event = require('../../models/Event.js');
+const Request = require('../../models/Request.js');
+const Task = require('../../models/Task.js');
 
-require("dotenv").config();
+require('dotenv').config();
 
 const {
   validateRegisterInput,
@@ -17,21 +17,21 @@ const {
   validateEmailInput,
   validatePasswordInput,
   validateEditUserProfile,
-} = require("../../util/validators");
+} = require('../../util/validators');
 
 function generateToken(user, time) {
   return jwt.sign(
-    {
-      id: user.id,
-      email: user.email,
-      username: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName
-    },
-    process.env.SECRET,
-    {
-      expiresIn: time,
-    }
+      {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+      process.env.SECRET,
+      {
+        expiresIn: time,
+      },
   );
 }
 
@@ -49,32 +49,32 @@ module.exports = {
       }
     },
 
-    async getUser(_, { userId }) {
+    async getUser(_, {userId}) {
       try {
-        var user = await User.findById(userId);
+        const user = await User.findById(userId);
         if (user) {
           const users = await User.find();
           const fallBelowUsers = await User.find()
-            .where("fallPoints")
-            .lt(user.fallPoints);
+              .where('fallPoints')
+              .lt(user.fallPoints);
           const springBelowUsers = await User.find()
-            .where("springPoints")
-            .lt(user.springPoints);
+              .where('springPoints')
+              .lt(user.springPoints);
           const summerBelowUsers = await User.find()
-            .where("summerPoints")
-            .lt(user.summerPoints);
+              .where('summerPoints')
+              .lt(user.summerPoints);
 
           const fallPercentile = Math.trunc(
-            (fallBelowUsers.length / users.length) * 100
+              (fallBelowUsers.length / users.length) * 100,
           );
           const springPercentile = Math.trunc(
-            (springBelowUsers.length / users.length) * 100
+              (springBelowUsers.length / users.length) * 100,
           );
           const summerPercentile = Math.trunc(
-            (summerBelowUsers.length / users.length) * 100
+              (summerBelowUsers.length / users.length) * 100,
           );
 
-          var newUser = {
+          const newUser = {
             firstName: user.firstName,
             lastName: user.lastName,
             username: user.username,
@@ -107,7 +107,7 @@ module.exports = {
 
           return newUser;
         } else {
-          throw new Error("User not found.");
+          throw new Error('User not found.');
         }
       } catch (err) {
         throw new Error(err);
@@ -119,7 +119,7 @@ module.exports = {
         const data = await User.aggregate([
           {
             $group: {
-              _id: "$major",
+              _id: '$major',
               value: {
                 $sum: 1,
               },
@@ -135,7 +135,7 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          throw new Error('Data not found.');
         }
       } catch (err) {
         throw new Error(err);
@@ -147,7 +147,7 @@ module.exports = {
         const data = await User.aggregate([
           {
             $group: {
-              _id: "$year",
+              _id: '$year',
               value: {
                 $sum: 1,
               },
@@ -163,7 +163,7 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          throw new Error('Data not found.');
         }
       } catch (err) {
         throw new Error(err);
@@ -175,7 +175,7 @@ module.exports = {
         const data = await User.aggregate([
           {
             $group: {
-              _id: "$year",
+              _id: '$year',
               value: {
                 $sum: 1,
               },
@@ -191,7 +191,7 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          throw new Error('Data not found.');
         }
       } catch (err) {
         throw new Error(err);
@@ -203,7 +203,7 @@ module.exports = {
         const data = await User.aggregate([
           {
             $group: {
-              _id: "$year",
+              _id: '$year',
               value: {
                 $sum: 1,
               },
@@ -219,7 +219,7 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          throw new Error('Data not found.');
         }
       } catch (err) {
         throw new Error(err);
@@ -230,7 +230,7 @@ module.exports = {
         const data = await User.aggregate([
           {
             $group: {
-              _id: "$country",
+              _id: '$country',
               value: {
                 $sum: 1,
               },
@@ -246,7 +246,7 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          throw new Error('Data not found.');
         }
       } catch (err) {
         throw new Error(err);
@@ -258,7 +258,7 @@ module.exports = {
         const data = await User.aggregate([
           {
             $group: {
-              _id: "$sex",
+              _id: '$sex',
               value: {
                 $sum: 1,
               },
@@ -274,7 +274,7 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          throw new Error('Data not found.');
         }
       } catch (err) {
         throw new Error(err);
@@ -286,7 +286,7 @@ module.exports = {
         const data = await User.aggregate([
           {
             $group: {
-              _id: "$country",
+              _id: '$country',
               value: {
                 $sum: 1,
               },
@@ -302,7 +302,7 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          throw new Error('Data not found.');
         }
       } catch (err) {
         throw new Error(err);
@@ -314,7 +314,7 @@ module.exports = {
         const data = await User.aggregate([
           {
             $group: {
-              _id: "$sex",
+              _id: '$sex',
               value: {
                 $sum: 1,
               },
@@ -330,7 +330,7 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          throw new Error('Data not found.');
         }
       } catch (err) {
         throw new Error(err);
@@ -341,7 +341,7 @@ module.exports = {
         const data = await User.aggregate([
           {
             $group: {
-              _id: "$ethnicity",
+              _id: '$ethnicity',
               value: {
                 $sum: 1,
               },
@@ -357,7 +357,7 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          throw new Error('Data not found.');
         }
       } catch (err) {
         throw new Error(err);
@@ -368,7 +368,7 @@ module.exports = {
         const data = await User.aggregate([
           {
             $group: {
-              _id: "$ethnicity",
+              _id: '$ethnicity',
               value: {
                 $sum: 1,
               },
@@ -384,7 +384,7 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          throw new Error('Data not found.');
         }
       } catch (err) {
         throw new Error(err);
@@ -393,13 +393,13 @@ module.exports = {
   },
 
   Mutation: {
-    async login(_, { username, password, remember }) {
+    async login(_, {username, password, remember}) {
       username = username.toLowerCase();
 
-      const { errors, valid } = validateLoginInput(username, password);
+      const {errors, valid} = validateLoginInput(username, password);
 
       if (!valid) {
-        throw new UserInputError("Errors", {
+        throw new UserInputError('Errors', {
           errors,
         });
       }
@@ -409,8 +409,8 @@ module.exports = {
       });
 
       if (!user) {
-        errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
+        errors.general = 'User not found.';
+        throw new UserInputError('User not found.', {
           errors,
         });
       }
@@ -418,8 +418,8 @@ module.exports = {
       const match = await bcrypt.compare(password, user.password);
 
       if (!match) {
-        errors.general = "Wrong credentials.";
-        throw new UserInputError("Wrong credentials.", {
+        errors.general = 'Wrong credentials.';
+        throw new UserInputError('Wrong credentials.', {
           errors,
         });
       }
@@ -427,13 +427,13 @@ module.exports = {
       const isConfirmed = user.confirmed;
 
       if (!isConfirmed) {
-        errors.general = "User not confirmed.";
-        throw new UserInputError("User not confirmed.", {
+        errors.general = 'User not confirmed.';
+        throw new UserInputError('User not confirmed.', {
           errors,
         });
       }
 
-      time = remember === "true" || remember === true ? "30d" : "24h";
+      time = remember === 'true' || remember === true ? '30d' : '24h';
       const token = generateToken(user, time);
 
       return {
@@ -444,9 +444,31 @@ module.exports = {
     },
 
     async register(
-      _,
-      {
-        registerInput: {
+        _,
+        {
+          registerInput: {
+            firstName,
+            lastName,
+            major,
+            year,
+            graduating,
+            country,
+            ethnicity,
+            sex,
+            username,
+            email,
+            password,
+            confirmPassword,
+            listServ,
+          },
+        },
+    ) {
+      firstName = firstName.trim();
+      lastName = lastName.trim();
+      email = email.toLowerCase();
+      username = username.toLowerCase();
+
+      const {valid, errors} = validateRegisterInput(
           firstName,
           lastName,
           major,
@@ -459,32 +481,10 @@ module.exports = {
           email,
           password,
           confirmPassword,
-          listServ,
-        },
-      }
-    ) {
-      firstName = firstName.trim();
-      lastName = lastName.trim();
-      email = email.toLowerCase();
-      username = username.toLowerCase();
-
-      const { valid, errors } = validateRegisterInput(
-        firstName,
-        lastName,
-        major,
-        year,
-        graduating,
-        country,
-        ethnicity,
-        sex,
-        username,
-        email,
-        password,
-        confirmPassword
       );
 
       if (!valid) {
-        throw new UserInputError("Errors", {
+        throw new UserInputError('Errors', {
           errors,
         });
       }
@@ -495,12 +495,12 @@ module.exports = {
 
       if (isUsernameDuplicate) {
         throw new UserInputError(
-          "An account with that username already exists.",
-          {
-            errors: {
-              username: "An account with that username already exists.",
+            'An account with that username already exists.',
+            {
+              errors: {
+                username: 'An account with that username already exists.',
+              },
             },
-          }
         );
       }
 
@@ -510,17 +510,17 @@ module.exports = {
 
       if (isEmailDuplicate) {
         throw new UserInputError(
-          "An account with that e-mail already exists.",
-          {
-            errors: {
-              email: "An account with that email already exists.",
+            'An account with that e-mail already exists.',
+            {
+              errors: {
+                email: 'An account with that email already exists.',
+              },
             },
-          }
         );
       }
 
       password = await bcrypt.hash(password, 12);
-      listServ = listServ === "true" || listServ === true ? true : false;
+      listServ = listServ === 'true' || listServ === true ? true : false;
 
       const newUser = new User({
         firstName,
@@ -539,7 +539,7 @@ module.exports = {
         fallPoints: 0,
         springPoints: 0,
         summerPoints: 0,
-        permission: "member",
+        permission: 'member',
         listServ,
         events: [],
         tasks: [],
@@ -567,17 +567,17 @@ module.exports = {
       const mailOptions = {
         from: process.env.EMAIL,
         to: `${user.email}`,
-        subject: "Confirm Email",
+        subject: 'Confirm Email',
         text:
-          "Thank you for registering, please click on the link below to complete your registration\n\n" +
+          'Thank you for registering, please click on the link below to complete your registration\n\n' +
           `${process.env.CLIENT_ORIGIN}/confirm/${user._id}\n\n`,
       };
 
       transporter.sendMail(mailOptions, (err, response) => {
         if (err) {
-          console.error("there was an error: ", err);
+          console.error('there was an error: ', err);
         } else {
-          res.status(200).json("recovery email sent");
+          res.status(200).json('recovery email sent');
         }
       });
       return {
@@ -586,13 +586,13 @@ module.exports = {
       };
     },
 
-    async redeemPoints(_, { redeemPointsInput: { code, username } }) {
-      code = code.toLowerCase().trim().replace(/ /g, "");
+    async redeemPoints(_, {redeemPointsInput: {code, username}}) {
+      code = code.toLowerCase().trim().replace(/ /g, '');
 
-      const { valid, errors } = validateRedeemPointsInput(code);
+      const {valid, errors} = validateRedeemPointsInput(code);
 
       if (!valid) {
-        throw new UserInputError("Errors", {
+        throw new UserInputError('Errors', {
           errors,
         });
       }
@@ -606,30 +606,30 @@ module.exports = {
       });
 
       if (!event) {
-        errors.general = "Event not found.";
-        throw new UserInputError("Event not found.", {
+        errors.general = 'Event not found.';
+        throw new UserInputError('Event not found.', {
           errors,
         });
       }
 
       if (!user) {
-        errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
+        errors.general = 'User not found.';
+        throw new UserInputError('User not found.', {
           errors,
         });
       }
 
       if (Date.parse(event.expiration) < Date.now()) {
-        errors.general = "Event code expired";
-        throw new UserInputError("Event code expired", {
+        errors.general = 'Event code expired';
+        throw new UserInputError('Event code expired', {
           errors,
         });
       }
 
       user.events.map((userEvent) => {
         if (String(userEvent.name) == String(event.name)) {
-          errors.general = "Event code already redeemed.";
-          throw new UserInputError("Event code already redeemed.", {
+          errors.general = 'Event code already redeemed.';
+          throw new UserInputError('Event code already redeemed.', {
             errors,
           });
         }
@@ -642,8 +642,8 @@ module.exports = {
         });
 
         if (request) {
-          errors.general = "Event code already sent for approval.";
-          throw new UserInputError("Event code already sent for approval.", {
+          errors.general = 'Event code already sent for approval.';
+          throw new UserInputError('Event code already sent for approval.', {
             errors,
           });
         }
@@ -658,9 +658,9 @@ module.exports = {
           createdAt: new Date().toISOString(),
         });
 
-        const res = await newRequest.save();
+        await newRequest.save();
 
-        var newUser = {
+        const newUser = {
           firstName: user.firstName,
           lastName: user.lastName,
           username: user.username,
@@ -686,148 +686,144 @@ module.exports = {
           tasks: user.tasks,
           bookmarkedTasks: user.bookmarkedTasks,
           bookmarks: user.bookmarks,
-          message: "Event code has been sent for approval.",
+          message: 'Event code has been sent for approval.',
         };
 
         return newUser;
       } else {
-        var pointsIncrease = {};
+        let pointsIncrease = {};
 
-        if (event.semester === "Fall Semester") {
+        if (event.semester === 'Fall Semester') {
           pointsIncrease = {
             points: event.points,
             fallPoints: event.points,
           };
-        } else if (event.semester === "Spring Semester") {
+        } else if (event.semester === 'Spring Semester') {
           pointsIncrease = {
             points: event.points,
             springPoints: event.points,
           };
-        } else if (event.semester === "Summer Semester") {
+        } else if (event.semester === 'Summer Semester') {
           pointsIncrease = {
             points: event.points,
             summerPoints: event.points,
           };
         } else {
-          errors.general = "Invalid event.";
-          throw new UserInputError("Invalid event.", {
+          errors.general = 'Invalid event.';
+          throw new UserInputError('Invalid event.', {
             errors,
           });
         }
 
-        var updatedUser = await User.findOneAndUpdate(
-          {
-            username,
-          },
-          {
-            $push: {
-              events: {
-                $each: [
-                  {
-                    name: event.name,
-                    category: event.category,
-                    createdAt: event.createdAt,
-                    points: event.points,
+        const updatedUser = await User.findOneAndUpdate(
+            {
+              username,
+            },
+            {
+              $push: {
+                events: {
+                  $each: [
+                    {
+                      name: event.name,
+                      category: event.category,
+                      createdAt: event.createdAt,
+                      points: event.points,
+                    },
+                  ],
+                  $sort: {
+                    createdAt: 1,
                   },
-                ],
-                $sort: {
-                  createdAt: 1,
                 },
               },
+              $inc: pointsIncrease,
             },
-            $inc: pointsIncrease,
-          },
-          {
-            new: true,
-          }
+            {
+              new: true,
+            },
         );
 
-        updatedUser.message = "";
+        updatedUser.message = '';
 
         await Event.findOneAndUpdate(
-          {
-            code,
-          },
-          {
-            $push: {
-              users: {
-                $each: [
-                  {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    username: user.username,
-                    email: user.email,
+            {
+              code,
+            },
+            {
+              $push: {
+                users: {
+                  $each: [
+                    {
+                      firstName: user.firstName,
+                      lastName: user.lastName,
+                      username: user.username,
+                      email: user.email,
+                    },
+                  ],
+                  $sort: {
+                    lastName: 1,
+                    firstName: 1,
                   },
-                ],
-                $sort: {
-                  lastName: 1,
-                  firstName: 1,
                 },
               },
+              $inc: {
+                attendance: 1,
+              },
             },
-            $inc: {
-              attendance: 1,
+            {
+              new: true,
             },
-          },
-          {
-            new: true,
-          }
         );
 
         return updatedUser;
       }
     },
 
-    async bookmarkTask(_, { bookmarkTaskInput: { name, username } }) {
-      var errors = {};
-
+    async bookmarkTask(_, {bookmarkTaskInput: {name, username}}) {
       const task = await Task.findOne({
         name,
       });
 
-      var updatedUser = await User.findOneAndUpdate(
-        {
-          username,
-        },
-        {
-          $push: {
-            bookmarkedTasks: task.name,
+      const updatedUser = await User.findOneAndUpdate(
+          {
+            username,
           },
-        },
-        {
-          new: true,
-        }
+          {
+            $push: {
+              bookmarkedTasks: task.name,
+            },
+          },
+          {
+            new: true,
+          },
       );
 
       return updatedUser;
     },
 
-    async unBookmarkTask(_, { unBookmarkTaskInput: { name, username } }) {
-      var errors = {};
-
+    async unBookmarkTask(_, {unBookmarkTaskInput: {name, username}}) {
       const task = await Task.findOne({
         name,
       });
 
-      var updatedUser = await User.findOneAndUpdate(
-        {
-          username,
-        },
-        {
-          $pull: {
-            bookmarkedTasks: task.name,
+      const updatedUser = await User.findOneAndUpdate(
+          {
+            username,
           },
-        },
-        {
-          new: true,
-        }
+          {
+            $pull: {
+              bookmarkedTasks: task.name,
+            },
+          },
+          {
+            new: true,
+          },
       );
 
       return updatedUser;
     },
 
-    async redeemTasksPoints(_, { redeemTasksPointsInput: { name, username } }) {
-      var errors = {};
+    async redeemTasksPoints(_, {redeemTasksPointsInput: {name, username}}) {
+      const errors = {};
 
       const user = await User.findOne({
         username,
@@ -839,22 +835,22 @@ module.exports = {
 
 
       const today = new Date(Date.now());
-      
-      //recalculate dates to set time to default
-      const currentdate = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-      const endDate = new Date(Date.parse(task.endDate))
+
+      // recalculate dates to set time to default
+      const currentdate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const endDate = new Date(Date.parse(task.endDate));
 
       if (endDate < currentdate) {
-        errors.general = "Task Expired";
-        throw new UserInputError("Task Expired", {
+        errors.general = 'Task Expired';
+        throw new UserInputError('Task Expired', {
           errors,
         });
       }
 
       user.tasks.map((userTask) => {
         if (String(userTask.name) == String(task.name)) {
-          errors.general = "Task already redeeemed by the user.";
-          throw new UserInputError("Task already redeemed by the user.", {
+          errors.general = 'Task already redeeemed by the user.';
+          throw new UserInputError('Task already redeemed by the user.', {
             errors,
           });
         }
@@ -866,15 +862,15 @@ module.exports = {
       });
 
       if (request) {
-        errors.general = "Task already sent for approval.";
-        throw new UserInputError("Task already sent for approval.", {
+        errors.general = 'Task already sent for approval.';
+        throw new UserInputError('Task already sent for approval.', {
           errors,
         });
       }
 
       const newTaskRequest = new Request({
         name: task.name,
-        type: "Task",
+        type: 'Task',
         points: task.points,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -884,7 +880,7 @@ module.exports = {
 
       await newTaskRequest.save();
 
-      var newUser = {
+      const newUser = {
         firstName: user.firstName,
         lastName: user.lastName,
         username: user.username,
@@ -909,24 +905,24 @@ module.exports = {
         events: user.events,
         tasks: user.tasks,
         bookmarkedtasks: user.bookmarkedTasks,
-        message: "Task has been sent for approval.",
+        message: 'Task has been sent for approval.',
       };
       return newUser;
     },
 
-    async confirmUser(_, { id }) {
+    async confirmUser(_, {id}) {
       const user = await User.findOneAndUpdate(
-        {
-          _id: id,
-        },
-        {
-          confirmed: true,
-        }
+          {
+            _id: id,
+          },
+          {
+            confirmed: true,
+          },
       );
 
       if (!user) {
-        errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
+        errors.general = 'User not found.';
+        throw new UserInputError('User not found.', {
           errors,
         });
       }
@@ -934,10 +930,10 @@ module.exports = {
       return user;
     },
 
-    async forgotPassword(_, { email }) {
-      const { errors, valid } = validateEmailInput(email);
+    async forgotPassword(_, {email}) {
+      const {errors, valid} = validateEmailInput(email);
       if (!valid) {
-        throw new UserInputError("Errors", {
+        throw new UserInputError('Errors', {
           errors,
         });
       }
@@ -946,15 +942,15 @@ module.exports = {
         email,
       });
       if (!user) {
-        errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
+        errors.general = 'User not found.';
+        throw new UserInputError('User not found.', {
           errors,
         });
       }
 
-      var time = "24h";
-      var token = generateToken(user, time);
-      var uniqueToken = false;
+      const time = '24h';
+      let token = generateToken(user, time);
+      let uniqueToken = false;
 
       while (!uniqueToken) {
         const user = await User.findOne({
@@ -968,12 +964,12 @@ module.exports = {
       }
 
       const newUser = await User.findOneAndUpdate(
-        {
-          email,
-        },
-        {
-          token,
-        }
+          {
+            email,
+          },
+          {
+            token,
+          },
       );
 
       const transporter = nodemailer.createTransport({
@@ -987,19 +983,19 @@ module.exports = {
       const mailOptions = {
         from: process.env.EMAIL,
         to: `${user.email}`,
-        subject: "Reset Password",
+        subject: 'Reset Password',
         text:
-          "You have requested the reset of the password for your account for shpe.com\n\n" +
-          "Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n" +
+          'You have requested the reset of the password for your account for shpe.com\n\n' +
+          'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n' +
           `${process.env.CLIENT_ORIGIN}/reset/${token}\n\n` +
-          "If you did not request this, please ignore this email and your password will remain unchanged.\n",
+          'If you did not request this, please ignore this email and your password will remain unchanged.\n',
       };
 
       transporter.sendMail(mailOptions, (err, response) => {
         if (err) {
-          console.error("there was an error: ", err);
+          console.error('there was an error: ', err);
         } else {
-          res.status(200).json("recovery email sent");
+          res.status(200).json('recovery email sent');
         }
       });
 
@@ -1010,14 +1006,14 @@ module.exports = {
       };
     },
 
-    async resetPassword(_, { password, confirmPassword, token }) {
-      const { errors, valid } = validatePasswordInput(
-        password,
-        confirmPassword
+    async resetPassword(_, {password, confirmPassword, token}) {
+      const {errors, valid} = validatePasswordInput(
+          password,
+          confirmPassword,
       );
 
       if (!valid) {
-        throw new UserInputError("Errors", {
+        throw new UserInputError('Errors', {
           errors,
         });
       }
@@ -1026,113 +1022,71 @@ module.exports = {
         token,
       });
       if (!user) {
-        errors.general = "Invalid Token";
-        throw new UserInputError("Invalid Token", {
+        errors.general = 'Invalid Token';
+        throw new UserInputError('Invalid Token', {
           errors,
         });
       }
 
       password = await bcrypt.hash(password, 12);
 
-      const newUser = await User.findOneAndUpdate(
-        {
-          email: user.email,
-        },
-        {
-          password,
-          token: "",
-        }
+      await User.findOneAndUpdate(
+          {
+            email: user.email,
+          },
+          {
+            password,
+            token: '',
+          },
       );
 
-      var Token = {
+      const Token = {
         token: token,
       };
       return Token;
     },
 
-    async bookmark(_, { company, username }) {
-      var updatedUser = await User.findOneAndUpdate(
-        {
-          username,
-        },
-        {
-          $push: {
-            bookmarks: company,
+    async bookmark(_, {company, username}) {
+      const updatedUser = await User.findOneAndUpdate(
+          {
+            username,
           },
-        },
-        {
-          new: true,
-        }
+          {
+            $push: {
+              bookmarks: company,
+            },
+          },
+          {
+            new: true,
+          },
       );
 
       return updatedUser;
     },
 
-    async deleteBookmark(_, { company, username }) {
-      var updatedUser = await User.findOneAndUpdate(
-        {
-          username,
-        },
-        {
-          $pull: {
-            bookmarks: company,
+    async deleteBookmark(_, {company, username}) {
+      const updatedUser = await User.findOneAndUpdate(
+          {
+            username,
           },
-        },
-        {
-          new: true,
-        }
+          {
+            $pull: {
+              bookmarks: company,
+            },
+          },
+          {
+            new: true,
+          },
       );
 
       return updatedUser;
     },
 
     async editUserProfile(
-      _,
-      {
-        editUserProfileInput: {
-          email,
-          firstName,
-          lastName,
-          photo,
-          major,
-          year,
-          graduating,
-          country,
-          ethnicity,
-          sex,
-          classes,
-          internships,
-          socialMedia,
-        },
-      }
-    ) {
-      const { errors, valid } = validateEditUserProfile(
-        firstName,
-        lastName,
-        photo,
-        major,
-        year,
-        graduating,
-        country,
-        ethnicity,
-        sex,
-        classes,
-        internships,
-        socialMedia
-      );
-
-      if (!valid) {
-        throw new UserInputError("Errors", {
-          errors,
-        });
-      }
-
-      const user = await User.findOne({ email });
-
-      if (user) {
-        const updatedUser = await User.findOneAndUpdate(
-          { email },
-          {
+        _,
+        {
+          editUserProfileInput: {
+            email,
             firstName,
             lastName,
             photo,
@@ -1146,80 +1100,121 @@ module.exports = {
             internships,
             socialMedia,
           },
-          {
-            new: true,
-          }
+        },
+    ) {
+      const {errors, valid} = validateEditUserProfile(
+          firstName,
+          lastName,
+          photo,
+          major,
+          year,
+          graduating,
+          country,
+          ethnicity,
+          sex,
+          classes,
+          internships,
+          socialMedia,
+      );
+
+      if (!valid) {
+        throw new UserInputError('Errors', {
+          errors,
+        });
+      }
+
+      const user = await User.findOne({email});
+
+      if (user) {
+        const updatedUser = await User.findOneAndUpdate(
+            {email},
+            {
+              firstName,
+              lastName,
+              photo,
+              major,
+              year,
+              graduating,
+              country,
+              ethnicity,
+              sex,
+              classes,
+              internships,
+              socialMedia,
+            },
+            {
+              new: true,
+            },
         );
 
         return updatedUser;
       } else {
-        throw new Error("User not found.");
+        throw new Error('User not found.');
       }
     },
 
-    async changePermission(_, 
-      { 
-        email, 
-        currentEmail, 
-        permission 
-      }
+    async changePermission(_,
+        {
+          email,
+          currentEmail,
+          permission,
+        },
     ) {
-
-      let { errors, valid } = validateEmailInput(email);
+      let {errors, valid} = validateEmailInput(email);
 
       if (!valid) {
-        throw new UserInputError("Errors.", {
+        throw new UserInputError('Errors.', {
           errors,
         });
       }
 
       if (email === currentEmail) {
         valid = false;
-        errors.general = "Can't change your own permissions";
-        throw new UserInputError("Can't change your own permissions", {
+        errors.general = 'Can\'t change your own permissions';
+        throw new UserInputError('Can\'t change your own permissions', {
           errors,
         });
       }
 
-      //loggedInUser is the current user that's trying to change another user's permissions
+      // loggedInUser is the current user that's trying to change another user's permissions
       const loggedInUser = await User.findOne({
         email: currentEmail,
       });
 
       if (!loggedInUser) {
-        errors.general = "User not found";
-        throw new UserInputError("User not found", {
+        errors.general = 'User not found';
+        throw new UserInputError('User not found', {
           errors,
         });
       }
 
-      if(!loggedInUser.permission.includes('admin')){
+      if (!loggedInUser.permission.includes('admin')) {
         valid = false;
-        errors.general = "Must be an admin to change permission";
-        throw new UserInputError("Must be an admin to change permission", {
+        errors.general = 'Must be an admin to change permission';
+        throw new UserInputError('Must be an admin to change permission', {
           errors,
         });
       }
 
-      const options = {new: true}
+      const options = {new: true};
 
       const user = await User.findOneAndUpdate(
-        {
-          email,
-        },
-        {
-          permission,
-        },
-        options
+          {
+            email,
+          },
+          {
+            permission,
+          },
+          options,
       );
       if (!user) {
-        errors.general = "User not found";
-        throw new UserInputError("User not found", {
+        errors.general = 'User not found';
+        throw new UserInputError('User not found', {
           errors,
         });
       } else {
         return user;
       }
-    }
-  }
+    },
+  },
 };

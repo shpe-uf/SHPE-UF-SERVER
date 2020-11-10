@@ -1,43 +1,43 @@
-const { model, Schema } = require('mongoose');
+const {Schema} = require('mongoose');
 const mongoose = require('mongoose');
 
 const rentableSchema = new Schema({
   item: {
     type: String,
-    required: true
+    required: true,
   },
   quantity: {
     type: Number,
-    required: true
+    required: true,
   },
   level: {
     type: Number,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   link: {
     type: String,
-    required: true
+    required: true,
   },
   renters: {
     type: [String],
-    required: true
+    required: true,
   },
   category: {
     type: String,
-    required: true
+    required: true,
   },
   image: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 }, {
-  collection: 'Inventory'
+  collection: 'Inventory',
 });
 
-const switchDB = mongoose.createConnection(process.env.DB_URI,{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true });
+const switchDB = mongoose.createConnection(process.env.DB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true});
 
 module.exports = switchDB.model('Rentable', rentableSchema);

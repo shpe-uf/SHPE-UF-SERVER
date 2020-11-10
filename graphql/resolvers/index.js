@@ -1,11 +1,11 @@
-const usersResolvers = require("./users.js");
-const eventsResolvers = require("./events.js");
-const requestsResolvers = require("./requests.js");
-const tasksResolvers = require("./tasks.js");
-const corporationResolvers = require("./corporations.js");
-const alumnisResolvers = require("./alumnis.js");
-const reimbursementsResolvers = require("./reimbursements.js");
-const shpeRentalsResolvers = require("./rentables.js")
+const usersResolvers = require('./users.js');
+const eventsResolvers = require('./events.js');
+const requestsResolvers = require('./requests.js');
+const tasksResolvers = require('./tasks.js');
+const corporationResolvers = require('./corporations.js');
+const alumnisResolvers = require('./alumnis.js');
+const reimbursementsResolvers = require('./reimbursements.js');
+const shpeRentalsResolvers = require('./rentables.js');
 
 module.exports = {
   Query: {
@@ -16,7 +16,7 @@ module.exports = {
     ...corporationResolvers.Query,
     ...alumnisResolvers.Query,
     ...reimbursementsResolvers.Query,
-    ...shpeRentalsResolvers.Query
+    ...shpeRentalsResolvers.Query,
   },
 
   Mutation: {
@@ -27,6 +27,6 @@ module.exports = {
     ...corporationResolvers.Mutation,
     ...alumnisResolvers.Mutation,
     ...reimbursementsResolvers.Mutation,
-    ...shpeRentalsResolvers.Mutation
-  }
+    ...shpeRentalsResolvers.Mutation,
+  },
 };

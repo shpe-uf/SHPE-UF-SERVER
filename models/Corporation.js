@@ -1,86 +1,86 @@
-const { model, Schema } = require("mongoose");
+const {model, Schema} = require('mongoose');
 
 const corporationSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   logo: {
     type: String,
-    required: true
+    required: true,
   },
   slogan: {
     type: String,
-    required: true
+    required: true,
   },
   majors: [{
     type: String,
-    required: true
+    required: true,
   }],
   industries: [{
     type: String,
-    required: true
+    required: true,
   }],
   overview: {
     type: String,
-    required: true
+    required: true,
   },
   mission: {
     type: String,
-    required: true
+    required: true,
   },
   goals: {
     type: String,
-    required: true
+    required: true,
   },
   businessModel: {
     type: String,
-    required: true
+    required: true,
   },
   newsLink: {
     type: String,
-    required: true
+    required: true,
   },
   applyLink: {
     type: String,
-    required: true
+    required: true,
   },
   academia: {
     type: Boolean,
-    required: true
+    required: true,
   },
   govContractor: {
     type: Boolean,
-    required: true
+    required: true,
   },
   nonProfit: {
     type: Boolean,
-    required: true
+    required: true,
   },
   visaSponsor: {
     type: Boolean,
-    required: true
+    required: true,
   },
   shpeSponsor: {
     type: Boolean,
-    required: true
+    required: true,
   },
   industryPartnership: {
     type: Boolean,
-    required: true
+    required: true,
   },
   fallBBQ: {
     type: Boolean,
-    required: true
+    required: true,
   },
   springBBQ: {
     type: Boolean,
-    required: true
+    required: true,
   },
   nationalConvention: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 });
 
-module.exports = model("Corporation", corporationSchema);
+module.exports = model('Corporation', corporationSchema);

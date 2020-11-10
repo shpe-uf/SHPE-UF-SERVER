@@ -1,11 +1,11 @@
-const { UserInputError } = require("apollo-server");
-const nodegeocoder = require("node-geocoder");
+const {UserInputError} = require('apollo-server');
+const nodegeocoder = require('node-geocoder');
 
-const Alumni = require("../../models/Alumni.js");
+const Alumni = require('../../models/Alumni.js');
 
-require("dotenv").config();
+require('dotenv').config();
 
-const { validateRegisterAlumniInput } = require("../../util/validators");
+const {validateRegisterAlumniInput} = require('../../util/validators');
 
 module.exports = {
   Query: {
@@ -16,14 +16,27 @@ module.exports = {
       } catch (err) {
         throw new Error(err);
       }
-    }
+    },
   },
 
   Mutation: {
     async registerAlumni(
-      _,
-      {
-        registerAlumniInput: {
+        _,
+        {
+          registerAlumniInput: {
+            firstName,
+            lastName,
+            email,
+            undergrad,
+            grad,
+            employer,
+            position,
+            location,
+            linkedin,
+          },
+        },
+    ) {
+      const {valid, errors} = validateRegisterAlumniInput(
           firstName,
           lastName,
           email,
@@ -32,81 +45,68 @@ module.exports = {
           employer,
           position,
           location,
-          linkedin
-        }
-      }
-    ) {
-      const { valid, errors } = validateRegisterAlumniInput(
-        firstName,
-        lastName,
-        email,
-        undergrad,
-        grad,
-        employer,
-        position,
-        location,
-        linkedin
+          linkedin,
       );
 
-      var coordinates = {
+      const coordinates = {
         latitude: 0,
-        longitude: 0
+        longitude: 0,
       };
 
       if (!valid) {
-        throw new UserInputError("Errors", {
-          errors
+        throw new UserInputError('Errors', {
+          errors,
         });
       }
 
-      grad.year = grad.year === "" ? 0 : grad.year;
+      grad.year = grad.year === '' ? 0 : grad.year;
 
-      const isEmailDuplicate = await Alumni.findOne({ email });
+      const isEmailDuplicate = await Alumni.findOne({email});
 
       if (isEmailDuplicate) {
-        throw new UserInputError("that e-mail already exists.", {
+        throw new UserInputError('that e-mail already exists.', {
           errors: {
-            email: "that email already exists."
-          }
+            email: 'that email already exists.',
+          },
         });
       }
 
       const alumniLocation =
         location.city +
-        ", " +
-        (location.state ? location.state + ", " : "") +
+        ', ' +
+        (location.state ? location.state + ', ' : '') +
         location.country;
 
-      var ngcOptions = {
-        provider: "mapquest",
-        httpAdapter: "https",
+      const ngcOptions = {
+        provider: 'mapquest',
+        httpAdapter: 'https',
         apiKey: process.env.MQ_KEY,
-        formatter: null
+        formatter: null,
       };
 
-      var geocoder = nodegeocoder(ngcOptions);
+      const geocoder = nodegeocoder(ngcOptions);
 
       await geocoder
-        .geocode(alumniLocation)
-        .then(function(res) {
-          var north = Math.random() * 0.007;
-          var south = -1 * Math.random() * 0.007;
-          var east = Math.random() * 0.007;
-          var west = -1 * Math.random() * 0.007;
-          coordinates.latitude = res[0].latitude + north + south;
-          coordinates.longitude = res[0].longitude + east + west;
-        })
-        .catch(function(err) {
-          throw new UserInputError(
-            "Invalid location, please check city, state and/or country.",
-            {
-              errors: {
-                general:
-                  "Invalid location, please check city, state and/or country."
-              }
-            }
-          );
-        });
+          .geocode(alumniLocation)
+          .then(function(res) {
+            const north = Math.random() * 0.007;
+            const south = -1 * Math.random() * 0.007;
+            const east = Math.random() * 0.007;
+            const west = -1 * Math.random() * 0.007;
+            coordinates.latitude = res[0].latitude + north + south;
+            coordinates.longitude = res[0].longitude + east + west;
+          })
+          .catch(function(err) {
+            throw new UserInputError(
+                'Invalid location, please check city, state and/or country.',
+                {
+                  errors: {
+                    general:
+                  'Invalid location, please check city, state and/or country.',
+                  },
+                },
+            );
+          });
 
       const newAlumni = new Alumni({
         firstName,
@@ -118,12 +118,12 @@ module.exports = {
         position,
         location,
         coordinates,
-        linkedin
+        linkedin,
       });
 
       await newAlumni.save();
 
       return newAlumni;
-    }
-  }
+    },
+  },
 };
