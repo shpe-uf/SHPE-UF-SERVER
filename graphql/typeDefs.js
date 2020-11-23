@@ -154,6 +154,10 @@ module.exports = gql`
   }
 
   type BugReport {
+    firstName: String!
+    lastName: String!
+    email: String!
+    reportType: String!
     report: String!
   }
 
@@ -357,6 +361,14 @@ module.exports = gql`
     execute: Boolean!
   }
 
+  input ContactUsInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    reportType: String!
+    report: String!
+  }
+
   ### AUXILIARY INPUTS ###
   input UndergradInput {
     university: String!
@@ -453,6 +465,6 @@ module.exports = gql`
     unPickUpItem(receiptID: ID!): Receipt
     unReturnItem(receiptID: ID!): Receipt
     deleteReceipt(receiptID: ID!): Receipt
-    reportBug(report: String!): BugReport!
+    reportBug(contactUsInput: ContactUsInput): BugReport!
   }
 `;

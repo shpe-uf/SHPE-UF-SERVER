@@ -689,3 +689,45 @@ module.exports.validateRentalRequest = (
     valid: Object.keys(errors).length < 1,
   };
 };
+
+module.exports.validateContactUsForm = (
+  firstName,
+  lastName,
+  email,
+  reportType,
+  report,
+) => {
+  const errors = {};
+
+  const emailValidator = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
+
+  if (firstName.trim() === "") {
+    errors.firstName = "First name is required.";
+  }
+
+  if (lastName.trim() === "") {
+    errors.lastName = "Last Name is required.";
+  }
+
+  if (email.trim() === "") {
+    errors.email = "Email is required.";
+  } else {
+    if (!email.match(emailValidator)) {
+      errors.email = "Invalid email address.";
+    }
+  }
+
+  if (reportType === "") {
+    errors.reportType = "Goal is required.";
+  }
+
+  if (report === "") {
+    errors.report = "Message is required.";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+
+}

@@ -4,17 +4,40 @@ const bugReport = require("../../models/BugReport.js");
 
 require("dotenv").config();
 
+const { validateContactUsForm } = require("../../util/validators");
+
 module.exports = {
     Mutation: {
-        async reportBug(_, { report } ) {
+        async reportBug(_, 
+            { contactUsInput: 
+                {
+                    firstName, 
+                    lastName, 
+                    email, 
+                    reportType, 
+                    report
+                } 
+            } 
+        ) {
+            const { valid, errors } = validateContactUsForm(
+                firstName,
+                lastName,
+                email,
+                reportType,
+                report,
+            );
 
-            if(report.length === 0) {
-                throw new UserInputError("Empty String", {
-                    error: "empty string",
-                  });
+            if (!valid) {
+                throw new UserInputError("Errors", {
+                  errors
+                });
             }
 
             const newReport = new bugReport({
+                firstName,
+                lastName,
+                email,
+                reportType,
                 report
             });
 
