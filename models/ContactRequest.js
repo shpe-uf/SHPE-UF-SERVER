@@ -1,6 +1,6 @@
 const { model, Schema } = require("mongoose");
 
-const reportBugSchema = new Schema({
+const contactRequestSchema = new Schema({
     firstName: {
         type: String,
         required: true,
@@ -13,17 +13,16 @@ const reportBugSchema = new Schema({
         type: String,
         required: true,
         lowercase: true,
-       // unique: true,
     },
-    reportType: {
+    messageType: {
         type: String,
         required: true,
     },
-    report: {
+    message: {
         type: String,
         required: true
     },
 
 })
 
-module.exports = model("bugReport", reportBugSchema);
+module.exports = model("contactRequest", contactRequestSchema);

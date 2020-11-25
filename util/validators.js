@@ -694,8 +694,8 @@ module.exports.validateContactUsForm = (
   firstName,
   lastName,
   email,
-  reportType,
-  report,
+  messageType,
+  message,
 ) => {
   const errors = {};
 
@@ -703,10 +703,18 @@ module.exports.validateContactUsForm = (
 
   if (firstName.trim() === "") {
     errors.firstName = "First name is required.";
+  } else {
+    if (firstName.length > 20) {
+      errors.firstName = "First name must be 20 characters max."
+    }
   }
 
   if (lastName.trim() === "") {
     errors.lastName = "Last Name is required.";
+  } else {
+    if (lastName.length > 20) {
+      errors.lastName = "Last name must be 20 characters max."
+    }
   }
 
   if (email.trim() === "") {
@@ -717,12 +725,16 @@ module.exports.validateContactUsForm = (
     }
   }
 
-  if (reportType === "") {
-    errors.reportType = "Goal is required.";
+  if (messageType === "") {
+    errors.messageType = "Goal is required.";
   }
 
-  if (report === "") {
-    errors.report = "Message is required.";
+  if (message === "") {
+    errors.message = "Message is required.";
+  } else {
+    if (message.length > 500) {
+      errors.message = "Message needs to be 500 characters max."
+    }
   }
 
   return {

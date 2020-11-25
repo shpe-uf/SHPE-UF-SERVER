@@ -153,12 +153,12 @@ module.exports = gql`
     deleted: Boolean
   }
 
-  type BugReport {
+  type ContactRequest {
     firstName: String!
     lastName: String!
     email: String!
-    reportType: String!
-    report: String!
+    messageType: String!
+    message: String!
   }
 
   ### AUXILIARY TYPES ###
@@ -361,12 +361,12 @@ module.exports = gql`
     execute: Boolean!
   }
 
-  input ContactUsInput {
+  input ContactUsFormInput {
     firstName: String!
     lastName: String!
     email: String!
-    reportType: String!
-    report: String!
+    messageType: String!
+    message: String!
   }
 
   ### AUXILIARY INPUTS ###
@@ -465,6 +465,6 @@ module.exports = gql`
     unPickUpItem(receiptID: ID!): Receipt
     unReturnItem(receiptID: ID!): Receipt
     deleteReceipt(receiptID: ID!): Receipt
-    reportBug(contactUsInput: ContactUsInput): BugReport!
+    submitContactRequest(contactUsFormInput: ContactUsFormInput): ContactRequest!
   }
 `;

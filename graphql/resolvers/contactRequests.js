@@ -1,6 +1,6 @@
 const { UserInputError } = require("apollo-server");
 
-const bugReport = require("../../models/BugReport.js");
+const contactRequest = require("../../models/ContactRequest.js");
 
 require("dotenv").config();
 
@@ -8,14 +8,14 @@ const { validateContactUsForm } = require("../../util/validators");
 
 module.exports = {
     Mutation: {
-        async reportBug(_, 
-            { contactUsInput: 
+        async submitContactRequest(_, 
+            { contactUsFormInput: 
                 {
                     firstName, 
                     lastName, 
                     email, 
-                    reportType, 
-                    report
+                    messageType, 
+                    message
                 } 
             } 
         ) {
@@ -23,8 +23,8 @@ module.exports = {
                 firstName,
                 lastName,
                 email,
-                reportType,
-                report,
+                messageType,
+                message,
             );
 
             if (!valid) {
@@ -33,17 +33,17 @@ module.exports = {
                 });
             }
 
-            const newReport = new bugReport({
+            const newContactRequest = new contactRequest({
                 firstName,
                 lastName,
                 email,
-                reportType,
-                report
+                messageType,
+                message
             });
 
-            await newReport.save();
+            await newContactRequest.save();
 
-            return newReport;
+            return newContactRequest;
         },
     }
 }
