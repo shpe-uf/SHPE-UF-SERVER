@@ -725,15 +725,15 @@ module.exports.validateContactUsForm = (
     }
   }
 
-  if (messageType === "") {
+  if (messageType.trim() === "") {
     errors.messageType = "Goal is required.";
   }
 
-  if (message === "") {
+  if (message.trim() === "") {
     errors.message = "Message is required.";
   } else {
     if (message.length > 500) {
-      errors.message = "Message needs to be 500 characters max."
+      errors.message = "Message must be 500 characters max."
     }
   }
 

@@ -9,14 +9,12 @@ const { validateContactUsForm } = require("../../util/validators");
 module.exports = {
     Mutation: {
         async submitContactRequest(_, 
-            { contactUsFormInput: 
-                {
-                    firstName, 
-                    lastName, 
-                    email, 
-                    messageType, 
-                    message
-                } 
+            {
+                firstName, 
+                lastName, 
+                email, 
+                messageType, 
+                message
             } 
         ) {
             const { valid, errors } = validateContactUsForm(

@@ -361,14 +361,6 @@ module.exports = gql`
     execute: Boolean!
   }
 
-  input ContactUsFormInput {
-    firstName: String!
-    lastName: String!
-    email: String!
-    messageType: String!
-    message: String!
-  }
-
   ### AUXILIARY INPUTS ###
   input UndergradInput {
     university: String!
@@ -465,6 +457,12 @@ module.exports = gql`
     unPickUpItem(receiptID: ID!): Receipt
     unReturnItem(receiptID: ID!): Receipt
     deleteReceipt(receiptID: ID!): Receipt
-    submitContactRequest(contactUsFormInput: ContactUsFormInput): ContactRequest!
+    submitContactRequest(
+      firstName: String!
+      lastName: String!
+      email: String!
+      messageType: String!
+      message: String!
+    ): ContactRequest!
   }
 `;
