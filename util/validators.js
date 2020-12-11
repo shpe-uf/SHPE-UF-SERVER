@@ -689,3 +689,57 @@ module.exports.validateRentalRequest = (
     valid: Object.keys(errors).length < 1,
   };
 };
+
+module.exports.validateContactUsForm = (
+  firstName,
+  lastName,
+  email,
+  messageType,
+  message,
+) => {
+  const errors = {};
+
+  const emailValidator = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
+
+  if (firstName.trim() === "") {
+    errors.firstName = "First name is required.";
+  } else {
+    if (firstName.length > 20) {
+      errors.firstName = "First name must be 20 characters max."
+    }
+  }
+
+  if (lastName.trim() === "") {
+    errors.lastName = "Last Name is required.";
+  } else {
+    if (lastName.length > 20) {
+      errors.lastName = "Last name must be 20 characters max."
+    }
+  }
+
+  if (email.trim() === "") {
+    errors.email = "Email is required.";
+  } else {
+    if (!email.match(emailValidator)) {
+      errors.email = "Invalid email address.";
+    }
+  }
+
+  if (messageType.trim() === "") {
+    errors.messageType = "Goal is required.";
+  }
+
+  if (message.trim() === "") {
+    errors.message = "Message is required.";
+  } else {
+    if (message.length > 500) {
+      errors.message = "Message must be 500 characters max."
+    }
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+
+}
