@@ -120,7 +120,10 @@ module.exports = {
               `Item: ${item}\n` +
               `Quantity: ${numberOfItems}\n` +
               `Date: ${newDate}\n` +
-              "This will have an official message later"
+              `\n` +
+              `In order to pick up your item, please visit a SHPE Rentals director in the SHPE Office in Weil Hall in room 276A\n\n` +
+              `SHPE Rentals directors are in the office on Mondays 10:00 am - 12:00 pm or Thursdays 1:00 pm - 3:00 pm.\n\n` +
+              `If this is an urgent request you can contact a SHPE Rentals director directly at juansuhr@ufl.edu or rolando.angulo@ufl.edu`
         };
     
         transporter.sendMail(requesterMail, (err, response) => {
@@ -133,7 +136,7 @@ module.exports = {
 
         const rentalAdminMail = {
             from: process.env.EMAIL,
-            to: `juansuhr@gmail.com`,
+            to: `juansuhr@ufl.edu`,
             subject: "Rental Request - " + `${username} ${item}`,
             text:
               "There is a new request for rental.\n\n" +
