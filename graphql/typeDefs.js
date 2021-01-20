@@ -153,6 +153,14 @@ module.exports = gql`
     deleted: Boolean
   }
 
+  type ContactRequest {
+    firstName: String!
+    lastName: String!
+    email: String!
+    messageType: String!
+    message: String!
+  }
+
   ### AUXILIARY TYPES ###
   type StatData {
     _id: String!
@@ -449,5 +457,12 @@ module.exports = gql`
     unPickUpItem(receiptID: ID!): Receipt
     unReturnItem(receiptID: ID!): Receipt
     deleteReceipt(receiptID: ID!): Receipt
+    submitContactRequest(
+      firstName: String!
+      lastName: String!
+      email: String!
+      messageType: String!
+      message: String!
+    ): ContactRequest!
   }
 `;
