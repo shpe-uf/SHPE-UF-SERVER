@@ -161,6 +161,11 @@ module.exports = gql`
     message: String!
   }
 
+  type MentorPair {
+    mentor: String!
+    mentee: String!
+  }
+
   ### AUXILIARY TYPES ###
   type StatData {
     _id: String!
@@ -361,6 +366,11 @@ module.exports = gql`
     execute: Boolean!
   }
 
+  input MentorPairInput {
+    mentor: String!
+    mentee: String!
+  }
+
   ### AUXILIARY INPUTS ###
   input UndergradInput {
     university: String!
@@ -400,6 +410,7 @@ module.exports = gql`
     getInventory: [Rentable]
     getItem(item: String): Rentable
     getReceipts: [Receipt]
+    getMentorPairs: [MentorPair]
   }
 
   ### MUTATIONS LIST ###
@@ -464,5 +475,6 @@ module.exports = gql`
       messageType: String!
       message: String!
     ): ContactRequest!
+    createMentorPair(mentorPairInput: MentorPairInput): MentorPair!
   }
 `;
