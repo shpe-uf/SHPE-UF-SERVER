@@ -35,7 +35,7 @@ module.exports = gql`
     summerPercentile: Int!
     bookmarks: [String]!
     classes: [String]
-    internships: [String]
+    internships: [ID]
     socialMedia: [String]
   }
 
@@ -89,6 +89,7 @@ module.exports = gql`
     fallBBQ: Boolean!
     springBBQ: Boolean!
     nationalConvention: Boolean!
+    interns: [ID]
   }
 
   type Request {
@@ -343,7 +344,7 @@ module.exports = gql`
     ethnicity: String!
     sex: String!
     classes: [String]
-    internships: [String]
+    internships: [ID]
     socialMedia: [String]
   }
 

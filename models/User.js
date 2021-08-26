@@ -1,6 +1,8 @@
-const { model, Schema } = require("mongoose");
+const { model, Schema} = require("mongoose");
+const mongoose = require("mongoose");
 const Event = require("./Event").schema;
 const Task = require("./Task").schema;
+const Corporation = require("./Corporation").schema;
 
 const userSchema = new Schema({
   firstName: {
@@ -81,7 +83,7 @@ const userSchema = new Schema({
   },
   listServ: Boolean,
   internships: {
-    type: [String],
+    type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Corporation'}],
   },
   socialMedia: {
     type: [String],

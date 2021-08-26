@@ -1,4 +1,6 @@
 const { model, Schema } = require("mongoose");
+const mongoose = require("mongoose");
+const User = require("./User");
 
 const corporationSchema = new Schema({
   name: {
@@ -80,6 +82,9 @@ const corporationSchema = new Schema({
   nationalConvention: {
     type: Boolean,
     required: true
+  },
+  interns: {
+    type: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
   }
 });
 
