@@ -406,6 +406,7 @@ module.exports = gql`
 
   type Mutation {
     register(registerInput: RegisterInput): User!
+    deleteUser(deleteId: String!, permUser: String!): String!
     login(username: String!, password: String!, remember: String!): User!
     createCorporation(
       createCorporationInput: CreateCorporationInput

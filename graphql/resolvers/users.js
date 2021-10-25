@@ -19,6 +19,8 @@ const {
   validateEditUserProfile,
 } = require("../../util/validators");
 
+const checkAuth = require("../../util/check-auth")
+
 function generateToken(user, time) {
   return jwt.sign(
     {
@@ -1223,6 +1225,24 @@ module.exports = {
       } else {
         return user;
       }
-    }
+    },
+
+    async deleteUser(_, { deleteId, permUser }){
+      try {
+        const currentUser = await User.findOne({username: permUser})
+        console.log(currentUser)
+        try {
+          const deleteUser = await User.findById(deleteId)
+          if(currentUser.username === deleteUser.username || currentUser.permission.includes("admin")){
+              await deleteUser.delete();
+              return 'User successfully deleted';  }
+          else
+              throw new Error('Insufficient Permissions');
+          } catch(err){
+            throw new Error(err)  }
+      
+      } catch(err){
+        throw err
+      }}    
   }
 };
