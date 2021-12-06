@@ -13,7 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "apollo-server": "^2.14.2",
+    "@sendgrid/mail": "^7.6.0",
+    "apollo-server": "^2.25.3",
     "bcryptjs": "^2.4.3",
     "data-urls": "^1.1.0",
     "dotenv": "^8.2.0",
