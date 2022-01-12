@@ -86,7 +86,6 @@ const userSchema = new Schema({
   socialMedia: {
     type: [String],
   },
-
   events: [
     {
       name: String,
@@ -95,7 +94,6 @@ const userSchema = new Schema({
       points: Number,
     },
   ],
-
   tasks: [
     {
       name: String,
