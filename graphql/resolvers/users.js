@@ -26,7 +26,7 @@ function generateToken(user, time) {
       email: user.email,
       username: user.username,
       firstName: user.firstName,
-      lastName: user.lastName
+      lastName: user.lastName,
     },
     process.env.SECRET,
     {
@@ -170,61 +170,6 @@ module.exports = {
       }
     },
 
-    async getYearStat() {
-      try {
-        const data = await User.aggregate([
-          {
-            $group: {
-              _id: "$year",
-              value: {
-                $sum: 1,
-              },
-            },
-          },
-          {
-            $sort: {
-              _id: 1,
-            },
-          },
-        ]);
-
-        if (data) {
-          return data;
-        } else {
-          throw new Error("Data not found.");
-        }
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
-
-    async getYearStat() {
-      try {
-        const data = await User.aggregate([
-          {
-            $group: {
-              _id: "$year",
-              value: {
-                $sum: 1,
-              },
-            },
-          },
-          {
-            $sort: {
-              _id: 1,
-            },
-          },
-        ]);
-
-        if (data) {
-          return data;
-        } else {
-          throw new Error("Data not found.");
-        }
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
     async getCountryStat() {
       try {
         const data = await User.aggregate([
@@ -281,88 +226,6 @@ module.exports = {
       }
     },
 
-    async getCountryStat() {
-      try {
-        const data = await User.aggregate([
-          {
-            $group: {
-              _id: "$country",
-              value: {
-                $sum: 1,
-              },
-            },
-          },
-          {
-            $sort: {
-              value: -1,
-            },
-          },
-        ]);
-
-        if (data) {
-          return data;
-        } else {
-          throw new Error("Data not found.");
-        }
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
-
-    async getSexStat() {
-      try {
-        const data = await User.aggregate([
-          {
-            $group: {
-              _id: "$sex",
-              value: {
-                $sum: 1,
-              },
-            },
-          },
-          {
-            $sort: {
-              value: -1,
-            },
-          },
-        ]);
-
-        if (data) {
-          return data;
-        } else {
-          throw new Error("Data not found.");
-        }
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
-    async getEthnicityStat() {
-      try {
-        const data = await User.aggregate([
-          {
-            $group: {
-              _id: "$ethnicity",
-              value: {
-                $sum: 1,
-              },
-            },
-          },
-          {
-            $sort: {
-              value: -1,
-            },
-          },
-        ]);
-
-        if (data) {
-          return data;
-        } else {
-          throw new Error("Data not found.");
-        }
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
     async getEthnicityStat() {
       try {
         const data = await User.aggregate([
@@ -837,15 +700,22 @@ module.exports = {
         name,
       });
 
-
       const currentdate = new Date(); //gets ouput in UTC timezone
       //convert the end date string to a proper date object
-      const temp = new Date(Date.parse(task.endDate))
+      const temp = new Date(Date.parse(task.endDate));
       /*
       Set the end date until this end of this day. Because UTC is 4 hours ahead, that means that the end date
       will be 4hrs after midnight of the day specified by the deadline
       */
-      const endDate = new Date(temp.getFullYear(), temp.getMonth(), temp.getDate(), 23, 59,59,999)
+      const endDate = new Date(
+        temp.getFullYear(),
+        temp.getMonth(),
+        temp.getDate(),
+        23,
+        59,
+        59,
+        999
+      );
 
       if (endDate < currentdate) {
         errors.general = "Task Expired";
@@ -1160,14 +1030,7 @@ module.exports = {
       }
     },
 
-    async changePermission(_, 
-      { 
-        email, 
-        currentEmail, 
-        permission 
-      }
-    ) {
-
+    async changePermission(_, { email, currentEmail, permission }) {
       let { errors, valid } = validateEmailInput(email);
 
       if (!valid) {
@@ -1196,7 +1059,7 @@ module.exports = {
         });
       }
 
-      if(!loggedInUser.permission.includes('admin')){
+      if (!loggedInUser.permission.includes("admin")) {
         valid = false;
         errors.general = "Must be an admin to change permission";
         throw new UserInputError("Must be an admin to change permission", {
@@ -1204,7 +1067,7 @@ module.exports = {
         });
       }
 
-      const options = {new: true}
+      const options = { new: true };
 
       const user = await User.findOneAndUpdate(
         {
@@ -1223,6 +1086,6 @@ module.exports = {
       } else {
         return user;
       }
-    }
-  }
+    },
+  },
 };
