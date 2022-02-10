@@ -1087,5 +1087,35 @@ module.exports = {
         return user;
       }
     },
+    async deleteUser(_, { deleteId, permUser }){
+      try {
+        const currentUser = await User.findOne({username: permUser})
+        console.log(currentUser)
+       
+	try {
+          const deleteUser = await User.findById(deleteId)
+          
+	  if(currentUser.username === deleteUser.username || currentUser.permission.includes("admin")){
+              await deleteUser.delete();    
+     	      try {
+       		 const users = await User.find().sort({
+         		 lastName: 1,
+         		 firstName: 1,
+       		 });
+       		 return users;
+     		 } catch (err) {
+       		 	throw new Error(err);
+     		 }
+	  }
+          else
+              throw new Error('Insufficient Permissions');
+          } catch(err){
+            throw new Error(err)
+	  }
+	  }
+	catch(err){
+       	    throw err
+      }
+    },    
   },
 };

@@ -464,5 +464,6 @@ module.exports = gql`
       messageType: String!
       message: String!
     ): ContactRequest!
+    deleteUser(deleteID: ID!, permUser: String!): [User]!
   }
 `;
