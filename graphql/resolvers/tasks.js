@@ -367,6 +367,79 @@ module.exports = {
       tasks = await Task.find();
 
       return tasks;
-    }
+    },
+    async resetTasks(_, {currentEmail}){
+      const checkPermission = await User.findOne({email: currentEmail});
+      if (checkPermission.permission !== 'admin-super'){
+        errors.general = "Insufficient Permissions";
+        throw new UserInputError("Insufficient Permissions"), {
+          errors
+        });
+	return await Task.find(); 
+      }
+
+      const users = await User.find()
+
+      const tasks = await Task.find();
+
+      for await(const task of Task.find()) {
+      	if (!users || !users.length || users.length === 0) {
+          errors.general = "User not found.";
+          throw new UserInputError("User not found.", {
+            errors
+          });
+      	}
+
+      	if (!task) {
+          errors.general = "Task not found.";
+          throw new UserInputError("Task not found.", {
+            errors
+          });
+      	}
+
+      	var pointsDecrease = {};
+
+      	if (task.semester === "Fall Semester") {
+       	  pointsDecrease = {
+            points: -task.points,
+            fallPoints: -task.points
+          };
+        } else if (task.semester === "Spring Semester") {
+          pointsDecrease = {
+            points: -task.points,
+            springPoints: -task.points
+          };
+      	} else if (task.semester === "Summer Semester") {
+          pointsDecrease = {
+            points: -task.points,
+            summerPoints: -task.points
+          };
+        } else {
+          errors.general = "Invalid task.";
+          throw new UserInputError("Invalid task.", {
+            errors
+          });
+      	}
+        await User.updateMany({
+          tasks: {
+            $elemMatch: {
+              name: task.name
+            }
+          }
+        }, {
+          $pull: {
+            tasks: {
+              name: task.name
+            }
+          },
+          $inc: pointsDecrease
+      	})
+      }
+
+      Task.deleteMany();      
+      tasks = await Task.find();
+
+      return tasks;
+    },
   }
 };

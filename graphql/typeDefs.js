@@ -464,5 +464,6 @@ module.exports = gql`
       messageType: String!
       message: String!
     ): ContactRequest!
+    resetTasks(currentEmail: String!): [Task]
   }
 `;
