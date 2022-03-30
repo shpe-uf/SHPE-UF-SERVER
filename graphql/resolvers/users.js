@@ -2,6 +2,7 @@ const { UserInputError } = require("apollo-server");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const nodemailerSendgrid = require("nodemailer-sendgrid");
 
 const User = require("../../models/User.js");
 const Event = require("../../models/Event.js");
@@ -9,6 +10,12 @@ const Request = require("../../models/Request.js");
 const Task = require("../../models/Task.js");
 
 require("dotenv").config();
+
+const transport = nodemailer.createTransport(
+  nodemailerSendgrid({
+    apiKey: process.env.SENDGRID_API_KEY,
+  })
+);
 
 const {
   validateRegisterInput,
@@ -419,30 +426,22 @@ module.exports = {
         email,
       });
 
-      const transporter = nodemailer.createTransport({
-        service: process.env.EMAIL_SERVICE,
-        auth: {
-          user: process.env.EMAIL,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-      });
-
-      const mailOptions = {
-        from: process.env.EMAIL,
-        to: `${user.email}`,
-        subject: "Confirm Email",
-        text:
-          "Thank you for registering, please click on the link below to complete your registration\n\n" +
-          `${process.env.CLIENT_ORIGIN}/confirm/${user._id}\n\n`,
-      };
-
-      transporter.sendMail(mailOptions, (err, response) => {
-        if (err) {
+      transport
+        .sendMail({
+          from: process.env.EMAIL,
+          to: user.email,
+          subject: "Confirm Email",
+          html:
+            "Thank you for registering, please click on the link below to complete your registration\n\n" +
+            `${process.env.CLIENT_ORIGIN}/confirm/${user._id}\n\n`,
+        })
+        .then(() => {
+          res.status(200).json("confirmation email sent");
+        })
+        .catch(() => {
           console.error("there was an error: ", err);
-        } else {
-          res.status(200).json("recovery email sent");
-        }
-      });
+        });
+
       return {
         ...res._doc,
         id: res._id,
