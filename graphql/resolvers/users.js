@@ -429,7 +429,7 @@ module.exports = {
       transport
         .sendMail({
           from: process.env.EMAIL,
-          to: user.email,
+          to: email,
           subject: "Confirm Email",
           html:
             "Thank you for registering, please click on the link below to complete your registration\n\n" +
@@ -856,24 +856,23 @@ module.exports = {
         },
       });
 
-      const mailOptions = {
-        from: process.env.EMAIL,
-        to: `${user.email}`,
-        subject: "Reset Password",
-        text:
-          "You have requested the reset of the password for your account for shpe.com\n\n" +
-          "Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n" +
-          `${process.env.CLIENT_ORIGIN}/reset/${token}\n\n` +
-          "If you did not request this, please ignore this email and your password will remain unchanged.\n",
-      };
-
-      transporter.sendMail(mailOptions, (err, response) => {
-        if (err) {
+      transport
+        .sendMail({
+          from: process.env.EMAIL,
+          to: email,
+          subject: "Reset Password",
+          html:
+            "You have requested the reset of the password for your account for shpe.com\n\n" +
+            "Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n" +
+            `${process.env.CLIENT_ORIGIN}/reset/${token}\n\n` +
+            "If you did not request this, please ignore this email and your password will remain unchanged.\n",
+        })
+        .then(() => {
+          res.status(200).json("Reset password email sent");
+        })
+        .catch(() => {
           console.error("there was an error: ", err);
-        } else {
-          res.status(200).json("recovery email sent");
-        }
-      });
+        });
 
       return {
         ...newUser._doc,

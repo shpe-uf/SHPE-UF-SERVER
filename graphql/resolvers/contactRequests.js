@@ -1,12 +1,17 @@
 const { UserInputError } = require("apollo-server");
+const nodemailer = require("nodemailer");
+const nodemailerSendgrid = require("nodemailer-sendgrid");
 
-const contactRequest = require("../../models/ContactRequest.js");
-const sgMail = require("@sendgrid/mail");
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 require("dotenv").config();
 
+const contactRequest = require("../../models/ContactRequest.js");
 const { validateContactUsForm } = require("../../util/validators");
+
+const transport = nodemailer.createTransport(
+  nodemailerSendgrid({
+    apiKey: process.env.SENDGRID_API_KEY,
+  })
+);
 
 module.exports = {
   Mutation: {
@@ -38,23 +43,28 @@ module.exports = {
 
       await newContactRequest.save();
 
-      const msg = {
-        to: "vptech.shpeuf@gmail.com",
-        from: "shpeufdev@gmail.com",
-        subject: "Contact Request From " + firstName + " " + lastName,
-        text: "Here's a Request from the Website!",
-        html:
-          "<strong>Contact Request Type:</strong> " + messageType + "<br>" +
-          "<strong>Message:</strong> " + message + "<br>" +
-          "To reply to " + firstName + ", email " + email,
-      };
-      sgMail
-        .send(msg)
-        .then(() => {
-          console.log("Email sent");
+      transport
+        .sendMail({
+          from: process.env.EMAIL,
+          to: "vptech.shpeuf@gmail.com",
+          subject: "Contact Request From " + firstName + " " + lastName,
+          html:
+            "<strong>Contact Request Type:</strong> " +
+            messageType +
+            "<br>" +
+            "<strong>Message:</strong> " +
+            message +
+            "<br>" +
+            "To reply to " +
+            firstName +
+            ", email " +
+            email,
         })
-        .catch((error) => {
-          console.error(error);
+        .then(() => {
+          console.log("Bug Report Email sent!");
+        })
+        .catch(() => {
+          console.log("Oh no! The email didn't send for some reason :(");
         });
 
       return newContactRequest;
