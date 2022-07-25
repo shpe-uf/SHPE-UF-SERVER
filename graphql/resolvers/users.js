@@ -305,7 +305,6 @@ module.exports = {
 
       time = remember === "true" || remember === true ? "30d" : "24h";
       const token = generateToken(user, time);
-
       return {
         ...user._doc,
         id: user._id,
