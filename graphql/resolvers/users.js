@@ -447,7 +447,7 @@ module.exports = {
       };
     },
 
-    async redeemPoints(_, { redeemPointsInput: { code, username } }) {
+    async redeemPoints(_, { redeemPointsInput: { code, username, guests } }) {
       code = code.toLowerCase().trim().replace(/ /g, "");
 
       const { valid, errors } = validateRedeemPointsInput(code);
@@ -476,6 +476,13 @@ module.exports = {
       if (!user) {
         errors.general = "User not found.";
         throw new UserInputError("User not found.", {
+          errors,
+        });
+      }
+
+      if (guests < 0 || guests > 5) {
+        errors.general = "Guests count exceeds limits.";
+        throw new UserInputError("Guests count exceeds limits.", {
           errors,
         });
       }
@@ -627,7 +634,7 @@ module.exports = {
               },
             },
             $inc: {
-              attendance: 1,
+              attendance: 1 + guests,
             },
           },
           {
