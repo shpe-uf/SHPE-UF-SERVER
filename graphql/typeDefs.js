@@ -53,7 +53,6 @@ module.exports = gql`
     users: [User]!
   }
 
-
   type Task {
     id: ID!
     name: String!
@@ -130,7 +129,7 @@ module.exports = gql`
     amount: String!
   }
 
-  type Rentable{
+  type Rentable {
     item: String!
     quantity: Int!
     level: Int!
@@ -141,7 +140,7 @@ module.exports = gql`
     image: String!
   }
 
-  type Receipt{
+  type Receipt {
     id: ID!
     username: String!
     item: String!
@@ -286,6 +285,7 @@ module.exports = gql`
   input RedeemPointsInput {
     code: String!
     username: String!
+    guests: Int!
   }
 
   input bookmarkTaskInput {
