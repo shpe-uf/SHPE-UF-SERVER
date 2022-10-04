@@ -24,6 +24,7 @@ module.exports = {
                 reimbursementInput: {
                     firstName,
                     lastName,
+                    eventFlyer,
                     email,
                     studentId,
                     address,
@@ -32,6 +33,8 @@ module.exports = {
                     description,
                     reimbursed,
                     amount,
+                    ufEmployee,
+                    receiptPhoto,
                     execute
                 }
             }
@@ -46,7 +49,10 @@ module.exports = {
                 event,
                 description,
                 reimbursed,
-                amount
+                amount,
+                receiptPhoto,
+                ufEmployee,
+                eventFlyer,
             );
 
             if (!valid) {
@@ -54,6 +60,8 @@ module.exports = {
                     errors
                 });
             }
+
+            ufEmployee = ufEmployee === "true" || ufEmployee === true ? true : false; 
 
                 const newReimbursement = new Reimbursement({
                     firstName,
@@ -65,7 +73,10 @@ module.exports = {
                     event,
                     description,
                     reimbursed,
-                    amount
+                    amount,
+                    ufEmployee,
+                    receiptPhoto,
+                    eventFlyer,
                 });
 
             if (execute) {
@@ -89,11 +100,14 @@ module.exports = {
                       `Name: ${firstName} ${lastName}\n` +
                       `Email: ${email}\n` +
                       `Student ID: ${studentId}\n` +
+                      `UF Employee: ${ufEmployee.toString()}` +
                       `Address: ${address}\n` +
                       `Company: ${company}\n` +
                       `Event: ${event}\n` +
                       `Event description: ${description}\n` +
                       `Amount: $${amount}\n\n` +
+                      `Receipt: ${receiptPhoto}\n`+
+                      `Event Flyer: ${eventFlyer}\n` +
                       "You will get a confirmation email when your request is approved. If you have any questions, send us an email at treasurer.shpeuf@gmail.com!"
                 };
             
@@ -115,11 +129,14 @@ module.exports = {
                       `Name: ${firstName} ${lastName}\n` +
                       `Email: ${email}\n` +
                       `Student ID: ${studentId}\n` +
+                      `UF Employee: ${ufEmployee.toString()}\n` +
                       `Address: ${address}\n` +
                       `Company: ${company}\n` +
                       `Event: ${event}\n` +
                       `Event description: ${description}\n` +
-                      `Amount: $${amount}\n\n`
+                      `Amount: $${amount}\n\n` +
+                      `Receipt: ${receiptPhoto}\n` +
+                      `Event Flyer: ${eventFlyer}\n`
                 };
 
                 transporter.sendMail(treasuryMail, (err, response) => {

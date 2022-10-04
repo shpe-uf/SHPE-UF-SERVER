@@ -127,6 +127,9 @@ module.exports = gql`
     description: String!
     reimbursed: String!
     amount: String!
+    ufEmployee: Boolean!
+    receiptPhoto: String!
+    eventFlyer: String!
   }
 
   type Rentable {
@@ -358,6 +361,9 @@ module.exports = gql`
     description: String!
     reimbursed: String!
     amount: String!
+    ufEmployee: String!
+    receiptPhoto: String!
+    eventFlyer: String!
     execute: Boolean!
   }
 

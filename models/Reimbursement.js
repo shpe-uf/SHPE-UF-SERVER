@@ -38,8 +38,20 @@ const reimbursementSchema = new Schema({
         required: true
     },
     amount: {
-        type: Number,
+        type: String,
         required: true
+    },
+    ufEmployee: {
+        type: Boolean,
+        required: true
+    },
+    receiptPhoto: {
+        type: String,
+        required: false
+    },
+    eventFlyer: {
+        type: String,
+        required: false
     }
 });
 

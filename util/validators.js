@@ -637,12 +637,6 @@ module.exports.validateReimbursementRequest = (
 
   if (amount.trim() === "") {
     errors.amount = "Amount is required."
-  } else if (isNaN(amount)) {
-    errors.amount = "For amount only enter numbers."
-  } else {
-    if (amount < 0) {
-      errors.amount = "Amount cannot be negative.";
-    }
   }
 
   if (address.trim() === "") {
