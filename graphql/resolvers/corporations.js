@@ -11,7 +11,7 @@ module.exports = {
   Query: {
     async getCorporations() {
       try {
-        const corporations = await Corporation.find().sort({ createdAt: 1 });
+        const corporations = await Corporation.find().sort({ name: 1 });
         return corporations;
       } catch (err) {
         throw new Error(err);
