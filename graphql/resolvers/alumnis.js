@@ -1,4 +1,4 @@
-const { UserInputError } = require("apollo-server");
+const { UserInputError } = require("@apollo/server");
 const nodegeocoder = require("node-geocoder");
 
 const Alumni = require("../../models/Alumni.js");

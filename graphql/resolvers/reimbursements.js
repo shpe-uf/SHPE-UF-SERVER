@@ -1,4 +1,4 @@
-const { UserInputError } = require("apollo-server");
+const { UserInputError } = require("@apollo/server");
 const Reimbursement = require("../../models/Reimbursement.js");
 const { validateReimbursementRequest } = require("../../util/validators");
 const nodemailer = require("nodemailer");
