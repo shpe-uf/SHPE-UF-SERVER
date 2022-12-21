@@ -1,4 +1,4 @@
-const { UserInputError } = require("apollo-server");
+const { UserInputError } = require("@apollo/server");
 const Corporation = require("../../models/Corporation.js");
 
 require("dotenv").config();

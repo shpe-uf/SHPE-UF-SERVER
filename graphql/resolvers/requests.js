@@ -1,6 +1,6 @@
 const {
   UserInputError
-} = require("apollo-server");
+} = require("@apollo/server");
 const Request = require("../../models/Request.js");
 const Event = require("../../models/Event.js");
 const Task = require("../../models/Task.js");
