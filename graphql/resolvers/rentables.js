@@ -1,4 +1,4 @@
-const { UserInputError } = require("apollo-server");
+const { UserInputError } = require("@apollo/server");
 const Rentable = require("../../models/Rentable.js")
 const Receipt = require("../../models/Receipt.js")
 const User = require("../../models/User.js")
