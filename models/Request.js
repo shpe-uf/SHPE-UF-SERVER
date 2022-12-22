@@ -1,37 +1,37 @@
-const { model, Schema } = require("mongoose");
-const User = require("./User").schema;
-const Event = require("./Event").schema;
+const { model, Schema } = require('mongoose');
+const User = require('./User').schema;
+const Event = require('./Event').schema;
 
 const requestSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   type: {
     type: String,
-    required: true
+    required: true,
   },
   points: {
     type: Number,
-    required: true
+    required: true,
   },
   firstName: {
     type: String,
-    required: true
+    required: true,
   },
   lastName: {
     type: String,
-    required: true
+    required: true,
   },
   username: {
     type: String,
     required: true,
-    lowercase: true
+    lowercase: true,
   },
   createdAt: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
-module.exports = model("Request", requestSchema);
+module.exports = model('Request', requestSchema);

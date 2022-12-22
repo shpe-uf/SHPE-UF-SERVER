@@ -1,6 +1,5 @@
-const {
-  UserInputError
-} = require("@apollo/server");
+const { GraphQLError } = require("graphql");
+const { ApolloServerErrorCode } = require('@apollo/server/errors');
 const Request = require("../../models/Request.js");
 const Event = require("../../models/Event.js");
 const Task = require("../../models/Task.js");
@@ -94,8 +93,13 @@ module.exports = {
           };
         } else {
           errors.general = "Invalid event.";
-          throw new UserInputError("Invalid event.", {
-            errors
+          throw new GraphQLError("Invalid event.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
@@ -164,8 +168,13 @@ module.exports = {
           };
         } else {
           errors.general = "Invalid Task.";
-          throw new UserInputError("Invalid Task.", {
-            errors
+          throw new GraphQLError("Invalid Task.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
