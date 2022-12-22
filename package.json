@@ -5,14 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "prettier": "./node_modules/.bin/prettier --single-quote --write './src/**/*.{js,css,json,py}'",
+    "prettier": "./node_modules/.bin/prettier --single-quote --write '*.{js,css,json}'",
     "precommit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.{js,css,json,py}": [
-      "./node_modules/.bin/prettier --single-quote --write",
-      "git add"
-    ]
   },
   "engines": {
     "node": "16.17.0"
@@ -35,11 +29,17 @@
     "nodemailer": "^6.7.2",
     "nodemailer-sendgrid": "^1.0.3",
     "nodemon": "^2.0.20",
-    "prettier": "^2.8.1",
     "react-mapbox-gl": "^4.8.2"
+  },
+  "lint-staged": {
+    "*.{js,css,json}": [
+      "./node_modules/.bin/prettier --single-quote --write",
+      "git add"
+    ]
   },
   "devDependencies": {
     "husky": "^8.0.2",
-    "lint-staged": "^13.1.0"
+    "lint-staged": "^13.1.0",
+    "prettier": "^2.8.1"
   }
 }
