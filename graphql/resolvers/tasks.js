@@ -1,4 +1,5 @@
-const { UserInputError } = require("@apollo/server");
+const { GraphQLError } = require("graphql");
+const { ApolloServerErrorCode } = require('@apollo/server/errors');
 const Task = require("../../models/Task");
 const User = require("../../models/User.js");
 const Request = require("../../models/Request.js");
@@ -39,7 +40,14 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new UserInputError("Errors", { errors });
+        throw new GraphQLError("Errors", { 
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
+         });
       }
 
       // REVISIT THIS LATER TO DETERMINE SEMESTER EITHER WHEN TASK BEGINS OR ENDS.
@@ -50,10 +58,14 @@ module.exports = {
       isTaskDuplicate = await Task.findOne({ name });
 
       if (isTaskDuplicate) {
-        throw new UserInputError("A task with that name already exists.", {
-          errors: {
-            name: "A task with that name already exists."
-          }
+        errors.name = "A task with that name already exists.";
+        throw new GraphQLError("A task with that name already exists.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -91,8 +103,13 @@ module.exports = {
       const { valid, errors } = validateManualTaskInputInput(username);
 
       if (!valid) {
-        throw new UserInputError("User input errors.", {
-          errors
+        throw new GraphQLError("User input errors.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -111,25 +128,40 @@ module.exports = {
 
       if (!user) {
         errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors
+        throw new GraphQLError("User not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if (!task) {
         errors.general = "Task not found.";
-        throw new UserInputError("Task not found.", {
-          errors
+        throw new GraphQLError("Task not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if (request) {
         errors.general =
           "This member has sent a request for this task. Check the Requests tab.";
-        throw new UserInputError(
+        throw new GraphQLError(
           "This member has sent a request for this task. Check the Requests tab.",
           {
-            errors
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           }
         );
       }
@@ -137,8 +169,13 @@ module.exports = {
       user.tasks.map(userTask => {
         if (String(userTask.name) == String(task.name)) {
           errors.general = "Task already redeemed by the user.";
-          throw new UserInputError("Task already redeemed by the user.", {
-            errors
+          throw new GraphQLError("Task already redeemed by the user.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
       });
@@ -162,8 +199,13 @@ module.exports = {
         };
       } else {
         errors.general = "Invalid task.";
-        throw new UserInputError("Invalid task.", {
-          errors
+        throw new GraphQLError("Invalid task.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
       
@@ -235,8 +277,13 @@ module.exports = {
       const { valid, errors } = validateManualTaskInputInput(username);
 
       if (!valid) {
-        throw new UserInputError("User input errors.", {
-          errors
+        throw new GraphQLError("User input errors.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -250,22 +297,37 @@ module.exports = {
 
       if (!user) {
         errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors
+        throw new GraphQLError("User not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if (!task) {
         errors.general = "Task not found.";
-        throw new UserInputError("Task not found.", {
-          errors
+        throw new GraphQLError("Task not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if(!user.tasks.map(e => e.name).includes(task.name)) {
         errors.general = "User is not member of task.";
-        throw new UserInputError("User is not member of Task.", {
-          errors
+        throw new GraphQLError("User is not member of Task.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -292,8 +354,13 @@ module.exports = {
         });
       } else {
         errors.general = "Invalid task.";
-        throw new UserInputError("Invalid task.", {
-          errors
+        throw new GraphQLError("Invalid task.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
       
@@ -311,15 +378,25 @@ module.exports = {
 
       if (!users || !users.length || users.length === 0) {
         errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors
+        throw new GraphQLError("User not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if (!task) {
         errors.general = "Task not found.";
-        throw new UserInputError("Task not found.", {
-          errors
+        throw new GraphQLError("Task not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -342,8 +419,13 @@ module.exports = {
         };
       } else {
         errors.general = "Invalid task.";
-        throw new UserInputError("Invalid task.", {
-          errors
+        throw new GraphQLError("Invalid task.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 

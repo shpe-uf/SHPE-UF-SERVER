@@ -1,4 +1,5 @@
-const { UserInputError } = require("@apollo/server");
+const { GraphQLError } = require("graphql");
+const { ApolloServerErrorCode } = require('@apollo/server/errors');
 const Corporation = require("../../models/Corporation.js");
 
 require("dotenv").config();
@@ -62,16 +63,17 @@ module.exports = {
       );
       
       if (!valid) {
-        throw new UserInputError("Errors", { errors });
+        throw new GraphQLError("Errors", {
+          errors,
+        });
       }
 
       isCorporationNameDuplicate = await Corporation.findOne({ name });
 
       if (isCorporationNameDuplicate) {
-        throw new UserInputError("This corporation is already in our database.", {
-          errors: {
-            name: "This corporation is already in our database."
-          }
+        errors.name =  "This corporation is already in our database.";
+        throw new GraphQLError("This corporation is already in our database.", {
+          errors,
         });
       }
 
@@ -159,7 +161,9 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new UserInputError("Errors", {errors});
+        throw new GraphQLError("Errors", {
+          errors
+        });
       }
 
       academia = (academia === "true" || academia === true) ? true : false;

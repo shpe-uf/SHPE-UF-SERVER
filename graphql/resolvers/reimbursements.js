@@ -1,4 +1,5 @@
-const { UserInputError } = require("@apollo/server");
+const { GraphQLError } = require("graphql");
+const { ApolloServerErrorCode } = require('@apollo/server/errors');
 const Reimbursement = require("../../models/Reimbursement.js");
 const { validateReimbursementRequest } = require("../../util/validators");
 const nodemailer = require("nodemailer");
@@ -56,8 +57,13 @@ module.exports = {
             );
 
             if (!valid) {
-                throw new UserInputError("Errors", {
-                    errors
+                throw new GraphQLError("Errors", {
+                    extensions: {
+                        exception: {
+                          code: ApolloServerErrorCode.BAD_USER_INPUT,
+                          errors,
+                        }
+                    },
                 });
             }
 
