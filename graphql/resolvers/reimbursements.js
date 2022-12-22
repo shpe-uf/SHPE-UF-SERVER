@@ -19,7 +19,7 @@ module.exports = {
     },
 
     Mutation: {
-        async reimbursementRequest(
+        async reimbursementRequest( 
             _,
             {
                 reimbursementInput: {

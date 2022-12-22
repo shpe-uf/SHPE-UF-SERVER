@@ -4,7 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index"
+    "start": "node index",
+    "prettier": "./node_modules/.bin/prettier --single-quote --write './src/**/*.{js,css,json,py}'",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,css,json,py}": [
+      "./node_modules/.bin/prettier --single-quote --write",
+      "git add"
+    ]
   },
   "engines": {
     "node": "16.17.0"
@@ -19,7 +27,9 @@
     "data-urls": "^1.1.0",
     "dotenv": "^8.2.0",
     "graphql-tag": "^2.12.6",
-    "jsonwebtoken": "^8.5.1",
+    "husky": "^8.0.2",
+    "jsonwebtoken": "^9.0.0",
+    "lint-staged": "^13.1.0",
     "mongo": "^0.1.0",
     "mongoose": "^5.7.9",
     "node": "^16.17.0",
@@ -27,6 +37,7 @@
     "nodemailer": "^6.7.2",
     "nodemailer-sendgrid": "^1.0.3",
     "nodemon": "^2.0.20",
+    "prettier": "^2.8.1",
     "react-mapbox-gl": "^4.8.2"
   }
 }
