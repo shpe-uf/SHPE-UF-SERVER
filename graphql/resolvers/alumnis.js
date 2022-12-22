@@ -1,4 +1,5 @@
-const { UserInputError } = require("@apollo/server");
+const { GraphQLError } = require("graphql");
+const { ApolloServerErrorCode } = require('@apollo/server/errors');
 const nodegeocoder = require("node-geocoder");
 
 const Alumni = require("../../models/Alumni.js");
@@ -54,8 +55,13 @@ module.exports = {
       };
 
       if (!valid) {
-        throw new UserInputError("Errors", {
-          errors
+        throw new GraphQLError("Errors", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -64,10 +70,14 @@ module.exports = {
       const isEmailDuplicate = await Alumni.findOne({ email });
 
       if (isEmailDuplicate) {
-        throw new UserInputError("that e-mail already exists.", {
-          errors: {
-            email: "that email already exists."
-          }
+        errors.email = "that email already exists.";
+        throw new GraphQLError("that e-mail already exists.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -97,13 +107,16 @@ module.exports = {
           coordinates.longitude = res[0].longitude + east + west;
         })
         .catch(function(err) {
-          throw new UserInputError(
+          errors.general = "Invalid location, please check city, state and/or country.";
+          throw new GraphQLError(
             "Invalid location, please check city, state and/or country.",
             {
-              errors: {
-                general:
-                  "Invalid location, please check city, state and/or country."
-              }
+              extensions: {
+                exception: {
+                  code: ApolloServerErrorCode.BAD_USER_INPUT,
+                  errors,
+                }
+              },
             }
           );
         });
