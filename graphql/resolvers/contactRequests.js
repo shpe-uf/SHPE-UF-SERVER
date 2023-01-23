@@ -1,4 +1,5 @@
-const { UserInputError } = require("apollo-server");
+const { GraphQLError } = require("graphql");
+const { ApolloServerErrorCode } = require('@apollo/server/errors');
 const nodemailer = require("nodemailer");
 const nodemailerSendgrid = require("nodemailer-sendgrid");
 
@@ -28,8 +29,13 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new UserInputError("Errors", {
-          errors,
+        throw new GraphQLError("Errors", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
