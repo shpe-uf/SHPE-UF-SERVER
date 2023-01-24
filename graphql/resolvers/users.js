@@ -1,4 +1,5 @@
-const { UserInputError } = require("apollo-server");
+const { GraphQLError } = require("graphql");
+const { ApolloServerErrorCode } = require('@apollo/server/errors');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -271,8 +272,13 @@ module.exports = {
       const { errors, valid } = validateLoginInput(username, password);
 
       if (!valid) {
-        throw new UserInputError("Errors", {
-          errors,
+        throw new GraphQLError("Errors", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -282,8 +288,13 @@ module.exports = {
 
       if (!user) {
         errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors,
+        throw new GraphQLError("User not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -291,8 +302,13 @@ module.exports = {
 
       if (!match) {
         errors.general = "Wrong credentials.";
-        throw new UserInputError("Wrong credentials.", {
-          errors,
+        throw new GraphQLError("Wrong credentials.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -300,8 +316,13 @@ module.exports = {
 
       if (!isConfirmed) {
         errors.general = "User not confirmed.";
-        throw new UserInputError("User not confirmed.", {
-          errors,
+        throw new GraphQLError("User not confirmed.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -355,8 +376,13 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new UserInputError("Errors", {
-          errors,
+        throw new GraphQLError("Errors", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -365,11 +391,15 @@ module.exports = {
       });
 
       if (isUsernameDuplicate) {
-        throw new UserInputError(
+        errors.username = "An account with that username already exists.";
+        throw new GraphQLError(
           "An account with that username already exists.",
           {
-            errors: {
-              username: "An account with that username already exists.",
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
             },
           }
         );
@@ -380,11 +410,15 @@ module.exports = {
       });
 
       if (isEmailDuplicate) {
-        throw new UserInputError(
+        errors.email = "An account with that email already exists.";
+        throw new GraphQLError(
           "An account with that e-mail already exists.",
           {
-            errors: {
-              email: "An account with that email already exists.",
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
             },
           }
         );
@@ -456,8 +490,10 @@ module.exports = {
       const { valid, errors } = validateRedeemPointsInput(code);
 
       if (!valid) {
-        throw new UserInputError("Errors", {
-          errors,
+        throw new GraphQLError("Errors", {
+          extensions: {
+            code: ApolloServerErrorCode.BAD_USER_INPUT,
+          },
         });
       }
 
@@ -471,37 +507,62 @@ module.exports = {
 
       if (!event) {
         errors.general = "Event not found.";
-        throw new UserInputError("Event not found.", {
-          errors,
+        throw new GraphQLError("Event not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if (!user) {
         errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors,
+        throw new GraphQLError("User not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if (guests < 0 || guests > 5) {
         errors.general = "Guests count exceeds limits.";
-        throw new UserInputError("Guests count exceeds limits.", {
-          errors,
+        throw new GraphQLError("Guests count exceeds limits.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if (Date.parse(event.expiration) < Date.now()) {
         errors.general = "Event code expired";
-        throw new UserInputError("Event code expired", {
-          errors,
+        throw new GraphQLError("Event code expired", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       user.events.map((userEvent) => {
         if (String(userEvent.name) == String(event.name)) {
           errors.general = "Event code already redeemed.";
-          throw new UserInputError("Event code already redeemed.", {
-            errors,
+          throw new GraphQLError("Event code already redeemed.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
       });
@@ -514,8 +575,13 @@ module.exports = {
 
         if (request) {
           errors.general = "Event code already sent for approval.";
-          throw new UserInputError("Event code already sent for approval.", {
-            errors,
+          throw new GraphQLError("Event code already sent for approval.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
@@ -581,8 +647,13 @@ module.exports = {
           };
         } else {
           errors.general = "Invalid event.";
-          throw new UserInputError("Invalid event.", {
-            errors,
+          throw new GraphQLError("Invalid event.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
@@ -727,16 +798,26 @@ module.exports = {
 
       if (endDate < currentdate) {
         errors.general = "Task Expired";
-        throw new UserInputError("Task Expired", {
-          errors,
+        throw new GraphQLError("Task Expired", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       user.tasks.map((userTask) => {
         if (String(userTask.name) == String(task.name)) {
           errors.general = "Task already redeeemed by the user.";
-          throw new UserInputError("Task already redeemed by the user.", {
-            errors,
+          throw new GraphQLError("Task already redeemed by the user.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
       });
@@ -748,8 +829,13 @@ module.exports = {
 
       if (request) {
         errors.general = "Task already sent for approval.";
-        throw new UserInputError("Task already sent for approval.", {
-          errors,
+        throw new GraphQLError("Task already sent for approval.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -807,8 +893,13 @@ module.exports = {
 
       if (!user) {
         errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors,
+        throw new GraphQLError("User not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -818,8 +909,13 @@ module.exports = {
     async forgotPassword(_, { email }) {
       const { errors, valid } = validateEmailInput(email);
       if (!valid) {
-        throw new UserInputError("Errors", {
-          errors,
+        throw new GraphQLError("Errors", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -828,8 +924,13 @@ module.exports = {
       });
       if (!user) {
         errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors,
+        throw new GraphQLError("User not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -889,8 +990,13 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new UserInputError("Errors", {
-          errors,
+        throw new GraphQLError("Errors", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -899,8 +1005,13 @@ module.exports = {
       });
       if (!user) {
         errors.general = "Invalid Token";
-        throw new UserInputError("Invalid Token", {
-          errors,
+        throw new GraphQLError("Invalid Token", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -994,8 +1105,13 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new UserInputError("Errors", {
-          errors,
+        throw new GraphQLError("Errors", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -1077,16 +1193,26 @@ module.exports = {
       let { errors, valid } = validateEmailInput(email);
 
       if (!valid) {
-        throw new UserInputError("Errors.", {
-          errors,
+        throw new GraphQLError("Errors.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if (email === currentEmail) {
         valid = false;
         errors.general = "Can't change your own permissions";
-        throw new UserInputError("Can't change your own permissions", {
-          errors,
+        throw new GraphQLError("Can't change your own permissions", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -1097,16 +1223,26 @@ module.exports = {
 
       if (!loggedInUser) {
         errors.general = "User not found";
-        throw new UserInputError("User not found", {
-          errors,
+        throw new GraphQLError("User not found", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if (!loggedInUser.permission.includes("admin")) {
         valid = false;
         errors.general = "Must be an admin to change permission";
-        throw new UserInputError("Must be an admin to change permission", {
-          errors,
+        throw new GraphQLError("Must be an admin to change permission", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -1123,8 +1259,13 @@ module.exports = {
       );
       if (!user) {
         errors.general = "User not found";
-        throw new UserInputError("User not found", {
-          errors,
+        throw new GraphQLError("User not found", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       } else {
         return user;

@@ -1,48 +1,48 @@
-const { model, Schema } = require("mongoose");
-const User = require("./User").schema;
+const { model, Schema } = require('mongoose');
+const User = require('./User').schema;
 
 const taskSchema = new Schema({
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   startDate: {
     type: String,
-    required: true
+    required: true,
   },
   endDate: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   points: {
     type: Number,
-    required: true
+    required: true,
   },
   attendance: {
     type: Number,
-    required: true
+    required: true,
   },
   semester: {
     type: String,
-    required: true
+    required: true,
   },
   createdAt: {
     type: String,
-    required: true
+    required: true,
   },
   users: [
     {
       firstName: String,
       lastName: String,
       email: String,
-      username: String
-    }
-  ]
+      username: String,
+    },
+  ],
 });
 
-module.exports = model("Task", taskSchema);
+module.exports = model('Task', taskSchema);

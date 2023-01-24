@@ -1,4 +1,5 @@
-const { UserInputError } = require("apollo-server");
+const { GraphQLError } = require("graphql");
+const { ApolloServerErrorCode } = require('@apollo/server/errors');
 const Event = require("../../models/Event.js");
 const User = require("../../models/User.js");
 const Request = require("../../models/Request.js");
@@ -40,7 +41,14 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new UserInputError("Errors", { errors });
+        throw new GraphQLError("Errors", { 
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
+        });
       }
 
       const findPoints = categoryOptions.find(({ key }) => key === category);
@@ -61,20 +69,28 @@ module.exports = {
       isEventNameDuplicate = await Event.findOne({ name });
 
       if (isEventNameDuplicate) {
-        throw new UserInputError("An event with that name already exists.", {
-          errors: {
-            name: "An event with that name already exists."
-          }
+        errors.name = "An event with that name already exists.";
+        throw new GraphQLError("An event with that name already exists.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       isEventCodeDuplicate = await Event.findOne({ code });
 
       if (isEventCodeDuplicate) {
-        throw new UserInputError("An event with that code already exists.", {
-          errors: {
-            code: "An event with that code already exists."
-          }
+        errors.name = "An event with that code already exists.";
+        throw new GraphQLError("An event with that code already exists.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -107,8 +123,13 @@ module.exports = {
       const { valid, errors } = validateManualInputInput(username);
 
       if (!valid) {
-        throw new UserInputError("Errors", {
-          errors
+        throw new GraphQLError("Errors", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -127,25 +148,40 @@ module.exports = {
 
       if (!user) {
         errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors
+        throw new GraphQLError("User not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if (!event) {
         errors.general = "Event not found.";
-        throw new UserInputError("Event not found.", {
-          errors
+        throw new GraphQLError("Event not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if (request) {
         errors.general =
           "This member has sent a request for this event code. Check the Requests tab.";
-        throw new UserInputError(
+        throw new GraphQLError(
           "This member has sent a request for this event code. Check the Requests tab.",
           {
-            errors
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           }
         );
       }
@@ -153,8 +189,13 @@ module.exports = {
       user.events.map(userEvent => {
         if (String(userEvent.name) == String(event.name)) {
           errors.general = "Event code already redeemed by the user.";
-          throw new UserInputError("Event code already redeemed by the user.", {
-            errors
+          throw new GraphQLError("Event code already redeemed by the user.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
       });
@@ -178,8 +219,13 @@ module.exports = {
         };
       } else {
         errors.general = "Invalid event.";
-        throw new UserInputError("Invalid event.", {
-          errors
+        throw new GraphQLError("Invalid event.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -251,8 +297,13 @@ module.exports = {
       const { valid, errors } = validateManualInputInput(username);
 
       if (!valid) {
-        throw new UserInputError("User input errors.", {
-          errors
+        throw new GraphQLError("User input errors.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -266,22 +317,37 @@ module.exports = {
 
       if (!user) {
         errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors
+        throw new GraphQLError("User not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if (!event) {
         errors.general = "Event not found.";
-        throw new UserInputError("Event not found.", {
-          errors
+        throw new GraphQLError("Event not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
       if(!user.events.map(e => e.name).includes(event.name)) {
         errors.general = "User is not member of event.";
-        throw new UserInputError("User is not member of Event.", {
-          errors
+        throw new GraphQLError("User is not member of Event.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 
@@ -308,8 +374,13 @@ module.exports = {
         });
       } else {
         errors.general = "Invalid event.";
-        throw new UserInputError("Invalid event.", {
-          errors
+        throw new GraphQLError("Invalid event.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
       
@@ -319,7 +390,7 @@ module.exports = {
     },
     async deleteEvent(_,{eventName}) {
 
-      const errors = ""
+      const errors = {}
       const users = await User.find()
       const event = await Event.findOne({
         name: eventName
@@ -327,15 +398,25 @@ module.exports = {
 
       if (!users || !users.length || users.length === 0) {
         errors.general = "User not found.";
-        throw new UserInputError("User not found.", {
-          errors
+        throw new GraphQLError("User not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
       
       if (!event) {
         errors.general = "Event not found.";
-        throw new UserInputError("Event not found.", {
-          errors
+        throw new GraphQLError("Event not found.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
     
@@ -359,8 +440,13 @@ module.exports = {
         };
       } else {
         errors.general = "Invalid event.";
-        throw new UserInputError("Invalid event.", {
-          errors
+        throw new GraphQLError("Invalid event.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
 

@@ -1,4 +1,5 @@
-const { UserInputError } = require("apollo-server");
+const { GraphQLError } = require("graphql");
+const { ApolloServerErrorCode } = require('@apollo/server/errors');
 const Rentable = require("../../models/Rentable.js")
 const Receipt = require("../../models/Receipt.js")
 const User = require("../../models/User.js")
@@ -56,18 +57,26 @@ module.exports = {
         const user = await User.findOne({'username': username});
 
         if(!user){
-          throw new UserInputError("That's not a valid user.", {
-            errors: {
-              name: "That's not a valid user."
-            }
+          errors.name = "That's not a valid user.";
+          throw new GraphQLError("That's not a valid user.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
         if(!rentable){
-          throw new UserInputError("That's not a valid rental item.", {
-            errors: {
-              name: "That's not a valid rental item."
-            }
+          erorrs.name = "That's not a valid rental item.";
+          throw new GraphQLError("That's not a valid rental item.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
@@ -78,7 +87,14 @@ module.exports = {
         );
   
         if (!valid) {
-          throw new UserInputError("Errors", { errors });
+          throw new GraphQLError("Errors", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
+          });
         }
         
         for(var i = 1; i <= numberOfItems; i++) {
@@ -171,10 +187,14 @@ module.exports = {
         const receipt = await Receipt.findOne({'_id': receiptID})
 
         if(!receipt) {
-          throw new UserInputError("That's not a valid receipt.", {
-            errors: {
-              name: "That's not a valid receipt."
-            }
+          errors.name = "That's not a valid receipt.";
+          throw new GraphQLError("That's not a valid receipt.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
@@ -199,10 +219,14 @@ module.exports = {
         const receipt = await Receipt.findById(receiptID);
 
         if(!receipt) {
-          throw new UserInputError("That's not a valid receipt.", {
-            errors: {
-              name: "That's not a valid receipt."
-            }
+          errors.name = "That's not a valid receipt.";
+          throw new GraphQLError("That's not a valid receipt.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
@@ -213,18 +237,26 @@ module.exports = {
         const user = await User.findOne({'username': username});
 
         if(!rentable) {
-          throw new UserInputError("Receipt contained an invalid rental item.", {
-            errors: {
-              name: "Receipt contained an invalid rental item."
-            }
+          errors.name = "Receipt contained an invalid rental item.";
+          throw new GraphQLError("Receipt contained an invalid rental item.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
         if(!user) {
-          throw new UserInputError("Receipt contained an invalid user.", {
-            errors: {
-              name: "Receipt contained an invalid user."
-            }
+          errors.name = "Receipt contained an invalid user.";
+          throw new GraphQLError("Receipt contained an invalid user.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
         
@@ -256,18 +288,26 @@ module.exports = {
         const receipt = await Receipt.findOne({'_id': receiptID})
 
         if(!receipt) {
-          throw new UserInputError("That's not a valid receipt.", {
-            errors: {
-              name: "That's not a valid receipt."
-            }
+          errors.name = "That's not a valid receipt.";
+          throw new GraphQLError("That's not a valid receipt.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
         if(!receipt.datePickedUp) {
-          throw new UserInputError("That's not a valid receipt.", {
-            errors: {
-              name: "That's not a closed receipt."
-            }
+          errors.name = "That's not a valid receipt.";
+          throw new GraphQLError("That's not a valid receipt.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
@@ -292,18 +332,26 @@ module.exports = {
         const receipt = await Receipt.findById(receiptID);
 
         if(!receipt) {
-          throw new UserInputError("That's not a valid receipt.", {
-            errors: {
-              name: "That's not a valid receipt."
-            }
+          errors.name = "That's not a valid receipt.";
+          throw new GraphQLError("That's not a valid receipt.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
         if(!receipt.dateClosed) {
-          throw new UserInputError("That's not a valid receipt.", {
-            errors: {
-              name: "That's not a closed receipt."
-            }
+          errors.name = "That's not a closed receipt.";
+          throw new GraphQLError("That's not a valid receipt.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
@@ -314,18 +362,26 @@ module.exports = {
         const user = await User.findOne({'username': username});
 
         if(!rentable) {
-          throw new UserInputError("Receipt contained an invalid rental item.", {
-            errors: {
-              name: "Receipt contained an invalid rental item."
-            }
+          errors.name = "Receipt contained an invalid rental item.";
+          throw new GraphQLError("Receipt contained an invalid rental item.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
         if(!user) {
-          throw new UserInputError("Receipt contained an invalid user.", {
-            errors: {
-              name: "Receipt contained an invalid user."
-            }
+          errors.name = "Receipt contained an invalid user.";
+          throw new GraphQLError("Receipt contained an invalid user.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
@@ -360,10 +416,14 @@ module.exports = {
         const receipt = await Receipt.findById(receiptID);
 
         if(!receipt) {
-          throw new UserInputError("That's not a valid receipt.", {
-            errors: {
-              name: "That's not a valid receipt."
-            }
+          errors.name = "That's not a valid receipt.";
+          throw new GraphQLError("That's not a valid receipt.", {
+            extensions: {
+              exception: {
+                code: ApolloServerErrorCode.BAD_USER_INPUT,
+                errors,
+              }
+            },
           });
         }
 
@@ -376,18 +436,26 @@ module.exports = {
           const user = await User.findOne({'username': username});
 
           if(!rentable) {
-            throw new UserInputError("Receipt contained an invalid rental item.", {
-              errors: {
-                name: "Receipt contained an invalid rental item."
-              }
+            errors.name = "Receipt contained an invalid rental item.";
+            throw new GraphQLError("Receipt contained an invalid rental item.", {
+              extensions: {
+                exception: {
+                  code: ApolloServerErrorCode.BAD_USER_INPUT,
+                  errors,
+                }
+              },
             });
           }
 
           if(!user) {
-            throw new UserInputError("Receipt contained an invalid user.", {
-              errors: {
-                name: "Receipt contained an invalid user."
-              }
+            errors.name = "Receipt contained an invalid user.";
+            throw new GraphQLError("Receipt contained an invalid user.", {
+              extensions: {
+                exception: {
+                  code: ApolloServerErrorCode.BAD_USER_INPUT,
+                  errors,
+                }
+              },
             });
           }
 
