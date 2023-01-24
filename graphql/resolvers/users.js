@@ -1165,8 +1165,13 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new UserInputError("Errors", {
-          errors,
+        throw new GraphQLError("Errors", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
         });
       }
       const user = await User.findOne({ email });
@@ -1275,41 +1280,36 @@ module.exports = {
     async updateYears() {
       var users = await User.find();
       users.forEach(async function(user){
-        //TESTING: Take entire block out of this IF to test on all users
-        if(user.updatedAt){
-          console.log("updatedAt exists....")
-          const email = user.email;
-          const currDate = new Date();
-          var updatedAt = currDate;
-          if(user.updatedAt) updatedAt = new Date(user.updatedAt);
-          const diffence = Math.round((currDate - updatedAt) / (1000*60*60*24));
+        const email = user.email;
+        const currDate = new Date();
+        var updatedAt = currDate;
+        if(user.updatedAt) updatedAt = new Date(user.updatedAt);
+        const msPerDay = 1000*60*60*24;
+        const difference = Math.round((currDate - updatedAt) / msPerDay);
 
-          var year = user.year;
-          if(diffence >= 365){
-            console.log("incrementing year....");
-            updatedAt = currDate;
-            if(year === "1st Year") year = "2nd Year"
-            else if (year === "2nd Year") year = "3rd Year"
-            else if (year === "3rd Year") year = "4th Year"
-            else if (year === "4th Year") year = "5th Year or Higher"
-          }
-
-          const updatedUser = await User.findOneAndUpdate(
-            { email },
-            {
-              year: year,
-              updatedAt: updatedAt.toISOString(),
-            },
-            {
-              new: true,
-              useFindAndModify: false,
-            },
-          );
-        } else {
-          console.log("updatedAt DNE");
+        var year = user.year;
+        if(difference >= 365){
+          console.log("incrementing year....");
+          updatedAt = currDate;
+          if(year === "1st Year") year = "2nd Year"
+          else if (year === "2nd Year") year = "3rd Year"
+          else if (year === "3rd Year") year = "4th Year"
+          else if (year === "4th Year") year = "5th Year or Higher"
         }
+
+        const updatedUser = await User.findOneAndUpdate(
+          { email },
+          {
+            year: year,
+            updatedAt: updatedAt.toISOString(),
+          },
+          {
+            new: true,
+            useFindAndModify: false,
+          },
+        );
       });
-      return User.find();
+      return users;
     },
   },
 };
