@@ -1120,7 +1120,7 @@ module.exports = {
       if (user) {
         updatedAt = user.updatedAt;
         if(user.year !== year){
-          var updatedAt = new Date().toISOString();
+          updatedAt = new Date().toISOString();
         }
         const updatedUser = await User.findOneAndUpdate(
           { email },
@@ -1141,6 +1141,7 @@ module.exports = {
           },
           {
             new: true,
+            useFindAndModify: false,
           }
         );
 
