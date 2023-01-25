@@ -1281,16 +1281,16 @@ module.exports = {
     async updateYears() {
       var users = await User.find();
       users.forEach(async function(user){
-        const email = user.email;
         const currDate = new Date();
-        var updatedAt = currDate;
-        if(user.updatedAt) updatedAt = new Date(user.updatedAt);
+        const email = user.email;
         const msPerDay = 1000*60*60*24;
+        var updatedAt = currDate;
+        var year = user.year;
+        
+        if(user.updatedAt) updatedAt = new Date(user.updatedAt);
         const difference = Math.round((currDate - updatedAt) / msPerDay);
 
-        var year = user.year;
         if(difference >= 365){
-          console.log("incrementing year....");
           updatedAt = currDate;
           if(year === "1st Year") year = "2nd Year"
           else if (year === "2nd Year") year = "3rd Year"
