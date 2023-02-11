@@ -18,7 +18,7 @@ module.exports = {
     async getEvents() {
       try {
         const events = await Event.find().sort({ createdAt: 1 });
-        return events;
+        return events.reverse();
       } catch (err) {
         throw new Error(err);
       }
