@@ -392,6 +392,7 @@ module.exports = gql`
     getUsers: [User]
     getUser(userId: ID!): User
     getEvents: [Event]
+    getEventsReversed: [Event]
     getTasks: [Task]
     getRequests: [Request]
     getMatches(username: String!): [User]
