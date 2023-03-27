@@ -1,17 +1,22 @@
 const { GraphQLError } = require("graphql");
-const { ApolloServerErrorCode } = require('@apollo/server/errors');
+const { ApolloServerErrorCode } = require("@apollo/server/errors");
 const Event = require("../../models/Event.js");
 const User = require("../../models/User.js");
 const Request = require("../../models/Request.js");
 
 const {
   validateCreateEventInput,
-  validateManualInputInput
+  validateManualInputInput,
 } = require("../../util/validators");
 
-const categoryOptions = require('../../json/category.json');
+const categoryOptions = require("../../json/category.json");
 const monthOptions = require("../../json/month.json");
 var { events } = require("react-mapbox-gl/lib/map-events");
+
+const {
+  handleInputError,
+  handleGeneralError,
+} = require("../../util/error-handling");
 
 module.exports = {
   Query: {
@@ -20,16 +25,16 @@ module.exports = {
         const events = await Event.find().sort({ createdAt: 1 });
         return events;
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, err.message);
       }
-    }
+    },
   },
 
   Mutation: {
     async createEvent(
       _,
       {
-        createEventInput: { name, code, category, expiration, request, points }
+        createEventInput: { name, code, category, expiration, request, points },
       }
     ) {
       const { valid, errors } = validateCreateEventInput(
@@ -41,23 +46,13 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new GraphQLError("Errors", { 
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const findPoints = categoryOptions.find(({ key }) => key === category);
       const month = new Date().getMonth();
 
-      code = code
-        .toLowerCase()
-        .trim()
-        .replace(/ /g, "");
+      code = code.toLowerCase().trim().replace(/ /g, "");
       points = category === "Miscellaneous" ? points : findPoints.points;
 
       semester = monthOptions[month].value;
@@ -69,29 +64,15 @@ module.exports = {
       isEventNameDuplicate = await Event.findOne({ name });
 
       if (isEventNameDuplicate) {
-        errors.name = "An event with that name already exists.";
-        throw new GraphQLError("An event with that name already exists.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        errors.general = "An event with that name already exists.";
+        handleInputError(errors);
       }
 
       isEventCodeDuplicate = await Event.findOne({ code });
 
       if (isEventCodeDuplicate) {
-        errors.name = "An event with that code already exists.";
-        throw new GraphQLError("An event with that code already exists.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        errors.general = "An event with that code already exists.";
+        handleInputError(errors);
       }
 
       const newEvent = new Event({
@@ -104,7 +85,7 @@ module.exports = {
         semester,
         request,
         users: [],
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       });
 
       await newEvent.save();
@@ -114,89 +95,46 @@ module.exports = {
       return updatedEvents;
     },
 
-    async manualInput(
-      _,
-      {
-        manualInputInput: { username, eventName }
-      }
-    ) {
+    async manualInput(_, { manualInputInput: { username, eventName } }) {
       const { valid, errors } = validateManualInputInput(username);
 
       if (!valid) {
-        throw new GraphQLError("Errors", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const user = await User.findOne({
-        username
+        username,
       });
 
       const event = await Event.findOne({
-        name: eventName
+        name: eventName,
       });
 
       const request = await Request.findOne({
         username: username,
-        eventName: eventName
+        eventName: eventName,
       });
 
       if (!user) {
         errors.general = "User not found.";
-        throw new GraphQLError("User not found.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       if (!event) {
         errors.general = "Event not found.";
-        throw new GraphQLError("Event not found.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       if (request) {
         errors.general =
           "This member has sent a request for this event code. Check the Requests tab.";
-        throw new GraphQLError(
-          "This member has sent a request for this event code. Check the Requests tab.",
-          {
-            extensions: {
-              exception: {
-                code: ApolloServerErrorCode.BAD_USER_INPUT,
-                errors,
-              }
-            },
-          }
-        );
+        handleInputError(errors);
       }
 
-      user.events.map(userEvent => {
+      user.events.map((userEvent) => {
         if (String(userEvent.name) == String(event.name)) {
           errors.general = "Event code already redeemed by the user.";
-          throw new GraphQLError("Event code already redeemed by the user.", {
-            extensions: {
-              exception: {
-                code: ApolloServerErrorCode.BAD_USER_INPUT,
-                errors,
-              }
-            },
-          });
+          handleInputError(errors);
         }
       });
 
@@ -205,33 +143,26 @@ module.exports = {
       if (event.semester === "Fall Semester") {
         pointsIncrease = {
           points: event.points,
-          fallPoints: event.points
+          fallPoints: event.points,
         };
       } else if (event.semester === "Spring Semester") {
         pointsIncrease = {
           points: event.points,
-          springPoints: event.points
+          springPoints: event.points,
         };
       } else if (event.semester === "Summer Semester") {
         pointsIncrease = {
           points: event.points,
-          summerPoints: event.points
+          summerPoints: event.points,
         };
       } else {
         errors.general = "Invalid event.";
-        throw new GraphQLError("Invalid event.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       var updatedUser = await User.findOneAndUpdate(
         {
-          username
+          username,
         },
         {
           $push: {
@@ -241,16 +172,16 @@ module.exports = {
                   name: event.name,
                   category: event.category,
                   createdAt: event.createdAt,
-                  points: event.points
-                }
+                  points: event.points,
+                },
               ],
-              $sort: { createdAt: 1 }
-            }
+              $sort: { createdAt: 1 },
+            },
           },
-          $inc: pointsIncrease
+          $inc: pointsIncrease,
         },
         {
-          new: true
+          new: true,
         }
       );
 
@@ -258,7 +189,7 @@ module.exports = {
 
       await Event.findOneAndUpdate(
         {
-          name: eventName
+          name: eventName,
         },
         {
           $push: {
@@ -268,18 +199,18 @@ module.exports = {
                   firstName: user.firstName,
                   lastName: user.lastName,
                   username: user.username,
-                  email: user.email
-                }
+                  email: user.email,
+                },
               ],
-              $sort: { lastName: 1, firstName: 1 }
-            }
+              $sort: { lastName: 1, firstName: 1 },
+            },
           },
           $inc: {
-            attendance: 1
-          }
+            attendance: 1,
+          },
         },
         {
-          new: true
+          new: true,
         }
       );
 
@@ -289,111 +220,85 @@ module.exports = {
     },
     async removeUserFromEvent(
       _,
-      {
-        manualInputInput: { username, eventName }
-      }
+      { manualInputInput: { username, eventName } }
     ) {
-
       const { valid, errors } = validateManualInputInput(username);
 
       if (!valid) {
-        throw new GraphQLError("User input errors.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const user = await User.findOne({
-        username
+        username,
       });
 
       const event = await Event.findOne({
-        name: eventName
+        name: eventName,
       });
 
       if (!user) {
         errors.general = "User not found.";
-        throw new GraphQLError("User not found.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       if (!event) {
         errors.general = "Event not found.";
-        throw new GraphQLError("Event not found.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
-      if(!user.events.map(e => e.name).includes(event.name)) {
+      if (!user.events.map((e) => e.name).includes(event.name)) {
         errors.general = "User is not member of event.";
-        throw new GraphQLError("User is not member of Event.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
-      newEvents = user.events.filter(e => e.name !== event.name)
-      newUsers = event.users.filter(e => e.username !== user.username)
+      newEvents = user.events.filter((e) => e.name !== event.name);
+      newUsers = event.users.filter((e) => e.username !== user.username);
 
       if (event.semester === "Fall Semester") {
-        await User.findOneAndUpdate({username},{
-          events: newEvents,
-          points: user.points - event.points,
-          fallPoints: user.fallPoints - event.points
-        });
+        await User.findOneAndUpdate(
+          { username },
+          {
+            events: newEvents,
+            points: user.points - event.points,
+            fallPoints: user.fallPoints - event.points,
+          }
+        );
       } else if (event.semester === "Spring Semester") {
-        await User.findOneAndUpdate({username},{
-          events: newEvents,
-          points: user.points - event.points,
-          springPoints: user.springPoints - event.points
-        });
+        await User.findOneAndUpdate(
+          { username },
+          {
+            events: newEvents,
+            points: user.points - event.points,
+            springPoints: user.springPoints - event.points,
+          }
+        );
       } else if (event.semester === "Summer Semester") {
-        await User.findOneAndUpdate({username},{
-          events: newEvents,
-          points: user.points - event.points,
-          summerPoints: user.summerPoints - event.points
-        });
+        await User.findOneAndUpdate(
+          { username },
+          {
+            events: newEvents,
+            points: user.points - event.points,
+            summerPoints: user.summerPoints - event.points,
+          }
+        );
       } else {
         errors.general = "Invalid event.";
-        throw new GraphQLError("Invalid event.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
-      
-      newEvent = await Event.findOneAndUpdate({name: eventName},{users: newUsers, attendance: event.attendance - 1},{new: true});
+
+      newEvent = await Event.findOneAndUpdate(
+        { name: eventName },
+        { users: newUsers, attendance: event.attendance - 1 },
+        { new: true }
+      );
 
       return newEvent;
     },
-    async deleteEvent(_,{eventName}) {
-
-      const errors = {}
-      const users = await User.find()
+    async deleteEvent(_, { eventName }) {
+      const errors = {};
+      const users = await User.find();
       const event = await Event.findOne({
-        name: eventName
+        name: eventName,
       });
 
       if (!users || !users.length || users.length === 0) {
@@ -403,74 +308,61 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
-      
+
       if (!event) {
         errors.general = "Event not found.";
-        throw new GraphQLError("Event not found.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
-    
 
       var pointsDecrease = {};
 
       if (event.semester === "Fall Semester") {
         pointsDecrease = {
           points: -event.points,
-          fallPoints: -event.points
+          fallPoints: -event.points,
         };
       } else if (event.semester === "Spring Semester") {
         pointsDecrease = {
           points: -event.points,
-          springPoints: -event.points
+          springPoints: -event.points,
         };
       } else if (event.semester === "Summer Semester") {
         pointsDecrease = {
           points: -event.points,
-          summerPoints: -event.points
+          summerPoints: -event.points,
         };
       } else {
         errors.general = "Invalid event.";
-        throw new GraphQLError("Invalid event.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
-      await Event.deleteOne({name: eventName})
+      await Event.deleteOne({ name: eventName });
 
-      await User.updateMany({
-        events: {
-          $elemMatch: {
-            name: eventName
-          }
-        }
-      }, {
-        $pull: {
+      await User.updateMany(
+        {
           events: {
-            name: eventName
-          }
+            $elemMatch: {
+              name: eventName,
+            },
+          },
         },
-        $inc: pointsDecrease
-      })
-      
+        {
+          $pull: {
+            events: {
+              name: eventName,
+            },
+          },
+          $inc: pointsDecrease,
+        }
+      );
+
       events = await Event.find();
 
       return events;
-    }
-
-  }
+    },
+  },
 };

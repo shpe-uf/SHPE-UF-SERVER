@@ -1,10 +1,13 @@
-const { GraphQLError } = require("graphql");
-const { ApolloServerErrorCode } = require("@apollo/server/errors");
 const Reimbursement = require("../../models/Reimbursement.js");
 const { validateReimbursementRequest } = require("../../util/validators");
 const nodemailer = require("nodemailer");
 
 require("dotenv").config();
+
+const {
+  handleInputError,
+  handleGeneralError,
+} = require("../../util/error-handling");
 
 module.exports = {
   Query: {
@@ -16,7 +19,7 @@ module.exports = {
         });
         return reimbursement;
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, err.message);
       }
     },
   },
@@ -60,14 +63,7 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new GraphQLError("Errors", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            },
-          },
-        });
+        handleInputError(errors);
       }
 
       ufEmployee = ufEmployee === "true" || ufEmployee === true ? true : false;
@@ -195,7 +191,7 @@ module.exports = {
 
         return resolvedReimbursement;
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, err.message);
       }
     },
 
@@ -234,7 +230,7 @@ module.exports = {
 
         return unresolvedReimbursement;
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, err.message);
       }
     },
 
@@ -273,7 +269,7 @@ module.exports = {
 
         return unresolvedReimbursement;
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, err.message);
       }
     },
 
@@ -312,7 +308,7 @@ module.exports = {
 
         return unresolvedReimbursement;
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, err.message);
       }
     },
   },

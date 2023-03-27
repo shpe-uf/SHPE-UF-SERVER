@@ -1,5 +1,3 @@
-const { GraphQLError } = require("graphql");
-const { ApolloServerErrorCode } = require('@apollo/server/errors');
 const nodemailer = require("nodemailer");
 const nodemailerSendgrid = require("nodemailer-sendgrid");
 
@@ -13,6 +11,8 @@ const transport = nodemailer.createTransport(
     apiKey: process.env.SENDGRID_API_KEY,
   })
 );
+
+const { handleInputError } = require("../../util/error-handling");
 
 module.exports = {
   Mutation: {
@@ -29,14 +29,7 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new GraphQLError("Errors", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const newContactRequest = new contactRequest({

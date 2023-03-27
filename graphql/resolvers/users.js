@@ -1,14 +1,16 @@
-const { GraphQLError } = require("graphql");
-const { ApolloServerErrorCode } = require('@apollo/server/errors');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const nodemailerSendgrid = require("nodemailer-sendgrid");
-
 const User = require("../../models/User.js");
 const Event = require("../../models/Event.js");
 const Request = require("../../models/Request.js");
 const Task = require("../../models/Task.js");
+
+const {
+  handleInputError,
+  handleGeneralError,
+} = require("../../util/error-handling");
 
 require("dotenv").config();
 
@@ -53,7 +55,7 @@ module.exports = {
         });
         return users;
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, "Users not found!");
       }
     },
 
@@ -115,10 +117,10 @@ module.exports = {
 
           return newUser;
         } else {
-          throw new Error("User not found.");
+          handleGeneralError({}, "User not found.");
         }
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, "Uknown user");
       }
     },
 
@@ -143,10 +145,10 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          handleGeneralError({}, "Data not found.");
         }
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, err.message);
       }
     },
 
@@ -171,10 +173,10 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          handleGeneralError({}, "Data not found.");
         }
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, err.message);
       }
     },
 
@@ -199,10 +201,10 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          handleGeneralError({}, "Data not found.");
         }
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError((err, err.message));
       }
     },
 
@@ -227,10 +229,10 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          handleGeneralError({}, "Data not found.");
         }
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, err.message);
       }
     },
 
@@ -255,10 +257,10 @@ module.exports = {
         if (data) {
           return data;
         } else {
-          throw new Error("Data not found.");
+          handleGeneralError({}, "Data not found.");
         }
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, err.message);
       }
     },
   },
@@ -270,14 +272,7 @@ module.exports = {
       const { errors, valid } = validateLoginInput(username, password);
 
       if (!valid) {
-        throw new GraphQLError("Errors", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const user = await User.findOne({
@@ -286,42 +281,21 @@ module.exports = {
 
       if (!user) {
         errors.general = "User not found.";
-        throw new GraphQLError("User not found.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const match = await bcrypt.compare(password, user.password);
 
       if (!match) {
         errors.general = "Wrong credentials.";
-        throw new GraphQLError("Wrong credentials.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const isConfirmed = user.confirmed;
 
       if (!isConfirmed) {
         errors.general = "User not confirmed.";
-        throw new GraphQLError("User not confirmed.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       time = remember === "true" || remember === true ? "30d" : "24h";
@@ -374,14 +348,7 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new GraphQLError("Errors", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const isUsernameDuplicate = await User.findOne({
@@ -389,18 +356,8 @@ module.exports = {
       });
 
       if (isUsernameDuplicate) {
-        errors.username = "An account with that username already exists.";
-        throw new GraphQLError(
-          "An account with that username already exists.",
-          {
-            extensions: {
-              exception: {
-                code: ApolloServerErrorCode.BAD_USER_INPUT,
-                errors,
-              }
-            },
-          }
-        );
+        errors.general = "An account with that username already exists.";
+        handleInputError(errors);
       }
 
       const isEmailDuplicate = await User.findOne({
@@ -408,18 +365,8 @@ module.exports = {
       });
 
       if (isEmailDuplicate) {
-        errors.email = "An account with that email already exists.";
-        throw new GraphQLError(
-          "An account with that e-mail already exists.",
-          {
-            extensions: {
-              exception: {
-                code: ApolloServerErrorCode.BAD_USER_INPUT,
-                errors,
-              }
-            },
-          }
-        );
+        errors.general = "An account with that e-mail already exists.";
+        handleInputError(errors);
       }
 
       password = await bcrypt.hash(password, 12);
@@ -471,7 +418,7 @@ module.exports = {
         .then(() => {
           res.status(200).json("confirmation email sent");
         })
-        .catch(() => {
+        .catch((err) => {
           console.error("there was an error: ", err);
         });
 
@@ -487,11 +434,7 @@ module.exports = {
       const { valid, errors } = validateRedeemPointsInput(code);
 
       if (!valid) {
-        throw new GraphQLError("Errors", {
-          extensions: {
-            code: ApolloServerErrorCode.BAD_USER_INPUT,
-          },
-        });
+        handleInputError(errors);
       }
 
       const event = await Event.findOne({
@@ -504,63 +447,28 @@ module.exports = {
 
       if (!event) {
         errors.general = "Event not found.";
-        throw new GraphQLError("Event not found.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       if (!user) {
         errors.general = "User not found.";
-        throw new GraphQLError("User not found.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       if (guests < 0 || guests > 5) {
         errors.general = "Guests count exceeds limits.";
-        throw new GraphQLError("Guests count exceeds limits.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       if (Date.parse(event.expiration) < Date.now()) {
         errors.general = "Event code expired";
-        throw new GraphQLError("Event code expired", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       user.events.map((userEvent) => {
         if (String(userEvent.name) == String(event.name)) {
           errors.general = "Event code already redeemed.";
-          throw new GraphQLError("Event code already redeemed.", {
-            extensions: {
-              exception: {
-                code: ApolloServerErrorCode.BAD_USER_INPUT,
-                errors,
-              }
-            },
-          });
+          handleInputError(errors);
         }
       });
 
@@ -572,14 +480,7 @@ module.exports = {
 
         if (request) {
           errors.general = "Event code already sent for approval.";
-          throw new GraphQLError("Event code already sent for approval.", {
-            extensions: {
-              exception: {
-                code: ApolloServerErrorCode.BAD_USER_INPUT,
-                errors,
-              }
-            },
-          });
+          handleInputError(errors);
         }
 
         const newRequest = new Request({
@@ -644,14 +545,7 @@ module.exports = {
           };
         } else {
           errors.general = "Invalid event.";
-          throw new GraphQLError("Invalid event.", {
-            extensions: {
-              exception: {
-                code: ApolloServerErrorCode.BAD_USER_INPUT,
-                errors,
-              }
-            },
-          });
+          handleInputError(errors);
         }
 
         var updatedUser = await User.findOneAndUpdate(
@@ -795,27 +689,13 @@ module.exports = {
 
       if (endDate < currentdate) {
         errors.general = "Task Expired";
-        throw new GraphQLError("Task Expired", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       user.tasks.map((userTask) => {
         if (String(userTask.name) == String(task.name)) {
           errors.general = "Task already redeeemed by the user.";
-          throw new GraphQLError("Task already redeemed by the user.", {
-            extensions: {
-              exception: {
-                code: ApolloServerErrorCode.BAD_USER_INPUT,
-                errors,
-              }
-            },
-          });
+          handleInputError(errors);
         }
       });
 
@@ -826,14 +706,7 @@ module.exports = {
 
       if (request) {
         errors.general = "Task already sent for approval.";
-        throw new GraphQLError("Task already sent for approval.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const newTaskRequest = new Request({
@@ -890,14 +763,7 @@ module.exports = {
 
       if (!user) {
         errors.general = "User not found.";
-        throw new GraphQLError("User not found.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       return user;
@@ -906,14 +772,7 @@ module.exports = {
     async forgotPassword(_, { email }) {
       const { errors, valid } = validateEmailInput(email);
       if (!valid) {
-        throw new GraphQLError("Errors", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const user = await User.findOne({
@@ -921,14 +780,7 @@ module.exports = {
       });
       if (!user) {
         errors.general = "User not found.";
-        throw new GraphQLError("User not found.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       var time = "24h";
@@ -969,7 +821,7 @@ module.exports = {
         .then(() => {
           res.status(200).json("Reset password email sent");
         })
-        .catch(() => {
+        .catch((err) => {
           console.error("there was an error: ", err);
         });
 
@@ -987,14 +839,7 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new GraphQLError("Errors", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const user = await User.findOne({
@@ -1002,14 +847,7 @@ module.exports = {
       });
       if (!user) {
         errors.general = "Invalid Token";
-        throw new GraphQLError("Invalid Token", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       password = await bcrypt.hash(password, 12);
@@ -1102,14 +940,7 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new GraphQLError("Errors", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const user = await User.findOne({ email });
@@ -1138,7 +969,7 @@ module.exports = {
 
         return updatedUser;
       } else {
-        throw new Error("User not found.");
+        handleGeneralError({}, "User not found.");
       }
     },
 
@@ -1146,27 +977,13 @@ module.exports = {
       let { errors, valid } = validateEmailInput(email);
 
       if (!valid) {
-        throw new GraphQLError("Errors.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       if (email === currentEmail) {
         valid = false;
         errors.general = "Can't change your own permissions";
-        throw new GraphQLError("Can't change your own permissions", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       //loggedInUser is the current user that's trying to change another user's permissions
@@ -1176,27 +993,13 @@ module.exports = {
 
       if (!loggedInUser) {
         errors.general = "User not found";
-        throw new GraphQLError("User not found", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       if (!loggedInUser.permission.includes("admin")) {
         valid = false;
         errors.general = "Must be an admin to change permission";
-        throw new GraphQLError("Must be an admin to change permission", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       }
 
       const options = { new: true };
@@ -1212,14 +1015,7 @@ module.exports = {
       );
       if (!user) {
         errors.general = "User not found";
-        throw new GraphQLError("User not found", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            }
-          },
-        });
+        handleInputError(errors);
       } else {
         return user;
       }

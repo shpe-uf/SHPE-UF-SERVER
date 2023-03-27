@@ -1,5 +1,3 @@
-const { GraphQLError } = require("graphql");
-const { ApolloServerErrorCode } = require("@apollo/server/errors");
 const Corporation = require("../../models/Corporation.js");
 
 require("dotenv").config();
@@ -8,6 +6,11 @@ const {
   validateCreateEditCorporationInput: validateCreateEditCorporationInput,
 } = require("../../util/validators");
 
+const {
+  handleInputError,
+  handleGeneralError,
+} = require("../../util/error-handling");
+
 module.exports = {
   Query: {
     async getCorporations() {
@@ -15,7 +18,7 @@ module.exports = {
         const corporations = await Corporation.find().sort({ name: 1 });
         return corporations;
       } catch (err) {
-        throw new Error(err);
+        handleGeneralError(err, err.message);
       }
     },
   },
@@ -62,28 +65,14 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new GraphQLError("Errors", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            },
-          },
-        });
+        handleInputError(errors);
       }
 
       isCorporationNameDuplicate = await Corporation.findOne({ name });
 
       if (isCorporationNameDuplicate) {
-        errors.name = "This corporation is already in our database.";
-        throw new GraphQLError("This corporation is already in our database.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            },
-          },
-        });
+        errors.general = "This corporation is already in our database.";
+        handleInputError(errors);
       }
 
       academia = academia === "true" || academia === true ? true : false;
@@ -178,14 +167,7 @@ module.exports = {
       );
 
       if (!valid) {
-        throw new GraphQLError("Errors", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            },
-          },
-        });
+        handleInputError(errors);
       }
 
       academia = academia === "true" || academia === true ? true : false;
@@ -242,14 +224,14 @@ module.exports = {
         );
         return updatedCorporation;
       } else {
-        throw new Error("Company not found.");
+        handleGeneralError({}, "Company not found.");
       }
     },
 
     async deleteCorporation(_, { corporationId }) {
       await Corporation.deleteOne({ _id: corporationId }, (err) => {
         if (err) {
-          throw err;
+          handleGeneralError(err, err.message);
         }
       });
 
