@@ -26,7 +26,7 @@ startApolloServer = async () => {
   await server.start();
 
   app.use(
-    cors({ origin: [process.env.CLIENT_ORIGIN], credentials: true }),
+    cors({ origin: [RegExp(process.env.CLIENT_ORIGIN)], credentials: true }),
     json(),
     expressMiddleware(server)
   );
