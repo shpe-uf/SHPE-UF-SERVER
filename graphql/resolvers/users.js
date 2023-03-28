@@ -1,5 +1,5 @@
 const { GraphQLError } = require("graphql");
-const { ApolloServerErrorCode } = require('@apollo/server/errors');
+const { ApolloServerErrorCode } = require("@apollo/server/errors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -61,26 +61,6 @@ module.exports = {
       try {
         var user = await User.findById(userId);
         if (user) {
-          const users = await User.find();
-          const fallBelowUsers = await User.find()
-            .where("fallPoints")
-            .lt(user.fallPoints);
-          const springBelowUsers = await User.find()
-            .where("springPoints")
-            .lt(user.springPoints);
-          const summerBelowUsers = await User.find()
-            .where("summerPoints")
-            .lt(user.summerPoints);
-
-          const fallPercentile = Math.trunc(
-            (fallBelowUsers.length / users.length) * 100
-          );
-          const springPercentile = Math.trunc(
-            (springBelowUsers.length / users.length) * 100
-          );
-          const summerPercentile = Math.trunc(
-            (summerBelowUsers.length / users.length) * 100
-          );
 
           var newUser = {
             firstName: user.firstName,
@@ -98,9 +78,9 @@ module.exports = {
             fallPoints: user.fallPoints,
             springPoints: user.springPoints,
             summerPoints: user.summerPoints,
-            fallPercentile: fallPercentile,
-            springPercentile: springPercentile,
-            summerPercentile: summerPercentile,
+            fallPercentile: user.fallPercentile,
+            springPercentile: user.springPercentile,
+            summerPercentile: user.summerPercentile,
             createdAt: user.createdAt,
             permission: user.permission,
             listServ: user.listServ,
@@ -275,7 +255,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -291,7 +271,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -305,7 +285,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -319,7 +299,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -379,7 +359,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -397,7 +377,7 @@ module.exports = {
               exception: {
                 code: ApolloServerErrorCode.BAD_USER_INPUT,
                 errors,
-              }
+              },
             },
           }
         );
@@ -409,17 +389,14 @@ module.exports = {
 
       if (isEmailDuplicate) {
         errors.email = "An account with that email already exists.";
-        throw new GraphQLError(
-          "An account with that e-mail already exists.",
-          {
-            extensions: {
-              exception: {
-                code: ApolloServerErrorCode.BAD_USER_INPUT,
-                errors,
-              }
+        throw new GraphQLError("An account with that e-mail already exists.", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
             },
-          }
-        );
+          },
+        });
       }
 
       password = await bcrypt.hash(password, 12);
@@ -442,6 +419,9 @@ module.exports = {
         fallPoints: 0,
         springPoints: 0,
         summerPoints: 0,
+        fallPercentile: 0,
+        springPercentile: 0,
+        summerPercentile: 0,
         permission: "member",
         listServ,
         events: [],
@@ -509,7 +489,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -521,7 +501,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -533,7 +513,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -545,7 +525,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -558,7 +538,7 @@ module.exports = {
               exception: {
                 code: ApolloServerErrorCode.BAD_USER_INPUT,
                 errors,
-              }
+              },
             },
           });
         }
@@ -577,7 +557,7 @@ module.exports = {
               exception: {
                 code: ApolloServerErrorCode.BAD_USER_INPUT,
                 errors,
-              }
+              },
             },
           });
         }
@@ -610,6 +590,9 @@ module.exports = {
           fallPoints: user.fallPoints,
           springPoints: user.springPoints,
           summerPoints: user.summerPoints,
+          fallPercentile: user.fallPercentile,
+          springPercentile: user.springPercentile,
+          summerPercentile: user.summerPercentile,
           createdAt: user.createdAt,
           permission: user.permission,
           listServ: user.listServ,
@@ -626,6 +609,8 @@ module.exports = {
         return newUser;
       } else {
         var pointsIncrease = {};
+
+        const users = await User.find();
 
         if (event.semester === "Fall Semester") {
           pointsIncrease = {
@@ -649,7 +634,7 @@ module.exports = {
               exception: {
                 code: ApolloServerErrorCode.BAD_USER_INPUT,
                 errors,
-              }
+              },
             },
           });
         }
@@ -712,6 +697,68 @@ module.exports = {
             new: true,
           }
         );
+
+        for (let i = 0; i < users.length; i++) {
+          var percentileUpdate = {};
+
+          if (event.semester === "Fall Semester") {
+            const fallBelowUsers = await User.find()
+              .where("fallPoints")
+              .lt(users[i].fallPoints);
+
+            const fallPercent = Math.trunc(
+              (fallBelowUsers.length / users.length) * 100
+            );
+
+            percentileUpdate = {
+              fallPercentile: fallPercent,
+              springPercentile: users[i].springPercentile,
+              summerPercentile: users[i].summerPercentile,
+            };
+          } else if (event.semester === "Spring Semester") {
+            const springBelowUsers = await User.find()
+              .where("springPoints")
+              .lt(users[i].springPoints);
+
+            const springPercent = Math.trunc(
+              (springBelowUsers.length / users.length) * 100
+            );
+
+            percentileUpdate = {
+              fallPercentile: users[i].fallPercentile,
+              springPercentile: springPercent,
+              summerPercentile: users[i].summerPercentile,
+            };
+          } else if (event.semester === "Summer Semester") {
+            const summerBelowUsers = await User.find()
+              .where("summerPoints")
+              .lt(users[i].summerPoints);
+
+            const summerPercent = Math.trunc(
+              (summerBelowUsers.length / users.length) * 100
+            );
+
+            percentileUpdate = {
+              fallPercentile: users[i].fallPercentile,
+              springPercentile: users[i].springPercentile,
+              summerPercentile: summerPercent,
+            };
+          }
+
+          var username = users[i].username;
+
+          await User.findOneAndUpdate(
+            {
+              username,
+            },
+            {
+              $inc: percentileUpdate,
+            },
+            {
+              new: true,
+            }
+          );
+        }
 
         return updatedUser;
       }
@@ -800,7 +847,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -813,7 +860,7 @@ module.exports = {
               exception: {
                 code: ApolloServerErrorCode.BAD_USER_INPUT,
                 errors,
-              }
+              },
             },
           });
         }
@@ -831,7 +878,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -864,6 +911,9 @@ module.exports = {
         fallPoints: user.fallPoints,
         springPoints: user.springPoints,
         summerPoints: user.summerPoints,
+        fallPercentile: user.fallPercentile,
+        springPercentile: user.springPercentile,
+        summerPercentile: user.summerPercentile,
         createdAt: user.createdAt,
         permission: user.permission,
         listServ: user.listServ,
@@ -895,7 +945,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -911,7 +961,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -926,7 +976,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -992,7 +1042,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -1007,7 +1057,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -1107,7 +1157,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -1151,7 +1201,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -1164,7 +1214,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -1181,7 +1231,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -1194,7 +1244,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       }
@@ -1217,7 +1267,7 @@ module.exports = {
             exception: {
               code: ApolloServerErrorCode.BAD_USER_INPUT,
               errors,
-            }
+            },
           },
         });
       } else {
