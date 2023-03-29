@@ -61,7 +61,6 @@ module.exports = {
       try {
         var user = await User.findById(userId);
         if (user) {
-
           var newUser = {
             firstName: user.firstName,
             lastName: user.lastName,
@@ -761,6 +760,84 @@ module.exports = {
         }
 
         return updatedUser;
+      }
+    },
+
+    async resetFallPercentiles() {
+      const users = await User.find();
+
+      for (let i = 0; i < users.length; i++) {
+        var percentileUpdate = {};
+
+        percentileUpdate = {
+          fallPercentile: 0,
+        };
+
+        var username = users[i].username;
+
+        await User.findOneAndUpdate(
+          {
+            username,
+          },
+          {
+            $inc: percentileUpdate,
+          },
+          {
+            new: true,
+          }
+        );
+      }
+    },
+
+    async resetSpringPercentiles() {
+      const users = await User.find();
+
+      for (let i = 0; i < users.length; i++) {
+        var percentileUpdate = {};
+
+        percentileUpdate = {
+          springPercentile: 0,
+        };
+
+        var username = users[i].username;
+
+        await User.findOneAndUpdate(
+          {
+            username,
+          },
+          {
+            $inc: percentileUpdate,
+          },
+          {
+            new: true,
+          }
+        );
+      }
+    },
+
+    async resetSummerPercentiles() {
+      const users = await User.find();
+
+      for (let i = 0; i < users.length; i++) {
+        var percentileUpdate = {};
+
+        percentileUpdate = {
+          summerPercentile: 0,
+        };
+
+        var username = users[i].username;
+
+        await User.findOneAndUpdate(
+          {
+            username,
+          },
+          {
+            $inc: percentileUpdate,
+          },
+          {
+            new: true,
+          }
+        );
       }
     },
 
