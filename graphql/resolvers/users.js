@@ -25,6 +25,7 @@ const {
   validateEmailInput,
   validatePasswordInput,
   validateEditUserProfile,
+  validateEditUpdatedAt,
 } = require("../../util/validators");
 
 function generateToken(user, time) {
@@ -102,6 +103,7 @@ module.exports = {
             springPercentile: springPercentile,
             summerPercentile: summerPercentile,
             createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
             permission: user.permission,
             listServ: user.listServ,
             events: user.events,
@@ -438,6 +440,7 @@ module.exports = {
         email,
         password,
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
         points: 0,
         fallPoints: 0,
         springPoints: 0,
@@ -1115,6 +1118,10 @@ module.exports = {
       const user = await User.findOne({ email });
 
       if (user) {
+        updatedAt = user.updatedAt;
+        if(user.year !== year){
+          updatedAt = new Date().toISOString();
+        }
         const updatedUser = await User.findOneAndUpdate(
           { email },
           {
@@ -1130,9 +1137,55 @@ module.exports = {
             classes,
             internships,
             socialMedia,
+            updatedAt,
           },
           {
             new: true,
+            useFindAndModify: false,
+          }
+        );
+
+        return updatedUser;
+      } else {
+        throw new Error("User not found.");
+      }
+    },
+
+    async editUpdatedAt(
+      _,
+      {
+        editUpdatedAtInput: {
+          email,
+          updatedAt,
+        },
+      }
+    ) {
+      const { errors, valid } = validateEditUpdatedAt(
+        email,
+        updatedAt,
+      );
+
+      if (!valid) {
+        throw new GraphQLError("Errors", {
+          extensions: {
+            exception: {
+              code: ApolloServerErrorCode.BAD_USER_INPUT,
+              errors,
+            }
+          },
+        });
+      }
+      const user = await User.findOne({ email });
+      if (user) {
+        
+        const updatedUser = await User.findOneAndUpdate(
+          { email },
+          {
+            updatedAt,
+          },
+          {
+            new: true,
+            useFindAndModify: false,
           }
         );
 
@@ -1223,6 +1276,41 @@ module.exports = {
       } else {
         return user;
       }
+    },
+
+    async updateYears() {
+      var users = await User.find();
+      users.forEach(async function(user){
+        const currDate = new Date();
+        const email = user.email;
+        const msPerDay = 1000*60*60*24;
+        var updatedAt = currDate;
+        var year = user.year;
+        
+        if(user.updatedAt) updatedAt = new Date(user.updatedAt);
+        const difference = Math.round((currDate - updatedAt) / msPerDay);
+
+        if(difference >= 365){
+          updatedAt = currDate;
+          if(year === "1st Year") year = "2nd Year"
+          else if (year === "2nd Year") year = "3rd Year"
+          else if (year === "3rd Year") year = "4th Year"
+          else if (year === "4th Year") year = "5th Year or Higher"
+        }
+
+        const updatedUser = await User.findOneAndUpdate(
+          { email },
+          {
+            year: year,
+            updatedAt: updatedAt.toISOString(),
+          },
+          {
+            new: true,
+            useFindAndModify: false,
+          },
+        );
+      });
+      return users;
     },
   },
 };
