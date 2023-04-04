@@ -1,5 +1,3 @@
-const { GraphQLError } = require("graphql");
-const { ApolloServerErrorCode } = require("@apollo/server/errors");
 const Event = require("../../models/Event.js");
 const User = require("../../models/User.js");
 const Request = require("../../models/Request.js");
@@ -311,14 +309,7 @@ module.exports = {
 
       if (!users || !users.length || users.length === 0) {
         errors.general = "User not found.";
-        throw new GraphQLError("User not found.", {
-          extensions: {
-            exception: {
-              code: ApolloServerErrorCode.BAD_USER_INPUT,
-              errors,
-            },
-          },
-        });
+        handleInputError(errors);
       }
 
       if (!event) {
