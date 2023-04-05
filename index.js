@@ -13,7 +13,7 @@ require("dotenv").config();
 
 const resolvers = require("./graphql/resolvers");
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 6000;
 
 startApolloServer = async () => {
   const app = express();
@@ -31,7 +31,7 @@ startApolloServer = async () => {
     expressMiddleware(server)
   );
   await new Promise((resolve) => httpServer.listen({ port }, resolve));
-  console.log(`SERVER RUNNING AT http://localhost:5000/`);
+  console.log(`SERVER RUNNING AT http://localhost:6000/`);
 };
 
 mongoose

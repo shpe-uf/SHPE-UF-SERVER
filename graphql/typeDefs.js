@@ -22,6 +22,9 @@ module.exports = gql`
     fallPoints: Int!
     springPoints: Int!
     summerPoints: Int!
+    fallPercentile: Int!
+    springPercentile: Int!
+    summerPercentile: Int!
     permission: String!
     listServ: Boolean!
     events: [Event]!
@@ -30,9 +33,6 @@ module.exports = gql`
     token: String!
     message: String!
     confirmed: Boolean!
-    fallPercentile: Int!
-    springPercentile: Int!
-    summerPercentile: Int!
     bookmarks: [String]!
     classes: [String]
     internships: [String]

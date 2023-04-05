@@ -711,8 +711,6 @@ module.exports = {
 
             percentileUpdate = {
               fallPercentile: fallPercent,
-              springPercentile: users[i].springPercentile,
-              summerPercentile: users[i].summerPercentile,
             };
           } else if (event.semester === "Spring Semester") {
             const springBelowUsers = await User.find()
@@ -724,9 +722,7 @@ module.exports = {
             );
 
             percentileUpdate = {
-              fallPercentile: users[i].fallPercentile,
               springPercentile: springPercent,
-              summerPercentile: users[i].summerPercentile,
             };
           } else if (event.semester === "Summer Semester") {
             const summerBelowUsers = await User.find()
@@ -738,8 +734,6 @@ module.exports = {
             );
 
             percentileUpdate = {
-              fallPercentile: users[i].fallPercentile,
-              springPercentile: users[i].springPercentile,
               summerPercentile: summerPercent,
             };
           }
@@ -762,8 +756,8 @@ module.exports = {
         return updatedUser;
       }
     },
-
-    async resetFallPercentiles() {
+/*
+    async resetFallPercentile(_) {
       const users = await User.find();
 
       for (let i = 0; i < users.length; i++) {
@@ -787,9 +781,11 @@ module.exports = {
           }
         );
       }
+
+      return 0;
     },
 
-    async resetSpringPercentiles() {
+    async resetSpringPercentile(_) {
       const users = await User.find();
 
       for (let i = 0; i < users.length; i++) {
@@ -813,9 +809,11 @@ module.exports = {
           }
         );
       }
+
+      return 0;
     },
 
-    async resetSummerPercentiles() {
+    async resetSummerPercentile(_) {
       const users = await User.find();
 
       for (let i = 0; i < users.length; i++) {
@@ -839,7 +837,11 @@ module.exports = {
           }
         );
       }
+
+      return 0;
     },
+
+    */
 
     async bookmarkTask(_, { bookmarkTaskInput: { name, username } }) {
       var errors = {};
