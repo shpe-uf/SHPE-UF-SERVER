@@ -16,6 +16,7 @@ module.exports = gql`
     sex: String!
     username: String!
     email: String!
+    personalEmail: String!
     password: String!
     createdAt: String!
     updatedAt: String!
@@ -210,6 +211,7 @@ module.exports = gql`
     sex: String!
     username: String!
     email: String!
+    personalEmail: String!
     password: String!
     confirmPassword: String!
     listServ: String!
@@ -335,8 +337,22 @@ module.exports = gql`
     linkedin: String!
   }
 
+  input EditAlumniProfileInput {
+    firstName: String!
+    lastName: String!
+    oldEmail: String!
+    newEmail: String!
+    undergrad: UndergradInput!
+    grad: GradInput!
+    employer: String!
+    position: String!
+    location: LocationInput!
+    linkedin: String!
+  }
+
   input EditUserProfileInput {
     email: String!
+    personalEmail: String!
     firstName: String!
     lastName: String!
     photo: String!
@@ -453,6 +469,7 @@ module.exports = gql`
     bookmark(company: String!, username: String!): User!
     deleteBookmark(company: String!, username: String!): User!
     registerAlumni(registerAlumniInput: RegisterAlumniInput): Alumni!
+    editAlumniProfile(editAlumniProfileInput: EditAlumniProfileInput): Alumni!
     changePermission(
       email: String!
       currentEmail: String!
@@ -460,6 +477,7 @@ module.exports = gql`
     ): User!
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
     editUpdatedAt(editUpdatedAtInput: EditUpdatedAtInput): User!
+    insertPersEmailProp: [User]
     updateYears: [User]
     reimbursementRequest(reimbursementInput: ReimbursementInput): Reimbursement!
     resolveReimbursement(id: ID!, email: String!): Reimbursement!

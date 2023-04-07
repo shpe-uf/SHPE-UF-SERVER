@@ -51,6 +51,12 @@ const userSchema = new Schema({
     lowercase: true,
     unique: true,
   },
+  personalEmail: {
+    type: String,
+    required: true,
+    lowercase: true,
+    unique: true,
+  },
   password: {
     type: String,
     required: true,
