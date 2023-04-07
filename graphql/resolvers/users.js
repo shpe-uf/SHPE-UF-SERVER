@@ -140,6 +140,7 @@ module.exports = {
             username: user.username,
             photo: user.photo,
             email: user.email,
+            personalEmail: user.personalEmail,
             major: user.major,
             year: user.year,
             graduating: user.graduating,
@@ -375,6 +376,7 @@ module.exports = {
           sex,
           username,
           email,
+          personalEmail,
           password,
           confirmPassword,
           listServ,
@@ -384,6 +386,7 @@ module.exports = {
       firstName = firstName.trim();
       lastName = lastName.trim();
       email = email.toLowerCase();
+      personalEmail = personalEmail.toLowerCase();
       username = username.toLowerCase();
 
       const { valid, errors } = validateRegisterInput(
@@ -397,6 +400,7 @@ module.exports = {
         sex,
         username,
         email,
+        personalEmail,
         password,
         confirmPassword
       );
@@ -436,6 +440,7 @@ module.exports = {
         ethnicity,
         sex,
         username,
+        personalEmail,
         email,
         password,
         createdAt: new Date().toISOString(),
@@ -558,6 +563,7 @@ module.exports = {
           lastName: user.lastName,
           username: user.username,
           email: user.email,
+          personalEmail: user.personalEmail,
           major: user.major,
           year: user.year,
           graduating: user.graduating,
@@ -827,6 +833,7 @@ module.exports = {
         lastName: user.lastName,
         username: user.username,
         email: user.email,
+        personalEmail: user.personalEmail,
         major: user.major,
         year: user.year,
         graduating: user.graduating,
@@ -1013,6 +1020,7 @@ module.exports = {
       {
         editUserProfileInput: {
           email,
+          personalEmail,
           firstName,
           lastName,
           photo,
@@ -1029,6 +1037,7 @@ module.exports = {
       }
     ) {
       const { errors, valid } = validateEditUserProfile(
+        personalEmail,
         firstName,
         lastName,
         photo,
@@ -1057,6 +1066,7 @@ module.exports = {
         const updatedUser = await User.findOneAndUpdate(
           { email },
           {
+            personalEmail,
             firstName,
             lastName,
             photo,
@@ -1187,6 +1197,26 @@ module.exports = {
             useFindAndModify: false,
           }
         );
+      });
+      return users;
+    },
+
+    async insertPersEmailProp() {
+      var users = await User.find();
+      users.forEach(async function(user){
+        const email = user.email;
+        if(!user.personalEmail){
+          const updatedUser = await User.findOneAndUpdate(
+            { email },
+            {
+              personalEmail: "",
+            },
+            {
+              new: true,
+              useFindAndModify: false,
+            },
+          );
+        }
       });
       return users;
     },

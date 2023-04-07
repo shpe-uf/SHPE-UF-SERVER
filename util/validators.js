@@ -11,6 +11,7 @@ module.exports.validateRegisterInput = (
   sex,
   username,
   email,
+  personalEmail,
   password,
   confirmPassword
 ) => {
@@ -88,6 +89,14 @@ module.exports.validateRegisterInput = (
           "University of Florida or Santa Fe College email required.";
       }
     }
+  }
+
+  if (personalEmail.trim() === "") {
+    errors.personalEmail = "Personal email is required.";
+  } else {
+    if (!personalEmail.match(emailRegex)) {
+      errors.personalEmail = "Invalid personal email address.";
+    } 
   }
 
   if (password === "") {
@@ -369,6 +378,7 @@ module.exports.validateCreateEditCorporationInput = (
 };
 
 module.exports.validateEditUserProfile = (
+  personalEmail,
   firstName,
   lastName,
   photo,
@@ -382,6 +392,15 @@ module.exports.validateEditUserProfile = (
   const errors = {};
 
   const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
+  const emailRegex = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
+
+  if (personalEmail.trim() === "") {
+    errors.personalEmail = "Personal email is required.";
+  } else {
+    if (!personalEmail.match(emailRegex)) {
+      errors.personalEmail = "Invalid personal email address.";
+    } 
+  }
 
   if (firstName.trim() === "") {
     errors.firstName = "First name is required.";
@@ -500,6 +519,132 @@ module.exports.validateRegisterAlumniInput = (
       errors.email = "Invalid email address.";
     }
   }
+
+  if (undergrad.university.trim() === "") {
+    errors.undergradUniversity = "Undergraduate university is required.";
+  }
+
+  if (undergrad.year.trim() === "") {
+    errors.undergradYear = "Undergraduate year is required.";
+  } else {
+    if (!undergrad.year.match(yearValidator)) {
+      errors.undergradYear = "Invalid undergraduate year.";
+    }
+  }
+
+  if (undergrad.major.trim() === "") {
+    errors.undergradMajor = "Undergraduate major is required.";
+  }
+
+  if (
+    grad.university.trim() !== "" ||
+    grad.year.trim() !== "" ||
+    grad.major.trim() !== ""
+  ) {
+    if (grad.university.trim() === "") {
+      errors.gradUniversity = "Graduate university is required.";
+    }
+
+    if (grad.year.trim() === "") {
+      errors.gradYear = "Graduate year is required.";
+    } else {
+      if (!grad.year.match(yearValidator)) {
+        errors.gradYear = "Invalid graduate year.";
+      }
+    }
+
+    if (grad.major.trim() === "") {
+      errors.gradMajor = "Graduate major is required.";
+    }
+  }
+
+  if (
+    grad.university.trim() === "" &&
+    grad.year.trim() === "" &&
+    grad.major.trim() === ""
+  ) {
+    if (employer.trim() === "") {
+      errors.employer = "Employer is required.";
+    }
+
+    if (position.trim() === "") {
+      errors.position = "Position is required.";
+    }
+  }
+
+  if (location.city.trim() === "") {
+    errors.locationCity = "City is required.";
+  }
+
+  if (location.country === "United States") {
+    if (location.state.trim() === "") {
+      errors.locationState = "State is required.";
+    }
+  }
+
+  if (location.country.trim() === "") {
+    errors.locationCountry = "Country is required.";
+  }
+
+  if (linkedin.trim() === "") {
+    errors.linkedin = "LinkedIn Profile link is required.";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+};
+
+module.exports.validateEditAlumniProfileInput = (
+  firstName,
+  lastName,
+  oldEmail,
+  newEmail,
+  undergrad,
+  grad,
+  employer,
+  position,
+  location,
+  linkedin
+) => {
+  const errors = {};
+
+  const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
+  const emailValidator = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
+  const yearValidator = /^\d{4}$/;
+
+  if (firstName.trim() === "") {
+    errors.firstName = "First name is required.";
+  } else {
+    if (!firstName.match(nameValidator)) {
+      errors.firstName =
+        "First Name must be at least 3 characters, max 20. No special characters or numbers.";
+    }
+  }
+
+  if (lastName.trim() === "") {
+    errors.lastName = "Last Name is required.";
+  } else {
+    if (!lastName.match(nameValidator)) {
+      errors.lastName =
+        "Last name must be at least 3 characters, max 20. No special characters or numbers.";
+    }
+  }
+
+  if (oldEmail.trim() === "") {
+    errors.email = "Old email is required.";
+  } else {
+    if (!oldEmail.match(emailValidator)) {
+      errors.email = "Invalid old email address.";
+    }
+  }
+
+  if (newEmail.trim() !== "") {
+    if (!newEmail.match(emailValidator)) {
+      errors.email = "Invalid new email address.";
+    }
+  } 
 
   if (undergrad.university.trim() === "") {
     errors.undergradUniversity = "Undergraduate university is required.";
