@@ -18,6 +18,7 @@ module.exports = gql`
     email: String!
     password: String!
     createdAt: String!
+    updatedAt: String!
     points: Int!
     fallPoints: Int!
     springPoints: Int!
@@ -350,6 +351,11 @@ module.exports = gql`
     socialMedia: [String]
   }
 
+  input EditUpdatedAtInput {
+    email: String!
+    updatedAt: String!
+  }
+
   input ReimbursementInput {
     firstName: String!
     lastName: String!
@@ -392,6 +398,7 @@ module.exports = gql`
     getUsers: [User]
     getUser(userId: ID!): User
     getEvents: [Event]
+    getEventsReversed: [Event]
     getTasks: [Task]
     getRequests: [Request]
     getMatches(username: String!): [User]
@@ -452,6 +459,8 @@ module.exports = gql`
       permission: String!
     ): User!
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
+    editUpdatedAt(editUpdatedAtInput: EditUpdatedAtInput): User!
+    updateYears: [User]
     reimbursementRequest(reimbursementInput: ReimbursementInput): Reimbursement!
     resolveReimbursement(id: ID!, email: String!): Reimbursement!
     unresolveReimbursement(id: ID!, email: String!): Reimbursement!

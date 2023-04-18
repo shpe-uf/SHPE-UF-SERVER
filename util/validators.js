@@ -443,6 +443,21 @@ module.exports.validateEditUserProfile = (
   };
 };
 
+module.exports.validateEditUpdatedAt = (
+  email,
+) => {
+  const errors = {};
+
+  if (email.trim() === "") {
+    errors.code = "No email was provided.";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+}
+
 module.exports.validateRegisterAlumniInput = (
   firstName,
   lastName,
