@@ -697,66 +697,64 @@ module.exports = {
           }
         );
 
-        for (let i = 0; i < users.length; i++) {
-          var percentileUpdate = {};
+        var percentileUpdate = {};
 
-          if (event.semester === "Fall Semester") {
-            const fallBelowUsers = await User.find()
-              .where("fallPoints")
-              .lt(users[i].fallPoints);
+        if (event.semester === "Fall Semester") {
+          const fallBelowUsers = await User.find()
+            .where("fallPoints")
+            .lt(users[i].fallPoints);
 
-            const fallPercent = Math.trunc(
-              (fallBelowUsers.length / users.length) * 100
-            );
-
-            percentileUpdate = {
-              fallPercentile: fallPercent,
-            };
-          } else if (event.semester === "Spring Semester") {
-            const springBelowUsers = await User.find()
-              .where("springPoints")
-              .lt(users[i].springPoints);
-
-            const springPercent = Math.trunc(
-              (springBelowUsers.length / users.length) * 100
-            );
-
-            percentileUpdate = {
-              springPercentile: springPercent,
-            };
-          } else if (event.semester === "Summer Semester") {
-            const summerBelowUsers = await User.find()
-              .where("summerPoints")
-              .lt(users[i].summerPoints);
-
-            const summerPercent = Math.trunc(
-              (summerBelowUsers.length / users.length) * 100
-            );
-
-            percentileUpdate = {
-              summerPercentile: summerPercent,
-            };
-          }
-
-          var username = users[i].username;
-
-          await User.findOneAndUpdate(
-            {
-              username,
-            },
-            {
-              $inc: percentileUpdate,
-            },
-            {
-              new: true,
-            }
+          const fallPercent = Math.trunc(
+            (fallBelowUsers.length / users.length) * 100
           );
+
+          percentileUpdate = {
+            fallPercentile: fallPercent,
+          };
+        } else if (event.semester === "Spring Semester") {
+          const springBelowUsers = await User.find()
+            .where("springPoints")
+            .lt(users[i].springPoints);
+
+          const springPercent = Math.trunc(
+            (springBelowUsers.length / users.length) * 100
+          );
+
+          percentileUpdate = {
+            springPercentile: springPercent,
+          };
+        } else if (event.semester === "Summer Semester") {
+          const summerBelowUsers = await User.find()
+            .where("summerPoints")
+            .lt(users[i].summerPoints);
+
+          const summerPercent = Math.trunc(
+            (summerBelowUsers.length / users.length) * 100
+          );
+
+          percentileUpdate = {
+            summerPercentile: summerPercent,
+          };
         }
+
+        var username = users[i].username;
+
+        await User.findOneAndUpdate(
+          {
+            username,
+          },
+          {
+            $inc: percentileUpdate,
+          },
+          {
+            new: true,
+          }
+        );
 
         return updatedUser;
       }
     },
-/*
+
     async resetFallPercentile(_) {
       const users = await User.find();
 
@@ -840,8 +838,6 @@ module.exports = {
 
       return 0;
     },
-
-    */
 
     async bookmarkTask(_, { bookmarkTaskInput: { name, username } }) {
       var errors = {};
