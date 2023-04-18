@@ -30,6 +30,80 @@ const {
   validateEditUpdatedAt,
 } = require("../../util/validators");
 
+async function calculatePercentiles(user){
+  const users = await User.find();
+
+  var percentileUpdate = {};
+
+  const month = new Date().getMonth();
+
+  var semester = "";
+
+  if (month == "January" || month == "February" || month == "March" || month == "April"){
+    semester = "Spring Semester";
+  }
+  else if (month == "May" || month == "June" || month == "July"){
+    semester = "Summer Semester";
+  } 
+  else if (month == "August" || month == "September" || month == "October" || month == "November" || month == "December"){
+    semester = "Fall Semester";
+  }
+
+    if (semester === "Fall Semester") {
+      const fallBelowUsers = await User.find()
+        .where("fallPoints")
+        .lt(user.fallPoints);
+
+      const fallPercent = Math.trunc(
+        (fallBelowUsers.length / users.length) * 100
+      );
+
+      percentileUpdate = {
+        fallPercentile: fallPercent,
+      };
+    } else if (semester === "Spring Semester") {
+      const springBelowUsers = await User.find()
+        .where("springPoints")
+        .lt(user.springPoints);
+
+      const springPercent = Math.trunc(
+        (springBelowUsers.length / users.length) * 100
+      );
+
+      percentileUpdate = {
+        springPercentile: springPercent,
+      };
+    } else if (semester === "Summer Semester") {
+      const summerBelowUsers = await User.find()
+        .where("summerPoints")
+        .lt(user.summerPoints);
+
+      const summerPercent = Math.trunc(
+        (summerBelowUsers.length / users.length) * 100
+      );
+
+      percentileUpdate = {
+        summerPercentile: summerPercent,
+      };
+    }
+
+    var username = user.username;
+
+    await User.findOneAndUpdate(
+      {
+        username,
+      },
+      {
+        $inc: percentileUpdate,
+      },
+      {
+        new: true,
+      }
+    );
+
+
+}
+
 function generateToken(user, time) {
   return jwt.sign(
     {
@@ -281,6 +355,9 @@ module.exports = {
 
       time = remember === "true" || remember === true ? "30d" : "24h";
       const token = generateToken(user, time);
+
+      calculatePercentiles(user);
+
       return {
         ...user._doc,
         id: user._id,
@@ -516,8 +593,6 @@ module.exports = {
       } else {
         var pointsIncrease = {};
 
-        const users = await User.find();
-
         if (event.semester === "Fall Semester") {
           pointsIncrease = {
             points: event.points,
@@ -597,59 +672,7 @@ module.exports = {
           }
         );
 
-        var percentileUpdate = {};
-
-        if (event.semester === "Fall Semester") {
-          const fallBelowUsers = await User.find()
-            .where("fallPoints")
-            .lt(users[i].fallPoints);
-
-          const fallPercent = Math.trunc(
-            (fallBelowUsers.length / users.length) * 100
-          );
-
-          percentileUpdate = {
-            fallPercentile: fallPercent,
-          };
-        } else if (event.semester === "Spring Semester") {
-          const springBelowUsers = await User.find()
-            .where("springPoints")
-            .lt(users[i].springPoints);
-
-          const springPercent = Math.trunc(
-            (springBelowUsers.length / users.length) * 100
-          );
-
-          percentileUpdate = {
-            springPercentile: springPercent,
-          };
-        } else if (event.semester === "Summer Semester") {
-          const summerBelowUsers = await User.find()
-            .where("summerPoints")
-            .lt(users[i].summerPoints);
-
-          const summerPercent = Math.trunc(
-            (summerBelowUsers.length / users.length) * 100
-          );
-
-          percentileUpdate = {
-            summerPercentile: summerPercent,
-          };
-        }
-
-        var username = users[i].username;
-
-        await User.findOneAndUpdate(
-          {
-            username,
-          },
-          {
-            $inc: percentileUpdate,
-          },
-          {
-            new: true,
-          }
-        );
+        calculatePercentiles(updatedUser);
 
         return updatedUser;
       }

@@ -479,5 +479,8 @@ module.exports = gql`
       messageType: String!
       message: String!
     ): ContactRequest!
+    resetFallPercentile: Int!
+    resetSpringPercentile: Int!
+    resetSummerPercentile: Int!
   }
 `;
