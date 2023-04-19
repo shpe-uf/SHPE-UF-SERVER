@@ -79,6 +79,18 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
+  fallPercentile: {
+    type: Number,
+    default: 0,
+  },
+  springPercentile: {
+    type: Number,
+    default: 0,
+  },
+  summerPercentile: {
+    type: Number,
+    default: 0,
+  },
   permission: {
     type: String,
     default: 'member',

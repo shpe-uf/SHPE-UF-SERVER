@@ -30,6 +30,76 @@ const {
   validateEditUpdatedAt,
 } = require("../../util/validators");
 
+async function calculatePercentiles(user) {
+  const users = await User.find({}, { _id: 1 });
+
+  var percentileUpdate = {};
+
+  const month = new Date().getMonth();
+
+  var semester = "";
+
+  if (month <= 3) {
+    semester = "Spring Semester";
+  } else if (month <= 6) {
+    semester = "Summer Semester";
+  } else if (month <= 11) {
+    semester = "Fall Semester";
+  }
+
+  if (semester === "Fall Semester") {
+    const fallBelowUsers = await User.find({}, { fallPoints: 1, _id: 0 })
+      .where("fallPoints")
+      .lt(user.fallPoints);
+
+    const fallPercent = Math.trunc(
+      (fallBelowUsers.length / users.length) * 100
+    );
+
+    percentileUpdate = {
+      fallPercentile: fallPercent,
+    };
+  } else if (semester === "Spring Semester") {
+    const springBelowUsers = await User.find({}, { springPoints: 1, _id: 0 })
+      .where("springPoints")
+      .lt(user.springPoints);
+
+    const springPercent = Math.trunc(
+      (springBelowUsers.length / users.length) * 100
+    );
+
+    percentileUpdate = {
+      springPercentile: springPercent,
+    };
+  } else if (semester === "Summer Semester") {
+    const summerBelowUsers = await User.find({}, { summerPoints: 1, _id: 0 })
+      .where("summerPoints")
+      .lt(user.summerPoints);
+
+    const summerPercent = Math.trunc(
+      (summerBelowUsers.length / users.length) * 100
+    );
+
+    percentileUpdate = {
+      summerPercentile: summerPercent,
+    };
+  }
+
+  var username = user.username;
+
+  await User.findOneAndUpdate(
+    {
+      username,
+    },
+    {
+      $set: percentileUpdate,
+    },
+    {
+      new: true,
+    }
+  );
+}
+
 function generateToken(user, time) {
   return jwt.sign(
     {
@@ -64,27 +134,6 @@ module.exports = {
       try {
         var user = await User.findById(userId);
         if (user) {
-          const users = await User.find();
-          const fallBelowUsers = await User.find()
-            .where("fallPoints")
-            .lt(user.fallPoints);
-          const springBelowUsers = await User.find()
-            .where("springPoints")
-            .lt(user.springPoints);
-          const summerBelowUsers = await User.find()
-            .where("summerPoints")
-            .lt(user.summerPoints);
-
-          const fallPercentile = Math.trunc(
-            (fallBelowUsers.length / users.length) * 100
-          );
-          const springPercentile = Math.trunc(
-            (springBelowUsers.length / users.length) * 100
-          );
-          const summerPercentile = Math.trunc(
-            (summerBelowUsers.length / users.length) * 100
-          );
-
           var newUser = {
             firstName: user.firstName,
             lastName: user.lastName,
@@ -101,9 +150,9 @@ module.exports = {
             fallPoints: user.fallPoints,
             springPoints: user.springPoints,
             summerPoints: user.summerPoints,
-            fallPercentile: fallPercentile,
-            springPercentile: springPercentile,
-            summerPercentile: summerPercentile,
+            fallPercentile: user.fallPercentile,
+            springPercentile: user.springPercentile,
+            summerPercentile: user.summerPercentile,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
             permission: user.permission,
@@ -302,6 +351,9 @@ module.exports = {
 
       time = remember === "true" || remember === true ? "30d" : "24h";
       const token = generateToken(user, time);
+
+      calculatePercentiles(user);
+
       return {
         ...user._doc,
         id: user._id,
@@ -392,6 +444,9 @@ module.exports = {
         fallPoints: 0,
         springPoints: 0,
         summerPoints: 0,
+        fallPercentile: 0,
+        springPercentile: 0,
+        summerPercentile: 0,
         permission: "member",
         listServ,
         events: [],
@@ -514,6 +569,9 @@ module.exports = {
           fallPoints: user.fallPoints,
           springPoints: user.springPoints,
           summerPoints: user.summerPoints,
+          fallPercentile: user.fallPercentile,
+          springPercentile: user.springPercentile,
+          summerPercentile: user.summerPercentile,
           createdAt: user.createdAt,
           permission: user.permission,
           listServ: user.listServ,
@@ -610,8 +668,48 @@ module.exports = {
           }
         );
 
+        calculatePercentiles(updatedUser);
+
         return updatedUser;
       }
+    },
+
+    async resetPercentile(semester) {
+      const users = await User.find({}, { _id: 1 });
+
+      var percentileUpdate = {};
+
+      if (semester == "fallPercentile") {
+        percentileUpdate = {
+          fallPercentile: 0,
+        };
+      } else if (semester == "springPercentile") {
+        percentileUpdate = {
+          springPercentile: 0,
+        };
+      } else if (semester == "summerPercentile") {
+        percentileUpdate = {
+          summerPercentile: 0,
+        };
+      }
+
+      for (let i = 0; i < users.length; i++) {
+        var username = users[i].username;
+
+        await User.findOneAndUpdate(
+          {
+            username,
+          },
+          {
+            $set: percentileUpdate,
+          },
+          {
+            new: true,
+          }
+        );
+      }
+
+      return 0;
     },
 
     async bookmarkTask(_, { bookmarkTaskInput: { name, username } }) {
@@ -740,6 +838,9 @@ module.exports = {
         fallPoints: user.fallPoints,
         springPoints: user.springPoints,
         summerPoints: user.summerPoints,
+        fallPercentile: user.fallPercentile,
+        springPercentile: user.springPercentile,
+        summerPercentile: user.summerPercentile,
         createdAt: user.createdAt,
         permission: user.permission,
         listServ: user.listServ,
