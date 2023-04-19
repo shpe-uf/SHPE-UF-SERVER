@@ -690,21 +690,21 @@ module.exports = {
 
       var percentileUpdate = {};
 
-      for (let i = 0; i < users.length; i++) {
-        if (semester == "fallPercentile") {
-          percentileUpdate = {
-            fallPercentile: 0,
-          };
-        } else if (semester == "springPercentile") {
-          percentileUpdate = {
-            springPercentile: 0,
-          };
-        } else if (semester == "summerPercentile") {
-          percentileUpdate = {
-            summerPercentile: 0,
-          };
-        }
+      if (semester == "fallPercentile") {
+        percentileUpdate = {
+          fallPercentile: 0,
+        };
+      } else if (semester == "springPercentile") {
+        percentileUpdate = {
+          springPercentile: 0,
+        };
+      } else if (semester == "summerPercentile") {
+        percentileUpdate = {
+          summerPercentile: 0,
+        };
+      }
 
+      for (let i = 0; i < users.length; i++) {
         var username = users[i].username;
 
         await User.findOneAndUpdate(
