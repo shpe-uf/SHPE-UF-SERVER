@@ -39,22 +39,11 @@ async function calculatePercentiles(user) {
 
   var semester = "";
 
-  if (
-    month == "January" ||
-    month == "February" ||
-    month == "March" ||
-    month == "April"
-  ) {
+  if (month <= 3) {
     semester = "Spring Semester";
-  } else if (month == "May" || month == "June" || month == "July") {
+  } else if (month <= 6) {
     semester = "Summer Semester";
-  } else if (
-    month == "August" ||
-    month == "September" ||
-    month == "October" ||
-    month == "November" ||
-    month == "December"
-  ) {
+  } else if (month <= 11) {
     semester = "Fall Semester";
   }
 
