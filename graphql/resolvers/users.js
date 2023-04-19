@@ -92,7 +92,7 @@ async function calculatePercentiles(user) {
       username,
     },
     {
-      $inc: percentileUpdate,
+      $set: percentileUpdate,
     },
     {
       new: true,
