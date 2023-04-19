@@ -701,7 +701,7 @@ module.exports = {
             username,
           },
           {
-            $inc: percentileUpdate,
+            $set: percentileUpdate,
           },
           {
             new: true,
