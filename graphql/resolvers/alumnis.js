@@ -161,18 +161,6 @@ module.exports = {
         handleInputError(errors);
       }
 
-      grad.year = grad.year === "" ? 0 : grad.year;
-      var email = oldEmail;
-
-      if(newEmail !== oldEmail && newEmail !== ""){
-        const isEmailDuplicate = await Alumni.findOne({ email: newEmail });
-        if (isEmailDuplicate) {
-          errors.general = "that new email already exists.";
-          handleInputError(errors);
-        }
-        email = newEmail;
-      }
-
       const alumniLocation =
         location.city +
         ", " +
@@ -204,33 +192,37 @@ module.exports = {
           handleInputError(errors);
         });
 
-      const alumni = await Alumni.findOne({ email: oldEmail });
-
-      if (alumni) {
-        const updatedAlumni = await Alumni.findOneAndUpdate(
-          { email: oldEmail },
-          {
-            firstName,
-            lastName,
-            email,
-            undergrad,
-            grad,
-            employer,
-            position,
-            location,
-            coordinates,
-            linkedin,
-          },
-          {
-            new: true,
-            useFindAndModify: false,
-          }
-        );
-
-        return updatedAlumni;
-      } else {
-        throw new Error("Alumni not found.");
-      }
+      grad.year = !grad.year ? 0 : grad.year;
+      var email = newEmail ? newEmail : oldEmail;
+      
+      const updatedAlumni = await Alumni.findOneAndUpdate(
+        { email: oldEmail },
+        {
+          firstName,
+          lastName,
+          email,
+          undergrad,
+          grad,
+          employer,
+          position,
+          location,
+          coordinates,
+          linkedin,
+        },
+        {
+          new: true,
+          useFindAndModify: false,
+        }
+      ).lean()
+      .catch(function (err) {
+        if(err.code === 11000){
+          errors.general = "That new email already exists.";
+          handleInputError(errors);
+        }
+        handleGeneralError(err);
+      });
+      if(updatedAlumni) return updatedAlumni;
+      throw new Error("Alumni not found.");
     },
   },
 };

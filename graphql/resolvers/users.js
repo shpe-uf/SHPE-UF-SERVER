@@ -1101,23 +1101,15 @@ module.exports = {
     },
 
     async insertPersEmailProp() {
-      var users = await User.find();
-      users.forEach(async function(user){
-        const email = user.email;
-        if(!user.personalEmail){
-          const updatedUser = await User.findOneAndUpdate(
-            { email },
-            {
-              personalEmail: "",
-            },
-            {
-              new: true,
-              useFindAndModify: false,
-            },
-          );
-        }
-      });
-      return users;
+      try{
+        const updatedUsers = await User.updateMany(
+          { personalEmail: { $exists: false } },
+          { $set: { personalEmail: "" } }
+        );
+        return true;
+      } catch (error) {
+        handleGeneralError(error);
+      }
     },
   },
 };

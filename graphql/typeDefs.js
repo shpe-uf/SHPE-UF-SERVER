@@ -477,7 +477,7 @@ module.exports = gql`
     ): User!
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
     editUpdatedAt(editUpdatedAtInput: EditUpdatedAtInput): User!
-    insertPersEmailProp: [User]
+    insertPersEmailProp: Boolean!
     updateYears: [User]
     reimbursementRequest(reimbursementInput: ReimbursementInput): Reimbursement!
     resolveReimbursement(id: ID!, email: String!): Reimbursement!
