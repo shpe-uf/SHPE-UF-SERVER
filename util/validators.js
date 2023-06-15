@@ -91,7 +91,7 @@ module.exports.validateRegisterInput = (
     }
   }
 
-  if (personalEmail.trim() === "") {
+  if (!personalEmail.trim()) {
     errors.personalEmail = "Personal email is required.";
   } else {
     if (!personalEmail.match(emailRegex)) {
@@ -623,7 +623,7 @@ module.exports.validateEditAlumniProfileInput = (
     }
   }
 
-  if (lastName.trim() === "") {
+  if (!lastName.trim()) {
     errors.lastName = "Last Name is required.";
   } else {
     if (!lastName.match(nameValidator)) {
