@@ -31,7 +31,10 @@ startApolloServer = async () => {
     expressMiddleware(server)
   );
   await new Promise((resolve) => httpServer.listen({ port }, resolve));
-  console.log(`SERVER RUNNING AT http://localhost:5000/`);
+  const addr = httpServer.address();
+  const host = addr.address === '::' ? 'localhost' : addr.address;
+  const hport = addr.port;
+  console.log(`SERVER RUNNING AT http://${host}:${hport}/`);
 };
 
 mongoose
