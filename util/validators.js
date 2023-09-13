@@ -282,7 +282,7 @@ module.exports.validateCreateResourceInput = (
   //Without other countries characters: /^https?:\/\/([a-zA-Z0-9.-]){1,63}(\.)[a-zA-Z0-9]{1,63}(((\/)[a-zA-Z0-9-]{1,63}){1,63})?(\/)?((\.)[a-zA-Z0-9.]{1,63})?$/gm;
   //With other chars in domain name /^https?:\/\/([0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-]){1,63}(\.)[a-zA-Z0-9]{1,63}(((\/)[a-zA-Z0-9-=?#&]{1,63}){1,63})?(\/)?((\.)[a-zA-Z0-9.-=?#&]{1,63})?$/gm
 
-  if (title.trim() === "") {
+  if (!title.trim()) {
     errors.title = "Title is required.";
   } else {
     if (!title.match(titleValidator)) {
@@ -291,7 +291,7 @@ module.exports.validateCreateResourceInput = (
     }
   }
 
-  if (link.trim() === "") {
+  if (!link.trim()) {
     errors.link = "Link is required.";
   } else {
     if (!link.match(linkValidator)) {
@@ -301,7 +301,7 @@ module.exports.validateCreateResourceInput = (
   }
 
 
-  if(description.trim() === "" && description.length > 280){
+  if(!description.trim() && description.length > 280){
     errors.description = "Description must be between 1 and 150 characters."
   }
 
