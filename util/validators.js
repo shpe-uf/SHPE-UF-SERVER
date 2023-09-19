@@ -276,11 +276,11 @@ module.exports.validateCreateResourceInput = (
 
   const titleValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
 
-  const linkValidator = /^https?:\/\/([0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-]){1,63}(\.)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF0-9]{1,63}(((\/)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF-=?#&]{1,63}){1,63})?(\/)?((\.)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-=?#&]{1,63})?$/gm;
+  const linkValidator = /^(https?:\/\/)?([0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-]){1,63}(\.)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF0-9]{1,63}(((\/)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF-=?#&]{1,63}){1,63})?(\/)?((\.)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-=?#&]{1,63})?$/gm;
 
-  //Other link valiadators, will take out later
+  //Other link validators if needed
   //Without other countries characters: /^https?:\/\/([a-zA-Z0-9.-]){1,63}(\.)[a-zA-Z0-9]{1,63}(((\/)[a-zA-Z0-9-]{1,63}){1,63})?(\/)?((\.)[a-zA-Z0-9.]{1,63})?$/gm;
-  //With other chars in domain name /^https?:\/\/([0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-]){1,63}(\.)[a-zA-Z0-9]{1,63}(((\/)[a-zA-Z0-9-=?#&]{1,63}){1,63})?(\/)?((\.)[a-zA-Z0-9.-=?#&]{1,63})?$/gm
+  //With other chars in domain name, must include http/https: /^https?:\/\/([0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-]){1,63}(\.)[a-zA-Z0-9]{1,63}(((\/)[a-zA-Z0-9-=?#&]{1,63}){1,63})?(\/)?((\.)[a-zA-Z0-9.-=?#&]{1,63})?$/gm
 
   if (!title.trim()) {
     errors.title = "Title is required.";
