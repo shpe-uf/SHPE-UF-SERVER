@@ -67,6 +67,16 @@ module.exports = gql`
     users: [User]
   }
 
+  type Resource {
+    id: ID!
+    title: String!
+    link: String!
+    description: String
+    image: String!
+    createdAt: String!
+    podcast: Boolean!
+  }
+
   type Corporation {
     id: ID!
     name: String!
@@ -230,6 +240,14 @@ module.exports = gql`
     endDate: String!
     description: String!
     points: Int!
+  }
+
+  input CreateResourceInput {
+    title: String!
+    description: String
+    link: String!
+    image: String
+    podcast: Boolean!
   }
 
   input TransactionData {
@@ -400,6 +418,7 @@ module.exports = gql`
     getEvents: [Event]
     getEventsReversed: [Event]
     getTasks: [Task]
+    getResources: [Resource]
     getRequests: [Request]
     getMatches(username: String!): [User]
     getCorporations: [Corporation]
@@ -428,6 +447,8 @@ module.exports = gql`
     createEvent(createEventInput: CreateEventInput): [Event]
     redeemPoints(redeemPointsInput: RedeemPointsInput): User!
     createTask(createTaskInput: CreateTaskInput): Task!
+    createResource(createResourceInput: CreateResourceInput): [Resource]
+    deleteResource(resourceId: ID!): [Resource!]
     bookmarkTask(bookmarkTaskInput: bookmarkTaskInput): User!
     unBookmarkTask(unBookmarkTaskInput: unBookmarkTaskInput): User!
     redeemTasksPoints(redeemTasksPointsInput: RedeemTasksPointsInput): User!

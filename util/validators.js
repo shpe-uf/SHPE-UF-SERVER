@@ -264,6 +264,53 @@ module.exports.validateCreateTaskInput = (
   };
 };
 
+module.exports.validateCreateResourceInput = (
+  title,
+  link,
+  description,
+  image,
+  podcast
+) => {
+
+  const errors = {};
+
+  const titleValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
+
+  const linkValidator = /^(https?:\/\/)?([0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-]){1,63}(\.)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF0-9]{1,63}(((\/)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF-=?#&]{1,63}){1,63})?(\/)?((\.)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-=?#&]{1,63})?$/gm;
+
+  //Other link validators if needed
+  //Without other countries characters: /^https?:\/\/([a-zA-Z0-9.-]){1,63}(\.)[a-zA-Z0-9]{1,63}(((\/)[a-zA-Z0-9-]{1,63}){1,63})?(\/)?((\.)[a-zA-Z0-9.]{1,63})?$/gm;
+  //With other chars in domain name, must include http/https: /^https?:\/\/([0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-]){1,63}(\.)[a-zA-Z0-9]{1,63}(((\/)[a-zA-Z0-9-=?#&]{1,63}){1,63})?(\/)?((\.)[a-zA-Z0-9.-=?#&]{1,63})?$/gm
+
+  if (!title.trim()) {
+    errors.title = "Title is required.";
+  } else {
+    if (!title.match(titleValidator)) {
+      errors.title =
+        "Resource name must be at least 6 characters, max 50. No special characters, except for hyphens (-) and dashes (/).";
+    }
+  }
+
+  if (!link.trim()) {
+    errors.link = "Link is required.";
+  } else {
+    if (!link.match(linkValidator)) {
+      errors.link =
+        "Link must be valid format.";
+    }
+  }
+
+
+  if(!description.trim() && description.length > 280){
+    errors.description = "Description must be between 1 and 150 characters."
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+};
+
 module.exports.validateRedeemPointsInput = (code) => {
   const errors = {};
 
