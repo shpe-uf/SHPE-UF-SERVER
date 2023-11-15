@@ -174,6 +174,41 @@ module.exports = gql`
     message: String!
   }
 
+### INPUT TYPES FOR BUG REPORT ###
+
+input CreateBugReportInput {
+  title: String!
+  description: String!
+  status: String!
+  priority: String!
+  reporter_id: ID!
+  assignee_id: ID
+}
+
+input UpdateBugReportInput {
+  id: ID!
+  title: String
+  description: String
+  status: String
+  priority: String
+  assignee_id: ID
+}
+
+### MUTATIONS FOR BUG REPORT ###
+
+extend type Mutation {
+  createBugReport(input: CreateBugReportInput): BugReport!
+  updateBugReport(input: UpdateBugReportInput): BugReport!
+  deleteBugReport(id: ID!): Boolean!
+}
+
+### QUERY FOR BUG REPORT ###
+
+extend type Query {
+  bugReports: [BugReport]!
+  bugReport(id: ID!): BugReport
+}
+
   ### AUXILIARY TYPES ###
   type StatData {
     _id: String!
