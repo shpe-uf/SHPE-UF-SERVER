@@ -9,7 +9,8 @@
     "precommit": "lint-staged"
   },
   "engines": {
-    "node": "16.17.0"
+    "node": "20.10.0",
+    "npm": "10.2.3"
   },
   "keywords": [],
   "author": "",
@@ -20,15 +21,16 @@
     "bcryptjs": "^2.4.3",
     "data-urls": "^1.1.0",
     "dotenv": "^8.2.0",
+    "graphql": "^16.8.0",
     "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.0",
     "mongo": "^0.1.0",
     "mongoose": "^5.7.9",
     "node": "^16.17.0",
-    "node-geocoder": "^3.25.0",
+    "node-geocoder": "^4.2.0",
     "nodemailer": "^6.7.2",
     "nodemailer-sendgrid": "^1.0.3",
-    "nodemon": "^2.0.20",
+    "nodemon": "^3.0.2",
     "react-mapbox-gl": "^4.8.2"
   },
   "lint-staged": {

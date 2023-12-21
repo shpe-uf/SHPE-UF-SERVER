@@ -130,7 +130,7 @@ module.exports = {
       }
     },
 
-    async getUser(_, { userId }) {
+    async getUser(_, { userId }, ) {
       try {
         var user = await User.findById(userId);
         if (user) {
