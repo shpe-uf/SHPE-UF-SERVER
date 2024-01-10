@@ -42,10 +42,6 @@ const receiptSchema = new Schema(
   }
 );
 
-const switchDB = mongoose.createConnection(process.env.DB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: true,
-});
+const switchDB = mongoose.createConnection(process.env.DB_URI, {});
 
 module.exports = switchDB.model('Receipt', receiptSchema);
