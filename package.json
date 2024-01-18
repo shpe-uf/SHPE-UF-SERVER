@@ -9,27 +9,29 @@
     "precommit": "lint-staged"
   },
   "engines": {
-    "node": "16.17.0"
+    "node": "20.10.0",
+    "npm": "10.2.3"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.3.0",
-    "@sendgrid/mail": "^7.6.0",
+    "@sendgrid/mail": "^8.1.0",
     "bcryptjs": "^2.4.3",
-    "data-urls": "^1.1.0",
-    "dotenv": "^8.2.0",
+    "data-urls": "^5.0.0",
+    "dotenv": "^16.3.1",
+    "graphql": "^16.8.0",
     "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.0",
     "mongo": "^0.1.0",
-    "mongoose": "^5.7.9",
-    "node": "^16.17.0",
-    "node-geocoder": "^3.25.0",
+    "mongoose": "^8.0.3",
+    "node": "^20.10.0",
+    "node-geocoder": "^4.2.0",
     "nodemailer": "^6.7.2",
     "nodemailer-sendgrid": "^1.0.3",
-    "nodemon": "^2.0.20",
-    "react-mapbox-gl": "^4.8.2"
+    "nodemon": "^3.0.2",
+    "react-mapbox-gl": "^5.1.1"
   },
   "lint-staged": {
     "*.{js,css,json}": [
@@ -39,7 +41,7 @@
   },
   "devDependencies": {
     "husky": "^8.0.2",
-    "lint-staged": "^13.1.0",
-    "prettier": "^2.8.1"
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.1"
   }
 }

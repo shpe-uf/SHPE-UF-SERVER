@@ -130,7 +130,7 @@ module.exports = {
       }
     },
 
-    async getUser(_, { userId }) {
+    async getUser(_, { userId }, ) {
       try {
         var user = await User.findById(userId);
         if (user) {
@@ -1072,8 +1072,7 @@ module.exports = {
             updatedAt,
           },
           {
-            new: true,
-            useFindAndModify: false,
+            new: true
           }
         );
 
@@ -1097,8 +1096,7 @@ module.exports = {
             updatedAt,
           },
           {
-            new: true,
-            useFindAndModify: false,
+            new: true
           }
         );
 
@@ -1183,8 +1181,7 @@ module.exports = {
             updatedAt: updatedAt.toISOString(),
           },
           {
-            new: true,
-            useFindAndModify: false,
+            new: true
           }
         );
       });

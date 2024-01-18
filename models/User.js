@@ -1,6 +1,4 @@
 const { model, Schema } = require('mongoose');
-const Event = require('./Event').schema;
-const Task = require('./Task').schema;
 
 const userSchema = new Schema({
   firstName: {

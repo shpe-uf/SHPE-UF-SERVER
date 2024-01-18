@@ -38,12 +38,7 @@ startApolloServer = async () => {
 };
 
 mongoose
-  .connect(process.env.URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: true,
-    useCreateIndex: true,
-  })
+  .connect(process.env.URI, {})
   .then(() => {
     console.log("\nSUCCESS: CONNECTED TO DATABASE");
     startApolloServer();
