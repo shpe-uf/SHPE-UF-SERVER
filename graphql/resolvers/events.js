@@ -59,7 +59,7 @@ module.exports = {
       const month = new Date().getMonth();
 
       code = code.toLowerCase().trim().replace(/ /g, "");
-      points = category === "Miscellaneous" ? points : findPoints.points;
+      points = points ? points: findPoints.points;
 
       semester = monthOptions[month].value;
       expiration = new Date(

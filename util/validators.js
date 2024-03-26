@@ -197,10 +197,8 @@ module.exports.validateCreateEventInput = (
     errors.expiration = "Expires in is required.";
   }
 
-  if (category.trim() === "Miscellaneous") {
-    if (points < 0 || points > 10) {
-      errors.points = "Points must be a whole number greater than 0.";
-    }
+  if (points < 0 || points > 10) {
+    errors.points = "Points must be a whole number greater than 0 and less than 10.";
   }
 
   return {
