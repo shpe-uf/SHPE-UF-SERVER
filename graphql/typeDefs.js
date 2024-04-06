@@ -501,5 +501,6 @@ module.exports = gql`
       message: String!
     ): ContactRequest!
     resetPercentile(semester: String!): Int!
+    deleteUser(email: String!): Boolean
   }
 `;
