@@ -483,7 +483,6 @@ module.exports = gql`
     reimbursementRequest(reimbursementInput: ReimbursementInput): Reimbursement!
     removeUserFromEvent(manualInputInput: ManualInputInput): Event
     removeUserFromTask(manualTaskInputInput: ManualTaskInputInput): Task
-    removeUserFromTask(manualTaskInputInput: ManualTaskInputInput): Task
     resetPassword(
       password: String!
       confirmPassword: String!
