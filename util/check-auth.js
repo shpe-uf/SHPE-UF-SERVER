@@ -3,7 +3,7 @@ const { AuthenticationError } = require("apollo-server");
 
 require("dotenv").config();
 
-module.exports = context => {
+module.exports = (context) => {
   const authHeader = context.req.headers.authorization;
 
   if (authHeader) {

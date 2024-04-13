@@ -16,6 +16,8 @@ const {
   handleGeneralError,
 } = require("../../util/error-handling");
 
+const checkAuth = require('../../util/check-auth');
+
 module.exports = {
   Query: {
     async getEvents() {
@@ -38,11 +40,24 @@ module.exports = {
 
   Mutation: {
     async createEvent(
-      _,
+      parent,
       {
         createEventInput: { name, code, category, expiration, request, points },
-      }
+      },
+      context
     ) {
+      // console.log(context.user)
+      const user = await User.findOne({username: checkAuth(context).username})
+
+
+
+      // console.log(user)
+
+      // if (!(context.User))
+      // {
+      //   throw new Error ("User does not have the required permissions for this action")
+      // }
+
       const { valid, errors } = validateCreateEventInput(
         name,
         code,
