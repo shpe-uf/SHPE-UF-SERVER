@@ -467,6 +467,7 @@ module.exports = gql`
     deleteReceipt(receiptID: ID!): Receipt
     deleteResource(resourceId: ID!): [Resource!]
     deleteTask(taskId: ID!): [Task]
+    deleteUser(email: String!): Boolean
     editCorporation(editCorporationInput: EditCorporationInput): Corporation!
     editUpdatedAt(editUpdatedAtInput: EditUpdatedAtInput): User!
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
