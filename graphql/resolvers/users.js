@@ -6,6 +6,7 @@ const User = require("../../models/User.js");
 const Event = require("../../models/Event.js");
 const Request = require("../../models/Request.js");
 const Task = require("../../models/Task.js");
+const eventFunctions = require("./events.js");
 
 const {
   handleInputError,
@@ -131,7 +132,7 @@ module.exports = {
       }
     },
 
-    async getUser(_, { userId }, ) {
+    async getUser(_, { userId },) {
       try {
         var user = await User.findById(userId);
         if (user) {
@@ -1188,5 +1189,39 @@ module.exports = {
       });
       return users;
     },
+
+
+    /**
+     * This function removes a user from all events they have attended and deletes them
+     * from our Mongodb database. Needed for our iOS user privacy concerns.
+     * 
+     * @param {String} email - the user's email we would like to delete.
+     * @returns {Boolean} - optional return value, returns true if the user is deleted.
+     * 
+     * @example deleteUser(testUser@ufl.edu)
+     */
+    async deleteUser(_, { email }) {
+
+      var user = await User.findOne({ email })
+
+      if (!user) {
+        errors = { email: "User not found" }
+        handleInputError(errors);
+      }
+
+      user.events.forEach(async function (userEvent) {
+        var event = await Event.findOne({ name: userEvent.name })
+        var newUsers = event.users.filter((e) => e.username !== user.username);
+
+        await Event.findOneAndUpdate(
+          { name: event.name },
+          { users: newUsers, attendance: event.attendance },
+          { new: true }
+        );
+      });
+
+      var user = await User.findOneAndDelete({ email });
+      return true
+    }
   },
 };
