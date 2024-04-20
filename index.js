@@ -13,7 +13,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const resolvers = require("./graphql/resolvers");
-const {checkAuth} = require('./util/check-auth');
+const checkAuth = require('./util/check-auth');
 
 const port = process.env.PORT || 5000;
 
@@ -28,9 +28,10 @@ startApolloServer = async () => {
   const {url} = await startStandaloneServer((server), {
     listen: {port},
     context: async ({ req }) => { 
-      console.log(req)
+
       const authHeader = req.headers.authorization || '';
       const user = checkAuth(authHeader);
+
       return {user};
     }
   });

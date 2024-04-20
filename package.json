@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
+    "start": "nodemon",
     "prettier": "./node_modules/.bin/prettier --single-quote --write '*.{js,css,json}'",
     "precommit": "lint-staged"
   },
