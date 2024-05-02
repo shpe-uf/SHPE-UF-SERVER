@@ -3,10 +3,9 @@ const { AuthenticationError } = require("apollo-server");
 
 require("dotenv").config();
 
-module.exports = context => {
-  const authHeader = context.req.headers.authorization;
-
+module.exports = (authHeader) => {
   if (authHeader) {
+    //console.log(authHeader)
     const token = authHeader.split("Bearer ")[1];
 
     if (token) {
@@ -20,5 +19,6 @@ module.exports = context => {
     throw new Error("Authentication token must follow the format: 'Bearer [token]'");
   }
 
-  throw new Error("Authorization header must be provided");
+  // throw new Error("Authorization header must be provided");
+  return null;
 };

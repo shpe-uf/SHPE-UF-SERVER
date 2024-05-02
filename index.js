@@ -3,6 +3,7 @@ const { expressMiddleware } = require("@apollo/server/express4");
 const {
   ApolloServerPluginDrainHttpServer,
 } = require("@apollo/server/plugin/drainHttpServer");
+const { startStandaloneServer } = require("@apollo/server/standalone");
 const express = require("express");
 const http = require("http");
 const { json } = require("body-parser");
@@ -12,6 +13,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const resolvers = require("./graphql/resolvers");
+const checkAuth = require('./util/check-auth');
 
 const port = process.env.PORT || 5000;
 
@@ -21,22 +23,26 @@ startApolloServer = async () => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    
   });
-  await server.start();
+  const {url} = await startStandaloneServer((server), {
+    listen: {port},
+    context: async ({ req }) => { 
 
-  app.use(
+      const authHeader = req.headers.authorization || '';
+      const user = checkAuth(authHeader);
+
+      return {user};
+    }
+  });
+    console.log(`SERVER RUNNING AT localhost:${process.env.PORT}`);
+}
+  /*app.use(
     cors({ origin: [RegExp(process.env.CLIENT_ORIGIN)], credentials: true }),
     json(),
     expressMiddleware(server)
-  );
-  await new Promise((resolve) => httpServer.listen({ port }, resolve));
-  const addr = httpServer.address();
-  const host = addr.address === '::' ? 'localhost' : addr.address;
-  const hport = addr.port;
-  console.log(`SERVER RUNNING AT http://${host}:${hport}/`);
-};
-
+  );*/
+  
 mongoose
   .connect(process.env.URI, {})
   .then(() => {
