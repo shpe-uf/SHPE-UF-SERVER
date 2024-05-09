@@ -918,11 +918,18 @@ module.exports = {
           from: process.env.EMAIL,
           to: email,
           subject: "Reset Password",
-          html:
-            "You have requested the reset of the password for your account for shpe.com\n\n" +
-            "Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n" +
-            `${process.env.CLIENT_ORIGIN}/reset/${token}\n\n` +
-            "If you did not request this, please ignore this email and your password will remain unchanged.\n",
+          html: `
+          <h1 style="text-align: center;">Hi, ${newUser.firstName}!</h1>
+          <p>You have requested the reset of the password for your account at <a href="http://shpeuf.com" style="color: blue; text-decoration: underline;">shpeuf.com</a></p>
+          <p>Click below to reset your password:</p>
+          <a href="${process.env.CLIENT_ORIGIN}/reset/${token}" style="text-decoration: none;">
+              <p style="text-align: center; background-color: orange; color: white; padding: 10px; margin: 10px 0;">
+                  Reset Password
+              </p>
+          </a>
+          <p style="text-align:center;"><strong> NOTE! This link is active for one hour.</strong></p>
+          <p>If you have not issued a password reset request, you can safely ignore this email, and your account will not be affected.</p>
+          `,
         })
         .then(() => {
           res.status(200).json("Reset password email sent");
