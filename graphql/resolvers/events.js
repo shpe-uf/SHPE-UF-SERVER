@@ -16,8 +16,6 @@ const {
   handleGeneralError,
 } = require("../../util/error-handling");
 
-const { AuthenticationError } = require("apollo-server");
-
 module.exports = {
   Query: {
     async getEvents() {
@@ -43,18 +41,8 @@ module.exports = {
       _,
       {
         createEventInput: { name, code, category, expiration, request, points },
-      },
-      context
-    ) {
-      
-      const user = await User.findOne({username: context.user.username})
-
-      if (user.permission != "member-admin-super")
-      {
-        throw new AuthenticationError("User does not have the required permissions")
       }
-
-      
+    ) {
       const { valid, errors } = validateCreateEventInput(
         name,
         code,
