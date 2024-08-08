@@ -47,6 +47,8 @@ module.exports = {
           fallBBQ,
           springBBQ,
           nationalConvention,
+          recruitmentDay,
+          signUpLink,
         },
       }
     ) {
@@ -61,7 +63,7 @@ module.exports = {
         goals,
         businessModel,
         newsLink,
-        applyLink
+        applyLink,
       );
 
       if (!valid) {
@@ -93,6 +95,7 @@ module.exports = {
         nationalConvention === "true" || nationalConvention === true
           ? true
           : false;
+      recruitmentDay = recruitmentDay === "true" || recruitmentDay === true ? true : false;
 
       const newCorporation = new Corporation({
         name,
@@ -115,9 +118,12 @@ module.exports = {
         fallBBQ,
         springBBQ,
         nationalConvention,
+        recruitmentDay,
+        signUpLink,
       });
 
       await newCorporation.save();
+
 
       const corporations = await Corporation.find();
 
@@ -149,6 +155,8 @@ module.exports = {
           fallBBQ,
           springBBQ,
           nationalConvention,
+          recruitmentDay,
+          signUpLink,
         },
       }
     ) {
@@ -163,7 +171,8 @@ module.exports = {
         goals,
         businessModel,
         newsLink,
-        applyLink
+        applyLink,
+        signUpLink
       );
 
       if (!valid) {
@@ -188,6 +197,7 @@ module.exports = {
         nationalConvention === "true" || nationalConvention === true
           ? true
           : false;
+      recruitmentDay = recruitmentDay === "true" || recruitmentDay === true ? true : false;
 
       const companyExists = await Corporation.findOne({ _id: id });
 
@@ -216,6 +226,8 @@ module.exports = {
             fallBBQ,
             springBBQ,
             nationalConvention,
+            recruitmentDay,
+            signUpLink,
           },
           {
             //Returns the updated object, instead of the old one
@@ -229,12 +241,11 @@ module.exports = {
     },
 
     async deleteCorporation(_, { corporationId }) {
-      await Corporation.deleteOne({ _id: corporationId }, (err) => {
-        if (err) {
-          handleGeneralError(err, err.message);
-        }
-      });
-
+      try{
+        await Corporation.deleteOne({ _id: corporationId });
+      }catch(err){
+        handleGeneralError(err, err.message);
+      }
       const corporations = await Corporation.find();
 
       return corporations;

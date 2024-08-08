@@ -47,6 +47,8 @@ module.exports = gql`
     fallBBQ: Boolean!
     springBBQ: Boolean!
     nationalConvention: Boolean!
+    recruitmentDay: Boolean!
+    signUpLink: String
   }
 
   type Event {
@@ -243,6 +245,8 @@ module.exports = gql`
     fallBBQ: String!
     springBBQ: String!
     nationalConvention: String!
+    recruitmentDay: String!
+    signUpLink: String
   }
 
   input CreateEventInput {
@@ -292,6 +296,8 @@ module.exports = gql`
     fallBBQ: String!
     springBBQ: String!
     nationalConvention: String!
+    recruitmentDay: String!
+    signUpLink: String
   }
 
   input EditUpdatedAtInput {

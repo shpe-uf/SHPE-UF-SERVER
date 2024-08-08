@@ -85,6 +85,14 @@ const corporationSchema = new Schema({
     type: Boolean,
     required: true,
   },
+  recruitmentDay: {
+    type: Boolean,
+    required: true,
+  },
+  signUpLink: {
+    type: String,
+    required: false,
+  },
 });
 
 module.exports = model('Corporation', corporationSchema);

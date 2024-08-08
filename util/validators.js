@@ -359,7 +359,9 @@ module.exports.validateCreateEditCorporationInput = (
   goals,
   businessModel,
   newsLink,
-  applyLink
+  applyLink,
+  recruitmentDay,
+  signUpLink
 ) => {
   const errors = {};
 
@@ -406,6 +408,11 @@ module.exports.validateCreateEditCorporationInput = (
   if (applyLink.trim() === "") {
     errors.applyLink = "No apply link was provided.";
   }
+  if(recruitmentDay && signUpLink.trim() === ""){
+    errors.signUpLink = "No sign up link was provided.";
+  }
+
+
 
   return {
     errors,
