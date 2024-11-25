@@ -470,10 +470,20 @@ module.exports = {
         .sendMail({
           from: process.env.EMAIL,
           to: email,
-          subject: "Confirm Email",
-          html:
-            "Thank you for registering, please click on the link below to complete your registration\n\n" +
-            `${process.env.CLIENT_ORIGIN}/confirm/${user._id}\n\n`,
+          subject: "Confirm Your Email Address",
+            html: `
+              <h1 style="text-align: center;">Hi, ${newUser.firstName}!</h1>
+              <p>Thank you for registering at <a href="http://shpeuf.com" style="color: blue; text-decoration: underline;">shpeuf.com</a>.</p>
+              <p>To complete your registration and verify your email address, please click the button below:</p>
+              <a href="${process.env.CLIENT_ORIGIN}/confirm/${user._id}" style="text-decoration: none;">
+                  <p style="text-align: center; background-color: orange; color: white; padding: 10px; margin: 10px 0;">
+                      Confirm Email
+                  </p>
+              </a>
+              <p>If you did not sign up for an account, you can safely ignore this email.</p>
+              <p>Thank you,</p>
+              <p style="text-align: center; font-weight: bold;">The SHPE UF Team</p>
+            `,
         })
         .then(() => {
           res.status(200).json("confirmation email sent");
