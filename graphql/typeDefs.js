@@ -4,17 +4,17 @@ module.exports = gql`
   ### MAIN MODEL TYPES ###
 
   type Alumni {
-  id: ID!
-  firstName: String!
-  lastName: String!
-  email: String!
-  undergrad: Undergrad!
-  grad: Grad!
-  employer: String!
-  position: String!
-  location: Location
-  coordinates: Coordinates!
-  linkedin: String!
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    undergrad: Undergrad!
+    grad: Grad!
+    employer: String!
+    position: String!
+    location: Location
+    coordinates: Coordinates!
+    linkedin: String!
   }
 
   type ContactRequest {
@@ -176,6 +176,12 @@ module.exports = gql`
     socialMedia: [String]
   }
 
+  type Partner {
+    name: String!
+    photo: String!
+    tier: String!
+  }
+
 
   ### AUXILIARY TYPES ###
   type Coordinates {
@@ -247,6 +253,13 @@ module.exports = gql`
     nationalConvention: String!
     recruitmentDay: String!
     signUpLink: String
+  }
+
+
+  input CreatePartnerInput{
+    name: String!
+    photo: String!
+    tier: String!
   }
 
   input CreateEventInput {
@@ -441,6 +454,7 @@ module.exports = gql`
     getTasks: [Task]
     getUser(userId: ID!): User
     getUsers: [User]
+    getPartners: [Partner]
     getYearStat: [StatData]
   }
 
@@ -464,6 +478,9 @@ module.exports = gql`
     createCorporation(
       createCorporationInput: CreateCorporationInput
     ): [Corporation]
+    createPartner(
+      createPartnerInput: CreatePartnerInput
+    ): [Partner]
     createEvent(createEventInput: CreateEventInput): [Event]
     createResource(createResourceInput: CreateResourceInput): [Resource]
     createTask(createTaskInput: CreateTaskInput): Task!
