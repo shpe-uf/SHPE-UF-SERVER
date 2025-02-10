@@ -466,21 +466,30 @@ module.exports = {
         email,
       });
 
+
       transport
         .sendMail({
           from: process.env.EMAIL,
           to: email,
           subject: "Confirm Email",
-          html:
-            "Thank you for registering, please click on the link below to complete your registration\n\n" +
-            `${process.env.CLIENT_ORIGIN}/confirm/${user._id}\n\n`,
+          html: `
+          <h1 style="text-align: center;">Hi, ${newUser.firstName}!</h1>
+        <p>Thank you for registering!</p>
+          <p>Click below to confirm your account:</p>
+          <a href="${process.env.CLIENT_ORIGIN}/confirm/${user._id}" style="text-decoration: none;">
+              <p style="text-align: center; background-color: orange; color: white; padding: 10px; margin: 10px 0;">
+                 Confirm Email 
+              </p>
+          </a>
+          `,
         })
         .then(() => {
-          res.status(200).json("confirmation email sent");
+          res.status(200).json("Confirmation email sent");
         })
         .catch((err) => {
           console.error("there was an error: ", err);
         });
+
 
       return {
         ...res._doc,
@@ -1165,7 +1174,7 @@ module.exports = {
 
     async updateYears() {
       var users = await User.find();
-      users.forEach(async function (user) {
+      users.forEach(async function(user) {
         const currDate = new Date();
         const email = user.email;
         const msPerDay = 1000 * 60 * 60 * 24;
@@ -1216,7 +1225,7 @@ module.exports = {
         handleInputError(errors);
       }
 
-      user.events.forEach(async function (userEvent) {
+      user.events.forEach(async function(userEvent) {
         var event = await Event.findOne({ name: userEvent.name })
         var newUsers = event.users.filter((e) => e.username !== user.username);
 
