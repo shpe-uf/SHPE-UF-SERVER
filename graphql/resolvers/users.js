@@ -31,6 +31,32 @@ const {
   validateEditUpdatedAt,
 } = require("../../util/validators");
 
+const { clearInterval } = require("timers");
+
+let seconds = 0;
+
+let time = 0;
+
+let intervalId;
+
+function startTimer() {
+  intervalId = setInterval(() => {
+    seconds++;
+    time = Math.round(seconds / 60);
+    console.log(`Timer running: ${seconds} minute(s)`);
+
+    if(seconds === 10) {
+      endTimer(intervalId);
+      console.log(seconds)
+    }
+  }, 1000)
+}
+
+function endTimer(intervalId) {
+  clearInterval(intervalId);
+}
+
+
 async function calculatePercentiles(user) {
   const users = await User.find({}, { _id: 1 });
 
@@ -599,6 +625,10 @@ module.exports = {
         return newUser;
       } else {
         var pointsIncrease = {};
+
+        if(event.category == "Volunteering") {
+          startTimer();
+        }
 
         if (event.semester === "Fall Semester") {
           pointsIncrease = {
