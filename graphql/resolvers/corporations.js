@@ -28,7 +28,7 @@ module.exports = {
       {
         createCorporationInput: {
           name,
-          logo,
+          //         logo,
           slogan,
           majors,
           industries,
@@ -54,7 +54,7 @@ module.exports = {
     ) {
       const { valid, errors } = validateCreateEditCorporationInput(
         name,
-        logo,
+        //        logo,
         slogan,
         majors,
         industries,
@@ -99,7 +99,7 @@ module.exports = {
 
       const newCorporation = new Corporation({
         name,
-        logo,
+        //      logo,
         slogan,
         majors,
         industries,
@@ -125,9 +125,9 @@ module.exports = {
       await newCorporation.save();
 
 
-      const corporations = await Corporation.find();
+      //      const corporations = await Corporation.find();
 
-      return corporations;
+      return newCorporation;
     },
 
     async editCorporation(
@@ -136,7 +136,7 @@ module.exports = {
         editCorporationInput: {
           id,
           name,
-          logo,
+          //        logo,
           slogan,
           majors,
           industries,
@@ -162,7 +162,7 @@ module.exports = {
     ) {
       const { valid, errors } = validateCreateEditCorporationInput(
         name,
-        logo,
+        //     logo,
         slogan,
         majors,
         industries,
@@ -207,7 +207,7 @@ module.exports = {
           {
             id,
             name,
-            logo,
+            //logo,
             slogan,
             majors,
             industries,
@@ -241,9 +241,9 @@ module.exports = {
     },
 
     async deleteCorporation(_, { corporationId }) {
-      try{
+      try {
         await Corporation.deleteOne({ _id: corporationId });
-      }catch(err){
+      } catch (err) {
         handleGeneralError(err, err.message);
       }
       const corporations = await Corporation.find();

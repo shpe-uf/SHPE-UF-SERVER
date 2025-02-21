@@ -350,7 +350,7 @@ module.exports.validateManualTaskInputInput = (username) => {
 
 module.exports.validateCreateEditCorporationInput = (
   name,
-  logo,
+  //logo,
   slogan,
   majors,
   industries,
@@ -369,9 +369,9 @@ module.exports.validateCreateEditCorporationInput = (
     errors.name = "No name was provided.";
   }
 
-  if (logo.trim() === "") {
-    errors.logo = "No logo was provided.";
-  }
+  // if (logo.trim() === "") {
+  //   errors.logo = "No logo was provided.";
+  // }
 
   if (slogan.trim() === "") {
     errors.slogan = "No slogan was provided.";
@@ -431,9 +431,9 @@ module.exports.validateCreateEditPartnerInput = (
     errors.name = "No name was provided.";
   }
 
-  if (photo.trim() === "") {
-    errors.logo = "No photo was provided.";
-  }
+  // if (photo.trim() === "") {
+  //   errors.logo = "No photo was provided.";
+  // }
 
   if (tier.trim() === "") {
     errors.slogan = "No tier was provided.";

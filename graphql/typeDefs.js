@@ -28,7 +28,6 @@ module.exports = gql`
   type Corporation {
     id: ID!
     name: String!
-    logo: String!
     slogan: String!
     majors: [String!]!
     industries: [String!]!
@@ -143,7 +142,7 @@ module.exports = gql`
     id: ID!
     firstName: String!
     lastName: String!
-    photo: String!
+    # photo: String!
     major: String!
     year: String!
     graduating: String!
@@ -232,7 +231,6 @@ module.exports = gql`
 
   input CreateCorporationInput {
     name: String!
-    logo: String!
     slogan: String!
     majors: [String!]!
     industries: [String!]!
@@ -290,7 +288,6 @@ module.exports = gql`
   input EditCorporationInput {
     id: ID!
     name: String!
-    logo: String!
     slogan: String!
     majors: [String!]!
     industries: [String!]!
@@ -477,7 +474,7 @@ module.exports = gql`
     confirmUser(id: String!): User!
     createCorporation(
       createCorporationInput: CreateCorporationInput
-    ): [Corporation]
+    ): Corporation!
     createPartner(
       createPartnerInput: CreatePartnerInput
     ): [Partner]

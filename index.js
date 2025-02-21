@@ -7,6 +7,7 @@ const express = require("express");
 const http = require("http");
 const { json } = require("body-parser");
 const mongoose = require("mongoose");
+// mongoose.set('debug', true)
 const typeDefs = require("./graphql/typeDefs.js");
 const cors = require("cors");
 require("dotenv").config();
@@ -26,7 +27,7 @@ startApolloServer = async () => {
   await server.start();
 
   app.use(
-    cors({ origin: [RegExp(process.env.CLIENT_ORIGIN)], credentials: true }),
+    cors({ origin: "http://localhost:3000", credentials: true }),
     json(),
     expressMiddleware(server)
   );

@@ -9,10 +9,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  photo: {
-    type: String,
-    default: '',
-  },
+  // photo: {
+  //   type: String,
+  //   default: '',
+  // },
   major: {
     type: String,
     required: true,
@@ -129,4 +129,4 @@ const userSchema = new Schema({
   bookmarks: [String],
 });
 
-module.exports = model('User', userSchema);
+module.exports = model('User', userSchema, 'testusers');

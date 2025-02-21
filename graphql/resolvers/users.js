@@ -140,7 +140,7 @@ module.exports = {
             firstName: user.firstName,
             lastName: user.lastName,
             username: user.username,
-            photo: user.photo,
+            // photo: user.photo,
             email: user.email,
             major: user.major,
             year: user.year,
@@ -173,7 +173,7 @@ module.exports = {
           handleGeneralError({}, "User not found.");
         }
       } catch (err) {
-        handleGeneralError(err, "Uknown user");
+        handleGeneralError(err, "Unknown user");
       }
     },
 
@@ -1033,7 +1033,7 @@ module.exports = {
           email,
           firstName,
           lastName,
-          photo,
+          // photo,
           major,
           year,
           graduating,
@@ -1049,7 +1049,7 @@ module.exports = {
       const { errors, valid } = validateEditUserProfile(
         firstName,
         lastName,
-        photo,
+        // photo,
         major,
         year,
         graduating,
@@ -1077,7 +1077,7 @@ module.exports = {
           {
             firstName,
             lastName,
-            photo,
+            // photo,
             major,
             year,
             graduating,

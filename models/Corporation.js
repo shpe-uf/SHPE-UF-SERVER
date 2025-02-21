@@ -5,10 +5,10 @@ const corporationSchema = new Schema({
     type: String,
     required: true,
   },
-  logo: {
-    type: String,
-    required: true,
-  },
+  // logo: {
+  //   type: String,
+  //   required: true,
+  // },
   slogan: {
     type: String,
     required: true,
@@ -95,4 +95,4 @@ const corporationSchema = new Schema({
   },
 });
 
-module.exports = model('Corporation', corporationSchema);
+module.exports = model('Corporation', corporationSchema, 'testcorporations');
