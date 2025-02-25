@@ -9,10 +9,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  // photo: {
-  //   type: String,
-  //   default: '',
-  // },
+  photo: {
+    type: String,
+    default: `${process.env.CLOUDFRONT_URL}`,
+  },
   major: {
     type: String,
     required: true,

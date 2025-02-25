@@ -431,9 +431,9 @@ module.exports.validateCreateEditPartnerInput = (
     errors.name = "No name was provided.";
   }
 
-  // if (photo.trim() === "") {
-  //   errors.logo = "No photo was provided.";
-  // }
+  if (photo.trim() === "") {
+    errors.logo = "No photo was provided.";
+  }
 
   if (tier.trim() === "") {
     errors.slogan = "No tier was provided.";
@@ -478,16 +478,16 @@ module.exports.validateEditUserProfile = (
     }
   }
 
-  if (photo) {
-    const dataUrlData = parseDataURL(photo);
-
-    if (dataUrlData.mimeType.toString().slice(0, 6) !== "image/") {
-      errors.photo = "Please use a valid image file for photo.";
-    } else if (Buffer.byteLength(dataUrlData.body) > 102400) {
-      errors.photo =
-        "Please use an image file that doesn't exceed the maximum file size (100 KB)";
-    }
-  }
+  // if (photo) {
+  //   const dataUrlData = parseDataURL(photo);
+  //
+  //   if (dataUrlData.mimeType.toString().slice(0, 6) !== "image/") {
+  //     errors.photo = "Please use a valid image file for photo.";
+  //   } else if (Buffer.byteLength(dataUrlData.body) > 102400) {
+  //     errors.photo =
+  //       "Please use an image file that doesn't exceed the maximum file size (100 KB)";
+  //   }
+  // }
 
 
   if (major.trim() === "") {
