@@ -1077,6 +1077,7 @@ module.exports = {
           {
             firstName,
             lastName,
+            username,
             photo,
             major,
             year,
