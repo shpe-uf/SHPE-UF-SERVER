@@ -21,22 +21,23 @@ const userAttendanceSchema = new Schema({
     type: Number,
     default: 0, // This will be calculated on its own
   },
-// Expandable option for the future
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+// ====================== Future Implimentations potentially ===================//
+// Expandable to classify user's role in attendance, give gredit to event, etc.
 //   role: {
 //     type: String,
 //     enum: ['volunteer', 'organizer', 'speaker', 'attendee'],
 //   },
 
-// Status for volunteering aka approved volunteer hours
+// Status for approved volunteer hours to avoid fraud for points
 //   status: {
 //     type: String,
 //     enum: ['pending', 'approved', 'rejected'],
 //     default: 'pending', // Defaulted to pending 
 //   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
 });
 
 module.exports = model('UserAttendance', userAttendanceSchema);
