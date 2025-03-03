@@ -40,14 +40,10 @@ const eventSchema = new Schema({
     type: Boolean,
     required: true,
   },
-  users: [
-    {
-      firstName: String,
-      lastName: String,
-      email: String,
-      username: String,
-    },
-  ],
+  users: [{
+    type: Types.ObjectId,
+    ref: 'UserAttendance'
+  }],
 });
 
 module.exports = model('Event', eventSchema);
