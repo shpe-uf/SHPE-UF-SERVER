@@ -1,7 +1,7 @@
 const Event = require("../../models/Event.js");
 const User = require("../../models/User.js");
 const Request = require("../../models/Request.js");
-
+const UserAttendance = require("../../models/UserAttendance.js");
 const {
   validateCreateEventInput,
   validateManualInputInput,
@@ -193,32 +193,22 @@ module.exports = {
 
       updatedUser.message = "";
 
+      const attendance = new UserAttendance({ user: user._id, event: event._id });
+      await attendance.save();
+
       await Event.findOneAndUpdate(
-        {
-          name: eventName,
-        },
+        { name: eventName },
         {
           $push: {
-            users: {
-              $each: [
-                {
-                  firstName: user.firstName,
-                  lastName: user.lastName,
-                  username: user.username,
-                  email: user.email,
-                },
-              ],
-              $sort: { lastName: 1, firstName: 1 },
-            },
+            users: attendance._id,
           },
           $inc: {
             attendance: 1,
           },
         },
-        {
-          new: true,
-        }
+        { new: true }
       );
+
 
       const updatedEvents = await Event.find();
 
@@ -258,8 +248,11 @@ module.exports = {
       }
 
       newEvents = user.events.filter((e) => e.name !== event.name);
-      newUsers = event.users.filter((e) => e.username !== user.username);
+      await UserAttendance.deleteOne({ event: event._id, user: user._id });
 
+      newUsers = await UserAttendance.find({ event: event._id }).populate('user');
+      newUsers = newUsers.map((record) => record._id);
+      
       if (event.semester === "Fall Semester") {
         await User.findOneAndUpdate(
           { username },
@@ -302,7 +295,7 @@ module.exports = {
     },
     async deleteEvent(_, { eventName }) {
       const errors = {};
-      const users = await User.find();
+      const users = await UserAttendance.find({ event: event._id }).populate('user');
       const event = await Event.findOne({
         name: eventName,
       });
