@@ -2,7 +2,7 @@ const Request = require("../../models/Request.js");
 const Event = require("../../models/Event.js");
 const Task = require("../../models/Task.js");
 const User = require("../../models/User.js");
-
+const UserAttendance = require("../../models/UserAttendance.js")
 const {
   handleInputError,
   handleGeneralError,
@@ -118,34 +118,19 @@ module.exports = {
           }
         );
 
+        const attendance = new UserAttendance({
+          user: user._id,
+          event: event._id,
+        });
+        await attendance.save();
+      
         await Event.findOneAndUpdate(
+          { name: name },
           {
-            name: name,
+            $push: { users: attendance._id },
+            $inc: { attendance: 1 },
           },
-          {
-            $push: {
-              users: {
-                $each: [
-                  {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    username: user.username,
-                    email: user.email,
-                  },
-                ],
-                $sort: {
-                  lastName: 1,
-                  firstName: 1,
-                },
-              },
-            },
-            $inc: {
-              attendance: 1,
-            },
-          },
-          {
-            new: true,
-          }
+          { new: true }
         );
       }
 
