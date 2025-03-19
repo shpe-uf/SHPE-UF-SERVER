@@ -59,7 +59,7 @@ module.exports = {
       const month = new Date().getMonth();
 
       code = code.toLowerCase().trim().replace(/ /g, "");
-      points = points ? points: findPoints.points;
+      points = points ? points : findPoints.points;
 
       semester = monthOptions[month].value;
       expiration = new Date(
@@ -193,7 +193,10 @@ module.exports = {
 
       updatedUser.message = "";
 
-      const attendance = new UserAttendance({ user: user._id, event: event._id });
+      const attendance = new UserAttendance({
+        user: user._id,
+        event: event._id,
+      });
       await attendance.save();
 
       await Event.findOneAndUpdate(
@@ -208,7 +211,6 @@ module.exports = {
         },
         { new: true }
       );
-
 
       const updatedEvents = await Event.find();
 
@@ -250,9 +252,11 @@ module.exports = {
       newEvents = user.events.filter((e) => e.name !== event.name);
       await UserAttendance.deleteOne({ event: event._id, user: user._id });
 
-      newUsers = await UserAttendance.find({ event: event._id }).populate('user');
+      newUsers = await UserAttendance.find({ event: event._id }).populate(
+        "user"
+      );
       newUsers = newUsers.map((record) => record._id);
-      
+
       if (event.semester === "Fall Semester") {
         await User.findOneAndUpdate(
           { username },
@@ -295,7 +299,9 @@ module.exports = {
     },
     async deleteEvent(_, { eventName }) {
       const errors = {};
-      const users = await UserAttendance.find({ event: event._id }).populate('user');
+      const users = await UserAttendance.find({ event: event._id }).populate(
+        "user"
+      );
       const event = await Event.findOne({
         name: eventName,
       });
@@ -356,5 +362,114 @@ module.exports = {
 
       return events;
     },
+  },
+  async checkInToEvent(_, { username, eventName, checkInTime }) {
+    const errors = {};
+
+    if (!username) {
+      errors.username = "Username is required.";
+    }
+    if (!eventName) {
+      errors.eventName = "Event name is required.";
+    }
+    if (!checkInTime) {
+      errors.checkInTime = "Check-in time is required.";
+    } else if (isNaN(Date.parse(checkInTime))) {
+      errors.checkInTime =
+        "Invalid check-in time format. Use a valid date string.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      handleInputError(errors);
+    }
+
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      handleInputError({ general: "User not found." });
+    }
+
+    const event = await Event.findOne({ name: eventName });
+
+    if (!event) {
+      handleInputError({ general: "Event not found." });
+    }
+
+    const currentTime = new Date(checkInTime);
+    const eventExpiration = new Date(event.expiration);
+
+    if (currentTime > eventExpiration) {
+      handleInputError({
+        checkInTime: "Cannot check in after the event expiration time.",
+      });
+    }
+
+    let attendance = await UserAttendance.findOne({
+      user: user._id,
+      event: event._id,
+    });
+
+    if (attendance && attendance.checkInTime) {
+      handleInputError({
+        general: "User has already checked in for this event.",
+      });
+    }
+
+    if (!attendance) {
+      attendance = new UserAttendance({
+        user: user._id,
+        event: event._id,
+        checkInTime: currentTime,
+      });
+    } else {
+      attendance.checkInTime = currentTime;
+    }
+
+    await attendance.save();
+
+    return attendance;
+  },
+  async checkOutFromEvent(_, { username, eventName, checkOutTime }) {
+    const user = await User.findOne({ username });
+    const event = await Event.findOne({ name: eventName });
+
+    if (!user) {
+      handleInputError({ general: "User not found." });
+    }
+
+    if (!event) {
+      handleInputError({ general: "Event not found." });
+    }
+
+    let attendance = await UserAttendance.findOne({
+      user: user._id,
+      event: event._id,
+    });
+
+    if (!attendance || !attendance.checkInTime) {
+      handleInputError({ general: "User has not checked in." });
+    }
+
+    const checkIn = new Date(attendance.checkInTime);
+    const checkOut = new Date(checkOutTime);
+    let totalMinutes = (checkOut - checkIn) / (1000 * 60);
+    let hoursVolunteered = Math.floor(totalMinutes / 60);
+    let extraMinutes = totalMinutes % 60;
+
+    if (extraMinutes >= 30) {
+      hoursVolunteered += 1;
+    }
+
+    const expirationHours =
+      (new Date(event.expiration) - checkIn) / (1000 * 60 * 60);
+    if (hoursVolunteered > expirationHours) {
+      hoursVolunteered = Math.floor(expirationHours);
+    }
+
+    attendance.checkOutTime = checkOut;
+    attendance.hoursVolunteered = hoursVolunteered;
+    await attendance.save();
+
+    return attendance;
   },
 };
