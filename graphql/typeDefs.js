@@ -60,6 +60,7 @@ module.exports = gql`
     attendance: Int!
     expiration: String!
     request: Boolean!
+    hourShpointRatio: Int!
     semester: String!
     createdAt: String!
     users: [User]!
