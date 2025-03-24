@@ -24,8 +24,6 @@ const eventSchema = new Schema({
     type: Number,
     required: true,
   },
-
-  
   expiration: {
     type: String,
     required: true,
@@ -41,11 +39,6 @@ const eventSchema = new Schema({
   request: {
     type: Boolean,
     required: true,
-  },
-
-  hourShpointRatio: {
-    type: Number,
-    required: false,
   },
   users: [
     {
