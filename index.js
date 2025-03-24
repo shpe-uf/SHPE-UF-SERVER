@@ -9,6 +9,8 @@ const { json } = require("body-parser");
 const mongoose = require("mongoose");
 const typeDefs = require("./graphql/typeDefs.js");
 const cors = require("cors");
+const sendEmails = require("./util/emailscript");
+const cron = require('node-cron');
 require("dotenv").config();
 
 const resolvers = require("./graphql/resolvers");
@@ -35,6 +37,12 @@ startApolloServer = async () => {
   const host = addr.address === '::' ? 'localhost' : addr.address;
   const hport = addr.port;
   console.log(`SERVER RUNNING AT http://${host}:${hport}/`);
+
+  cron.schedule('0 0 1 5,12 *', () => {
+    sendEmails();
+  }, {
+    timezone: 'America/New_York'
+  });
 };
 
 mongoose
