@@ -38,6 +38,7 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
+  
   request: {
     type: Boolean,
     required: true,
@@ -45,8 +46,9 @@ const eventSchema = new Schema({
 
   hourShpointRatio: {
     type: Number,
-    required: false,
+    required: true,
   },
+
   users: [
     {
       firstName: String,

@@ -163,6 +163,7 @@ module.exports.validateCreateEventInput = (
   name,
   code,
   category,
+  hourShpointRatio,
   points,
   expiration
 ) => {
@@ -179,6 +180,12 @@ module.exports.validateCreateEventInput = (
         "Event name must be at least 6 characters, max 50. No special characters, except for hyphens (-) and dashes (/).";
     }
   }
+
+  if (hourShpointRatio && hourShpointRatio < 0.0) {
+    errors.hourShpointRatio = "Hour/SHPoint ratio must be greater than 0.";
+  }
+
+  console.log("hourShpointRatio", hourShpointRatio);
 
   if (code.trim() === "") {
     errors.code = "Code is required.";

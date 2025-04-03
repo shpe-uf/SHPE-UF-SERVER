@@ -40,13 +40,14 @@ module.exports = {
     async createEvent(
       _,
       {
-        createEventInput: { name, code, category, expiration, request, points },
+        createEventInput: { name, code, category, points, expiration, hourShpointRatio, request },
       }
     ) {
       const { valid, errors } = validateCreateEventInput(
         name,
         code,
         category,
+        hourShpointRatio,
         points,
         expiration
       );
@@ -90,6 +91,7 @@ module.exports = {
         expiration,
         semester,
         request,
+        hourShpointRatio: 0.0,
         users: [],
         createdAt: new Date().toISOString(),
       });

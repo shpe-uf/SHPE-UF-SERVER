@@ -60,9 +60,9 @@ module.exports = gql`
     attendance: Int!
     expiration: String!
     request: Boolean!
-    hourShpointRatio: Int!
     semester: String!
     createdAt: String!
+    hourShpointRatio: Float!
     users: [User]!
   } 
 
@@ -269,6 +269,7 @@ module.exports = gql`
     category: String!
     points: String!
     expiration: String!
+    hourShpointRatio: Float!
     request: String!
   }
 
