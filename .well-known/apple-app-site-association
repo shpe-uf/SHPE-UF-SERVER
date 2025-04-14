@@ -1,0 +1,17 @@
+{
+    "applinks": {
+        "details": {
+        "appID" : [".com.shpeuf.shpe-uf"],
+        "components": [
+            {
+            "#": "no_universal_links",
+            "exclude": true,
+            "comment": "Doesn't match with any universal"
+            },
+            {
+            "/": "/reset*",
+            "comment": "reset password link, redirect to app"
+            }
+        ]
+    }
+}

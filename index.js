@@ -8,6 +8,7 @@ const http = require("http");
 const { json } = require("body-parser");
 const mongoose = require("mongoose");
 const typeDefs = require("./graphql/typeDefs.js");
+const path = require("path");
 const cors = require("cors");
 require("dotenv").config();
 
@@ -18,6 +19,14 @@ const port = process.env.PORT || 5000;
 startApolloServer = async () => {
   const app = express();
   const httpServer = http.createServer(app);
+
+  app.use('/.well-known', express.static(path.join(__dirname, '.well-known'), {
+    setHeaders: (res) => {
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+    }
+  }));
+
   const server = new ApolloServer({
     typeDefs,
     resolvers,
