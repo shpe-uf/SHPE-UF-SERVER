@@ -44,8 +44,8 @@ module.exports = {
 
       transport
         .sendMail({
-          from: process.env.EMAIL,
-          to: "vptech.shpeuf@gmail.com",
+          from: email,
+          to: process.env.EMAIL,
           subject: "Contact Request From " + firstName + " " + lastName,
           html:
             "<strong>Contact Request Type:</strong> " +
