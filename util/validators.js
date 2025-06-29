@@ -228,31 +228,31 @@ module.exports.validateCreateTaskInput = (
     }
   }
 
-  if(isNaN(Date.parse(startDate)) || isNaN(Date.parse(endDate))) {
+  if (isNaN(Date.parse(startDate)) || isNaN(Date.parse(endDate))) {
     errors.date = "Invalid date, please enter a 'MM/DD/YYYY' format"
   } else {
     let start = new Date(Date.parse(startDate))
     let end = new Date(Date.parse(endDate))
     let d = new Date()
-    let futureLimit = new Date(d.getFullYear()+1,d.getMonth(),d.getDay())
-    let pastLimit = new Date(d.getFullYear()-1,d.getMonth(),d.getDay())
-    if(start > futureLimit || end > futureLimit) {
+    let futureLimit = new Date(d.getFullYear() + 1, d.getMonth(), d.getDay())
+    let pastLimit = new Date(d.getFullYear() - 1, d.getMonth(), d.getDay())
+    if (start > futureLimit || end > futureLimit) {
       errors.date = "Invalid date, too far into the future"
-    } else if(start < pastLimit || end < pastLimit) {
+    } else if (start < pastLimit || end < pastLimit) {
       errors.date = "Invalid date, too far into the past"
-    } else if(end <= start) {
+    } else if (end <= start) {
       errors.date = "End date needs to be after start date"
     }
   }
 
-  if(description.trim() === "" && description.length > 280){
+  if (description.trim() === "" && description.length > 280) {
     errors.description = "Description must be between 1 and 280 characters."
   }
-  if(typeof(points) !== 'number') {
+  if (typeof (points) !== 'number') {
     errors.points = "Points must be a whole number greater than 0.";
   }
 
-  if(points < 0 || points > 10) {
+  if (points < 0 || points > 10) {
     errors.points = "Points must be a whole number greater than 0.";
   }
 
@@ -299,7 +299,7 @@ module.exports.validateCreateResourceInput = (
   }
 
 
-  if(!description.trim() && description.length > 280){
+  if (!description.trim() && description.length > 280) {
     errors.description = "Description must be between 1 and 150 characters."
   }
 
@@ -359,7 +359,9 @@ module.exports.validateCreateEditCorporationInput = (
   goals,
   businessModel,
   newsLink,
-  applyLink
+  applyLink,
+  recruitmentDay,
+  signUpLink
 ) => {
   const errors = {};
 
@@ -406,6 +408,36 @@ module.exports.validateCreateEditCorporationInput = (
   if (applyLink.trim() === "") {
     errors.applyLink = "No apply link was provided.";
   }
+  if (recruitmentDay && signUpLink.trim() === "") {
+    errors.signUpLink = "No sign up link was provided.";
+  }
+
+
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+};
+
+module.exports.validateCreateEditPartnerInput = (
+  name,
+  photo,
+  tier,
+) => {
+  const errors = {};
+
+  if (name.trim() === "") {
+    errors.name = "No name was provided.";
+  }
+
+  if (photo.trim() === "") {
+    errors.logo = "No photo was provided.";
+  }
+
+  if (tier.trim() === "") {
+    errors.slogan = "No tier was provided.";
+  }
 
   return {
     errors,
@@ -446,7 +478,7 @@ module.exports.validateEditUserProfile = (
     }
   }
 
-  if(photo) {
+  if (photo) {
     const dataUrlData = parseDataURL(photo);
 
     if (dataUrlData.mimeType.toString().slice(0, 6) !== "image/") {
@@ -456,7 +488,7 @@ module.exports.validateEditUserProfile = (
         "Please use an image file that doesn't exceed the maximum file size (100 KB)";
     }
   }
-  
+
 
   if (major.trim() === "") {
     errors.major = "Major is required.";
@@ -689,7 +721,7 @@ module.exports.validateReimbursementRequest = (
     errors.studentId = "Student ID is required."
   } else if (isNaN(studentId)) {
     errors.studentId = "Student ID can only be numbers."
-  }else {
+  } else {
     if (studentId > 99999999 || studentId < 10000000) {
       errors.studentId = "Invalid student ID.";
     }
@@ -734,7 +766,7 @@ module.exports.validateRentalRequest = (
       "The requested number is too high for the current stock";
   }
 
-  if(numberRequested === 0) {
+  if (numberRequested === 0) {
     errors.invalid = 'The requested number must be greater than 0';
   }
 
