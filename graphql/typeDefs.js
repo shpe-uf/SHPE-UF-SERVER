@@ -25,6 +25,14 @@ module.exports = gql`
     message: String!
   }
 
+  type ChatBotAnswer {
+    answer: String!
+  }
+
+  type ChatBot {
+    ask(question: String!): ChatBotAnswer
+  }
+
   type Corporation {
     id: ID!
     name: String!
@@ -437,6 +445,7 @@ module.exports = gql`
 
   type Query {
     getAlumnis: [Alumni]
+    chatBot(question: String!): String!
     getCorporations: [Corporation]
     getCountryStat: [StatData]
     getEthnicityStat: [StatData]
