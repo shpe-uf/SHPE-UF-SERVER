@@ -1,3 +1,17 @@
 node_modules/
 .env
 package-lock.json
+rag-env/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+rag/chroma_db/
+rag/faiss_storage/
+.cache/
+*.bin
+*.safetensors
+.DS_Store
+Thumbs.db
