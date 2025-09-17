@@ -445,6 +445,31 @@ module.exports.validateCreateEditPartnerInput = (
   };
 };
 
+module.exports.validateCreateEditGbmSlideInput = (
+  title,
+  link,
+  thumbnail,
+) => {
+  const errors = {};
+
+  if (title.trim() === "") {
+    errors.name = "No title was provided.";
+  }
+
+  if (link.trim() === "") {
+    errors.logo = "No link was provided.";
+  }
+
+  if (thumbnail.trim() === "") {
+    errors.slogan = "No thumbnail was provided.";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+};
+
 module.exports.validateEditUserProfile = (
   firstName,
   lastName,

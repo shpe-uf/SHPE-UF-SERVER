@@ -182,6 +182,12 @@ module.exports = gql`
     tier: String!
   }
 
+  type GbmSlide {
+    title: String!
+    link: String!
+    thumbnail: String!
+  }
+
 
   ### AUXILIARY TYPES ###
   type Coordinates {
@@ -260,6 +266,12 @@ module.exports = gql`
     name: String!
     photo: String!
     tier: String!
+  }
+
+  input CreateGbmSlideInput{
+    title: String!
+    link: String!
+    thumbnail: String!
   }
 
   input CreateEventInput {
@@ -455,6 +467,7 @@ module.exports = gql`
     getUser(userId: ID!): User
     getUsers: [User]
     getPartners: [Partner]
+    getGbmSlides: [GbmSlide]
     getYearStat: [StatData]
   }
 
@@ -481,6 +494,7 @@ module.exports = gql`
     createPartner(
       createPartnerInput: CreatePartnerInput
     ): [Partner]
+    createGbmSlide(createGbmSlideInput: CreateGbmSlideInput): [GbmSlide]
     createEvent(createEventInput: CreateEventInput): [Event]
     createResource(createResourceInput: CreateResourceInput): [Resource]
     createTask(createTaskInput: CreateTaskInput): Task!
