@@ -494,7 +494,7 @@ module.exports = gql`
     createPartner(
       createPartnerInput: CreatePartnerInput
     ): [Partner]
-    createGbmSlide(createGbmSlideInput: CreateGbmSlideInput): [GbmSlide]
+    createGbmSlide(createGbmSlideInput: CreateGbmSlideInput!): GbmSlide
     createEvent(createEventInput: CreateEventInput): [Event]
     createResource(createResourceInput: CreateResourceInput): [Resource]
     createTask(createTaskInput: CreateTaskInput): Task!

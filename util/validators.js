@@ -453,15 +453,15 @@ module.exports.validateCreateEditGbmSlideInput = (
   const errors = {};
 
   if (title.trim() === "") {
-    errors.name = "No title was provided.";
+    errors.title = "No title was provided.";
   }
 
   if (link.trim() === "") {
-    errors.logo = "No link was provided.";
+    errors.link = "No link was provided.";
   }
 
   if (thumbnail.trim() === "") {
-    errors.slogan = "No thumbnail was provided.";
+    errors.thumbnail = "No thumbnail was provided.";
   }
 
   return {
