@@ -105,11 +105,11 @@ module.exports.validateRegisterInput = (
   };
 };
 
-module.exports.validateLoginInput = (username, password) => {
+module.exports.validateLoginInput = (usernameOrEmail, password) => {
   const errors = {};
 
-  if (username.trim() === "") {
-    errors.username = "Username is required.";
+  if (usernameOrEmail.trim() === "") {
+    errors.usernameOrEmail = "Username or email is required.";
   }
 
   if (password.trim() === "") {

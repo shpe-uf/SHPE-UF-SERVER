@@ -319,18 +319,20 @@ module.exports = {
   },
 
   Mutation: {
-    async login(_, { username, password, remember }) {
-      username = username.toLowerCase();
+    async login(_, { usernameOrEmail, password, remember }) {
+      usernameOrEmail = usernameOrEmail.toLowerCase();
 
-      const { errors, valid } = validateLoginInput(username, password);
+      const { errors, valid } = validateLoginInput(usernameOrEmail, password);
 
       if (!valid) {
         handleInputError(errors);
       }
 
-      const user = await User.findOne({
-        username,
-      });
+      const isEmail = usernameOrEmail.includes('@');
+      const user = await User.findOne(isEmail 
+        ? { email: usernameOrEmail }
+        : { username: usernameOrEmail }
+      );
 
       if (!user) {
         errors.general = "User not found.";
