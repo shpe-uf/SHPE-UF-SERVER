@@ -18,7 +18,8 @@ async function queryRAG(question) {
             `${RAG_API_URL}/query`,
             { question },
             {
-                headers: {
+                headers:
+                {
                     'Content-Type': 'application/json'
                 },
                 timeout: REQUEST_TIMEOUT
@@ -31,7 +32,9 @@ async function queryRAG(question) {
         } else {
             throw new Error('Invalid response from RAG API');
         }
-    } catch (error) {
+    } 
+    catch (error) 
+    {
         console.error('RAG Query Error:', error.message);
         
         // Handle specific error cases
@@ -48,10 +51,10 @@ async function queryRAG(question) {
 }
 
 /**
- * Index a single website into the RAG system
- * @param {string} url - The URL to index
- * @returns {Promise<object>} - Indexing result
- */
+* Index a single website into the RAG system
+* @param {string} url - The URL to index
+* @returns {Promise<object>} - Indexing result
+*/
 async function indexWebsite(url) {
     try {
         const response = await axios.post(

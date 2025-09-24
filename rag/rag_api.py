@@ -49,10 +49,10 @@ class RAGSystem:
         
         # Ollama configuration
         self.ollama_url = "http://localhost:11434/api/generate"
-        self.ollama_model = "llama2"  # Change model
+        self.ollama_model = "llama2"
         
     def scrape_website(self, url: str) -> Dict:
-        """Scrape content from a website"""
+        
         try:
             response = requests.get(url, timeout=10)
             response.raise_for_status()
@@ -131,16 +131,16 @@ class RAGSystem:
         }
     
     def search_similar(self, query: str, k: int = 5) -> List[Dict]:
-        # Generate embedding for query
+        # Generate embedding from the user query
         query_embedding = self.embedding_model.encode([query])[0].tolist()
         
-        # Search in ChromaDB
+        # Search in ChromaDB for verctors most similar to query
         results = self.collection.query(
             query_embeddings=[query_embedding],
             n_results=k
         )
         
-        # Format results
+        # Results
         formatted_results = []
         if results['documents'] and results['documents'][0]:
             for i in range(len(results['documents'][0])):
@@ -153,16 +153,16 @@ class RAGSystem:
         return formatted_results
     
     def generate_answer(self, question: str, context: str) -> str:
-        """Generate answer using Ollama"""
         prompt = f"""You are a helpful assistant. Use the following context to answer the question. 
-If you cannot answer based on the context, say so. Do not mention how you are a large language model unless specifically asked.
+        If you cannot answer based on the context, say so. Do not mention how you are a large language 
+        model unless specifically asked. Keep your responses appropiatly short for a mobile device experience.
+        
+        Context:
+        {context}
 
-Context:
-{context}
+        Question: {question}
 
-Question: {question}
-
-Answer:"""
+        Answer:"""
         
         try:
             response = requests.post(
@@ -182,9 +182,10 @@ Answer:"""
         except requests.exceptions.RequestException as e:
             logger.error(f"Ollama request failed: {str(e)}")
             return f"Error generating answer: {str(e)}"
-    
+
+    # Main RAG query function
     def query(self, question: str) -> str:
-        """Main RAG query function"""
+        
         # Search for relevant documents
         relevant_docs = self.search_similar(question, k=5)
         
