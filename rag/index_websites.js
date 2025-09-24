@@ -7,7 +7,7 @@ const WEBSITES = [
     'https://www.shpeuf.com/eboard',
     'https://www.shpeuf.com/alumni',
     'https://www.shpeuf.com/contactus',
-    'https://www.shpeuf.com/calendar'
+    'https://www.shpeuf.com/calendar',
     'https://shpe.org',
     'https://shpe.org/career-services/'
 ];

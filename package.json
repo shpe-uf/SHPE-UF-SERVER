@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
-    "prettier": "./node_modules/.bin/prettier --single-quote --write '*.{js,css,json}'",
+    "serve:rag": "python -m uvicorn rag.rag_api:app --host 0.0.0.0 --port 8001",
+    "wait-and-serve:node": "wait-on http-get://localhost:8001/health && cross-env RAG_API_URL=http://localhost:8001 node index.js",
+    "start": "concurrently -k -n RAG,NODE -c yellow,cyan \"npm:serve:rag\" \"npm:wait-and-serve:node\"",
+    "prettier": "prettier --single-quote --write '*.{js,css,json}'",
     "precommit": "lint-staged"
   },
   "engines": {
@@ -41,8 +43,11 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.0.0",
     "husky": "^8.0.2",
     "lint-staged": "^15.2.0",
-    "prettier": "^3.1.1"
+    "prettier": "^3.1.1",
+    "wait-on": "^9.0.1"
   }
 }
