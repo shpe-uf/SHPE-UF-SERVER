@@ -5,7 +5,7 @@ const {
 } = require("@apollo/server/plugin/drainHttpServer");
 const express = require("express");
 const http = require("http");
-const { json } = require("body-parser");
+const { json, urlencoded } = require("body-parser");
 const mongoose = require("mongoose");
 const typeDefs = require("./graphql/typeDefs.js");
 const cors = require("cors");
@@ -27,7 +27,8 @@ startApolloServer = async () => {
 
   app.use(
     cors({ origin: [RegExp(process.env.CLIENT_ORIGIN)], credentials: true }),
-    json(),
+    json({ limit: "50mb" }),
+    urlencoded({ extended: true, limit: "50mb" }),
     expressMiddleware(server)
   );
   await new Promise((resolve) => httpServer.listen({ port }, resolve));

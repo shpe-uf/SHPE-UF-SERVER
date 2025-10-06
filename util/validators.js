@@ -457,7 +457,7 @@ module.exports.validateCreateEditGbmSlideInput = (
   }
 
   if (link.trim() === "") {
-    errors.link = "No link was provided.";
+    errors.link = "No Pdf was provided.";
   }
 
   if (thumbnail.trim() === "") {
