@@ -445,6 +445,31 @@ module.exports.validateCreateEditPartnerInput = (
   };
 };
 
+module.exports.validateCreateEditGbmSlideInput = (
+  title,
+  link,
+  thumbnail,
+) => {
+  const errors = {};
+
+  if (title.trim() === "") {
+    errors.title = "No title was provided.";
+  }
+
+  if (link.trim() === "") {
+    errors.link = "No Pdf was provided.";
+  }
+
+  if (thumbnail.trim() === "") {
+    errors.thumbnail = "No thumbnail was provided.";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+};
+
 module.exports.validateEditUserProfile = (
   firstName,
   lastName,

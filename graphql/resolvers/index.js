@@ -9,6 +9,8 @@ const shpeRentalsResolvers = require("./rentables.js")
 const contactRequestsResolvers = require("./contactRequests.js")
 const resourcesResolvers = require("./resources.js")
 const partnerResolvers = require("./partners.js")
+const gbmslideResolvers = require("./gbmslides.js")
+
 
 module.exports = {
   Query: {
@@ -22,6 +24,7 @@ module.exports = {
     ...shpeRentalsResolvers.Query,
     ...resourcesResolvers.Query,
     ...partnerResolvers.Query,
+    ...gbmslideResolvers.Query,
   },
 
   Mutation: {
@@ -31,6 +34,7 @@ module.exports = {
     ...tasksResolvers.Mutation,
     ...corporationResolvers.Mutation,
     ...partnerResolvers.Mutation,
+    ...gbmslideResolvers.Mutation,
     ...alumnisResolvers.Mutation,
     ...reimbursementsResolvers.Mutation,
     ...shpeRentalsResolvers.Mutation,
