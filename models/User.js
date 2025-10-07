@@ -1,5 +1,28 @@
 const { model, Schema } = require('mongoose');
 
+// Helper function to calculate year progression using JavaScript Date
+function calculateYearProgression(currentYear, lastUpdated) {
+  const now = new Date();
+  const lastUpdate = lastUpdated ? new Date(lastUpdated) : now;
+  
+  // Calculate years difference
+  const yearsDiff = now.getFullYear() - lastUpdate.getFullYear();
+  
+  // If a full year has passed, advance the year
+  if (yearsDiff >= 1) {
+    const yearProgression = {
+      "1st Year": "2nd Year",
+      "2nd Year": "3rd Year", 
+      "3rd Year": "4th Year",
+      "4th Year": "5th Year or Higher"
+    };
+    
+    return yearProgression[currentYear] || currentYear;
+  }
+  
+  return currentYear;
+}
+
 const userSchema = new Schema({
   firstName: {
     type: String,
@@ -127,6 +150,16 @@ const userSchema = new Schema({
     default: false,
   },
   bookmarks: [String],
+});
+
+// Pre-save middleware to automatically update year progression
+userSchema.pre('save', function(next) {
+  const newYear = calculateYearProgression(this.year, this.updatedAt);
+  if (newYear !== this.year) {
+    this.year = newYear;
+    this.updatedAt = new Date().toISOString();
+  }
+  next();
 });
 
 module.exports = model('User', userSchema);

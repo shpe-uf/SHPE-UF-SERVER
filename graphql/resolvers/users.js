@@ -13,6 +13,8 @@ const {
   handleGeneralError,
 } = require("../../util/error-handling");
 
+const { scheduler, updateAllUsersYears } = require("../../util/simpleScheduler");
+
 require("dotenv").config();
 
 const transport = nodemailer.createTransport(
@@ -314,6 +316,17 @@ module.exports = {
         }
       } catch (err) {
         handleGeneralError(err, err.message);
+      }
+    },
+
+    async getSchedulerStatus() {
+      try {
+        return {
+          activeJobs: scheduler.getActiveJobs(),
+          isRunning: scheduler.getActiveJobs().length > 0
+        };
+      } catch (err) {
+        handleGeneralError(err, "Failed to get scheduler status");
       }
     },
   },
@@ -1173,37 +1186,63 @@ module.exports = {
     },
 
     async updateYears() {
-      var users = await User.find();
-      users.forEach(async function(user) {
-        const currDate = new Date();
-        const email = user.email;
-        const msPerDay = 1000 * 60 * 60 * 24;
-        var updatedAt = currDate;
-        var year = user.year;
+      try {
+        console.log('Starting manual year update process...');
+        
+        const users = await User.find();
+        let updatedCount = 0;
+        const updatedUsers = [];
 
-        if (user.updatedAt) updatedAt = new Date(user.updatedAt);
-        const difference = Math.round((currDate - updatedAt) / msPerDay);
+        for (const user of users) {
+          const now = new Date();
+          const lastUpdate = user.updatedAt ? new Date(user.updatedAt) : now;
+          const yearsDiff = now.getFullYear() - lastUpdate.getFullYear();
 
-        if (difference >= 365) {
-          updatedAt = currDate;
-          if (year === "1st Year") year = "2nd Year";
-          else if (year === "2nd Year") year = "3rd Year";
-          else if (year === "3rd Year") year = "4th Year";
-          else if (year === "4th Year") year = "5th Year or Higher";
+          if (yearsDiff >= 1) {
+            let newYear = user.year;
+            
+            // Progress year
+            if (user.year === "1st Year") newYear = "2nd Year";
+            else if (user.year === "2nd Year") newYear = "3rd Year";
+            else if (user.year === "3rd Year") newYear = "4th Year";
+            else if (user.year === "4th Year") newYear = "5th Year or Higher";
+
+            if (newYear !== user.year) {
+              const updatedUser = await User.findOneAndUpdate(
+                { email: user.email },
+                {
+                  year: newYear,
+                  updatedAt: now.toISOString(),
+                },
+                { new: true }
+              );
+              updatedUsers.push(updatedUser);
+              updatedCount++;
+              console.log(`Updated ${user.email} from ${user.year} to ${newYear}`);
+            }
+          }
         }
 
-        const updatedUser = await User.findOneAndUpdate(
-          { email },
-          {
-            year: year,
-            updatedAt: updatedAt.toISOString(),
-          },
-          {
-            new: true
-          }
-        );
-      });
-      return users;
+        console.log(`Manual year update completed. Updated ${updatedCount} users.`);
+        return updatedUsers.length > 0 ? updatedUsers : users;
+      } catch (err) {
+        console.error('Error in manual year update:', err);
+        handleGeneralError(err, "Failed to update years");
+      }
+    },
+
+    async triggerYearUpdate() {
+      try {
+        console.log('Manually triggering year update...');
+        await updateAllUsersYears();
+        return {
+          success: true,
+          message: "Year update triggered successfully"
+        };
+      } catch (err) {
+        console.error('Error triggering year update:', err);
+        handleGeneralError(err, "Failed to trigger year update");
+      }
     },
 
 

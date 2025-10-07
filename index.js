@@ -9,6 +9,7 @@ const { json } = require("body-parser");
 const mongoose = require("mongoose");
 const typeDefs = require("./graphql/typeDefs.js");
 const cors = require("cors");
+const { initializeYearUpdate } = require("./util/simpleScheduler.js");
 require("dotenv").config();
 
 const resolvers = require("./graphql/resolvers");
@@ -35,6 +36,9 @@ startApolloServer = async () => {
   const host = addr.address === '::' ? 'localhost' : addr.address;
   const hport = addr.port;
   console.log(`SERVER RUNNING AT http://${host}:${hport}/`);
+  
+  // Initialize year update scheduler after server starts
+  initializeYearUpdate();
 };
 
 mongoose

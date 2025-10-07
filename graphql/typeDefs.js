@@ -206,6 +206,16 @@ module.exports = gql`
     value: Int!
   }
 
+  type SchedulerStatus {
+    activeJobs: [String!]!
+    isRunning: Boolean!
+  }
+
+  type YearUpdateResult {
+    success: Boolean!
+    message: String!
+  }
+
   type Token {
     token: String!
   }
@@ -451,6 +461,7 @@ module.exports = gql`
     getRequests: [Request]
     getResources: [Resource]
     getSexStat: [StatData]
+    getSchedulerStatus: SchedulerStatus
     getTasks: [Task]
     getUser(userId: ID!): User
     getUsers: [User]
@@ -527,6 +538,7 @@ module.exports = gql`
     unReturnItem(receiptID: ID!): Receipt
     uncancelReimbursement(id: ID!, email: String!): Reimbursement!
     unresolveReimbursement(id: ID!, email: String!): Reimbursement!
+    triggerYearUpdate: YearUpdateResult!
     updateYears: [User]
     redeemPoints(redeemPointsInput: RedeemPointsInput): User!
     redeemTasksPoints(redeemTasksPointsInput: RedeemTasksPointsInput): User!
