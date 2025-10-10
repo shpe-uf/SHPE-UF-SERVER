@@ -323,14 +323,15 @@ module.exports = {
       username = username.toLowerCase();
 
       const { errors, valid } = validateLoginInput(username, password);
+      const { valid: checkEmailValid} = validateEmailInput(username)
 
       if (!valid) {
         handleInputError(errors);
       }
 
-      const user = await User.findOne({
-        username,
-      });
+      const user = await User.findOne(
+        checkEmailValid ? { email: username } : { username: username }
+      );
 
       if (!user) {
         errors.general = "User not found.";
