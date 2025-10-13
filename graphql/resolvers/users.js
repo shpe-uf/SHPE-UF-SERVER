@@ -24,6 +24,7 @@ const transport = nodemailer.createTransport(
 const {
   validateRegisterInput,
   validateLoginInput,
+  validateLoginWithEmailInput,
   validateRedeemPointsInput,
   validateEmailInput,
   validatePasswordInput,
@@ -330,6 +331,50 @@ module.exports = {
 
       const user = await User.findOne({
         username,
+      });
+
+      if (!user) {
+        errors.general = "User not found.";
+        handleInputError(errors);
+      }
+
+      const match = await bcrypt.compare(password, user.password);
+
+      if (!match) {
+        errors.general = "Wrong credentials.";
+        handleInputError(errors);
+      }
+
+      const isConfirmed = user.confirmed;
+
+      if (!isConfirmed) {
+        errors.general = "User not confirmed.";
+        handleInputError(errors);
+      }
+
+      time = remember === "true" || remember === true ? "30d" : "24h";
+      const token = generateToken(user, time);
+
+      calculatePercentiles(user);
+
+      return {
+        ...user._doc,
+        id: user._id,
+        token,
+      };
+    },
+
+    async loginWithEmail(_, { email, password, remember }) {
+      email = email.toLowerCase();
+
+      const { errors, valid } = validateLoginWithEmailInput(email, password);
+
+      if (!valid) {
+        handleInputError(errors);
+      }
+
+      const user = await User.findOne({
+        email,
       });
 
       if (!user) {

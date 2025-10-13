@@ -496,6 +496,7 @@ module.exports = gql`
     editUserProfile(editUserProfileInput: EditUserProfileInput): User!
     forgotPassword(email: String!): User!
     login(username: String!, password: String!, remember: String!): User!
+    loginWithEmail(email: String!, password: String!, remember: String!): User!
     manualInput(manualInputInput: ManualInputInput): [Event]
     manualTaskInput(manualTaskInputInput: ManualTaskInputInput): Task
     pickUpItem(receiptID: ID!): Receipt
