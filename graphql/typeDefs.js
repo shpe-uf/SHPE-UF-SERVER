@@ -182,6 +182,22 @@ module.exports = gql`
     tier: String!
   }
 
+  type DevTeamMember {
+    name: String!
+    position: String!
+    team: String!
+    picture: String!
+    active: Boolean!
+    createdAt: String!
+  }
+
+  type EboardMember {
+    position: String!
+    name: String!
+    picture: String!
+    active: Boolean!
+    createdAt: String!
+  }
 
   ### AUXILIARY TYPES ###
   type Coordinates {
@@ -260,6 +276,36 @@ module.exports = gql`
     name: String!
     photo: String!
     tier: String!
+  }
+
+  input CreateDevTeamInput {
+    name: String!
+    position: String!
+    team: String!
+    picture: String!
+  }
+
+  input UpdateDevTeamInput {
+    id: ID!
+    name: String
+    position: String
+    team: String
+    active: Boolean
+    picture: String
+  }
+
+  input CreateEboardInput {
+    position: String!
+    name: String!
+    picture: String!
+  }
+
+  input UpdateEboardInput {
+    id: ID!
+    position: String
+    name: String
+    active: Boolean
+    picture: String
   }
 
   input CreateEventInput {
@@ -456,6 +502,8 @@ module.exports = gql`
     getUsers: [User]
     getPartners: [Partner]
     getYearStat: [StatData]
+    getDevTeam: [DevTeamMember]
+    getEboard: [EboardMember]
   }
 
 
@@ -530,6 +578,10 @@ module.exports = gql`
     updateYears: [User]
     redeemPoints(redeemPointsInput: RedeemPointsInput): User!
     redeemTasksPoints(redeemTasksPointsInput: RedeemTasksPointsInput): User!
+    createDevTeamMember(createDevTeamInput: CreateDevTeamInput): [DevTeamMember]
+    updateDevTeamMember(updateDevTeamInput: UpdateDevTeamInput): DevTeamMember
+    createEboardMember(createEboardInput: CreateEboardInput): [EboardMember]
+    updateEboardMember(updateEboardInput: UpdateEboardInput): EboardMember
   }
 
 `;
