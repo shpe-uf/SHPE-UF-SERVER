@@ -50,64 +50,253 @@ class RAGSystem:
         # Ollama configuration
         self.ollama_url = "http://localhost:11434/api/generate"
         self.ollama_model = "llama2"
-        
     def scrape_website(self, url: str) -> Dict:
-        
+        """
+        Scrape website content with Selenium for JS-rendered pages (e.g., React-based sites like shpeuf.com).
+        Falls back to requests if Selenium fails.
+        """
+        from selenium import webdriver
+        from selenium.webdriver.chrome.options import Options
+        from bs4 import BeautifulSoup
+        import re
+
         try:
+            # --- Try normal requests first ---
             response = requests.get(url, timeout=10)
             response.raise_for_status()
-            
-            soup = BeautifulSoup(response.content, 'html.parser')
-            
-            # Remove script and style elements
+            html = response.text
+
+            # Heuristic: if little visible text, fall back to Selenium render
+            visible_chars = len(re.sub(r"\s+", "", BeautifulSoup(html, "html.parser").get_text()))
+            if visible_chars < 800:
+                logger.info(f"Low text count detected ({visible_chars}), using Selenium render for {url}")
+                try:
+                    chrome_options = Options()
+                    chrome_options.add_argument("--headless=new")
+                    chrome_options.add_argument("--disable-gpu")
+                    chrome_options.add_argument("--no-sandbox")
+                    chrome_options.add_argument("--disable-dev-shm-usage")
+
+                    driver = webdriver.Chrome(options=chrome_options)
+                    driver.set_page_load_timeout(15)
+                    driver.get(url)
+                    html = driver.page_source
+                    driver.quit()
+                except Exception as render_err:
+                    logger.warning(f"Selenium fallback failed for {url}: {render_err}")
+
+            # --- Parse HTML content ---
+            soup = BeautifulSoup(html, "html.parser")
+
             for script in soup(["script", "style"]):
                 script.extract()
-            
-            # Get text
-            text = soup.get_text()
-            lines = (line.strip() for line in text.splitlines())
-            chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-            text = ' '.join(chunk for chunk in chunks if chunk)
-            
-            # Get title
-            title = soup.find('title').string if soup.find('title') else url
-            
+
+            text = soup.get_text(" ", strip=True)
+            title = soup.find("title").string if soup.find("title") else url
+
             return {
                 "url": url,
                 "title": title,
-                "content": text[:10000],  # Limit content length
+                "content": text[:15000],
                 "scraped_at": datetime.now().isoformat()
             }
+
         except Exception as e:
-            logger.error(f"Error scraping {url}: {str(e)}")
-            raise HTTPException(status_code=400, detail=f"Failed to scrape {url}: {str(e)}")
+            logger.error(f"Error scraping {url}: {e}")
+            raise HTTPException(status_code=400, detail=f"Failed to scrape {url}: {e}")
+
+    # def scrape_website(self, url: str) -> Dict:
+        
+    #     try:
+    #         response = requests.get(url, timeout=10)
+    #         response.raise_for_status()
+            
+    #         soup = BeautifulSoup(response.content, 'html.parser')
+            
+    #         # Remove script and style elements
+    #         for script in soup(["script", "style"]):
+    #             script.extract()
+            
+    #         # Get text
+    #         text = soup.get_text()
+    #         lines = (line.strip() for line in text.splitlines())
+    #         chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+    #         text = ' '.join(chunk for chunk in chunks if chunk)
+            
+    #         # Get title
+    #         title = soup.find('title').string if soup.find('title') else url
+            
+    #         return {
+    #             "url": url,
+    #             "title": title,
+    #             "content": text[:10000],  # Limit content length
+    #             "scraped_at": datetime.now().isoformat()
+    #         }
+    #     except Exception as e:
+    #         logger.error(f"Error scraping {url}: {str(e)}")
+    #         raise HTTPException(status_code=400, detail=f"Failed to scrape {url}: {str(e)}")
     
     def chunk_text(self, text: str, chunk_size: int = 500, overlap: int = 50) -> List[str]:
         """Split text into overlapping chunks"""
+        # Backwards-compatible simple word-based behavior preserved under legacy signature
         words = text.split()
         chunks = []
-        
+
         for i in range(0, len(words), chunk_size - overlap):
             chunk = ' '.join(words[i:i + chunk_size])
             if chunk:
                 chunks.append(chunk)
-        
+
+        return chunks
+
+    # --- New hierarchical / semantically-aware chunking helpers ---
+    def _split_paragraphs(self, text: str) -> List[str]:
+        """Split text into paragraphs using double-newline as delimiter, fallback to whole text."""
+        paras = [p.strip() for p in text.split('\n\n') if p.strip()]
+        if not paras:
+            return [text.strip()]
+        return paras
+
+    def _split_sentences(self, paragraph: str) -> List[str]:
+        """Lightweight sentence splitter using punctuation. Keeps punctuation on sentences."""
+        import re
+        sentences = [s.strip() for s in re.split(r'(?<=[\.\?\!])\s+', paragraph) if s.strip()]
+        return sentences if sentences else [paragraph]
+
+    def _estimate_tokens(self, text: str) -> int:
+        """Estimate tokens using simple word count heuristic. Replace with tokenizer if available."""
+        words = text.split()
+        return max(1, len(words))
+
+    def chunk_text_hierarchical(self,
+                                text: str,
+                                chunk_size_tokens: int = 400,
+                                overlap_tokens: int = 50,
+                                semantic_threshold: Optional[float] = None
+                                ) -> List[str]:
+        """
+        Hierarchical chunking:
+         - splits into paragraphs, then sentences
+         - aggregates sentences into chunks up to chunk_size_tokens (estimated)
+         - overlap defined in tokens (approx via sentence units)
+         - if semantic_threshold set, performs simple semantic de-dup/merge using embeddings
+        """
+        chunks: List[str] = []
+
+        paragraphs = self._split_paragraphs(text)
+        last_chunk_embedding = None
+
+        for para in paragraphs:
+            sentences = self._split_sentences(para)
+            cur_sentences: List[str] = []
+            cur_tokens = 0
+
+            for sent in sentences:
+                sent_tokens = self._estimate_tokens(sent)
+
+                # If a single sentence is huge, split by words
+                if sent_tokens >= chunk_size_tokens:
+                    words = sent.split()
+                    for i in range(0, len(words), chunk_size_tokens - overlap_tokens):
+                        big_chunk = ' '.join(words[i:i + chunk_size_tokens])
+                        if not big_chunk:
+                            continue
+                        if semantic_threshold and chunks:
+                            try:
+                                from sentence_transformers import util
+                                emb = self.embedding_model.encode([big_chunk])[0]
+                                if last_chunk_embedding is not None:
+                                    sim = float(util.cos_sim(emb, last_chunk_embedding))
+                                else:
+                                    sim = 0.0
+                            except Exception:
+                                sim = 0.0
+                            if sim >= semantic_threshold:
+                                chunks[-1] = chunks[-1] + "\n\n" + big_chunk
+                                last_chunk_embedding = emb
+                                continue
+                            last_chunk_embedding = emb
+                        chunks.append(big_chunk)
+                    cur_sentences = []
+                    cur_tokens = 0
+                    continue
+
+                cur_sentences.append(sent)
+                cur_tokens += sent_tokens
+
+                if cur_tokens >= chunk_size_tokens:
+                    chunk_text = ' '.join(cur_sentences).strip()
+                    if semantic_threshold and chunks:
+                        try:
+                            from sentence_transformers import util
+                            emb = self.embedding_model.encode([chunk_text])[0]
+                            sim = float(util.cos_sim(emb, last_chunk_embedding)) if last_chunk_embedding is not None else 0.0
+                        except Exception:
+                            sim = 0.0
+                        if sim >= semantic_threshold:
+                            chunks[-1] = chunks[-1] + "\n\n" + chunk_text
+                            last_chunk_embedding = emb
+                        else:
+                            chunks.append(chunk_text)
+                            last_chunk_embedding = emb
+                    else:
+                        chunks.append(chunk_text)
+                        if semantic_threshold:
+                            last_chunk_embedding = self.embedding_model.encode([chunk_text])[0]
+
+                    # Prepare overlap by keeping last sentences approximating overlap_tokens
+                    if overlap_tokens > 0 and cur_sentences:
+                        avg_tokens_per_sentence = max(1, int(cur_tokens / max(1, len(cur_sentences))))
+                        overlap_sent_count = max(1, int(overlap_tokens / avg_tokens_per_sentence))
+                        cur_sentences = cur_sentences[-overlap_sent_count:]
+                        cur_tokens = sum(self._estimate_tokens(s) for s in cur_sentences)
+                    else:
+                        cur_sentences = []
+                        cur_tokens = 0
+
+            # flush remaining sentences in paragraph
+            if cur_sentences:
+                chunk_text = ' '.join(cur_sentences).strip()
+                if chunk_text:
+                    if semantic_threshold and chunks:
+                        try:
+                            from sentence_transformers import util
+                            emb = self.embedding_model.encode([chunk_text])[0]
+                            sim = float(util.cos_sim(emb, last_chunk_embedding)) if last_chunk_embedding is not None else 0.0
+                        except Exception:
+                            sim = 0.0
+                        if sim >= semantic_threshold:
+                            chunks[-1] = chunks[-1] + "\n\n" + chunk_text
+                            last_chunk_embedding = emb
+                        else:
+                            chunks.append(chunk_text)
+                            last_chunk_embedding = emb
+                    else:
+                        chunks.append(chunk_text)
+                        if semantic_threshold:
+                            last_chunk_embedding = self.embedding_model.encode([chunk_text])[0]
+
         return chunks
     
     def index_website(self, url: str) -> Dict:
         """Scrape and index a website"""
         # Scrape website
         website_data = self.scrape_website(url)
-        
-        # Chunk the content
-        chunks = self.chunk_text(website_data['content'])
-        
+
+        # ✅ Use hierarchical chunking instead of simple word split
+        chunks = self.chunk_text_hierarchical(
+            website_data['content'],
+            chunk_size_tokens=400,     # typical sweet spot
+            overlap_tokens=80,         # keeps context continuity
+            semantic_threshold=0.85    # merge chunks that are semantically near-identical
+        )
+
         # Generate embeddings
         embeddings = self.embedding_model.encode(chunks).tolist()
-        
+
         # Create unique IDs for chunks
         ids = [f"{hashlib.md5(f'{url}_{i}'.encode()).hexdigest()}" for i in range(len(chunks))]
-        
+
         # Prepare metadata
         metadatas = [{
             "url": url,
@@ -115,7 +304,7 @@ class RAGSystem:
             "chunk_index": i,
             "scraped_at": website_data['scraped_at']
         } for i in range(len(chunks))]
-        
+
         # Add to ChromaDB
         self.collection.add(
             embeddings=embeddings,
@@ -123,12 +312,15 @@ class RAGSystem:
             metadatas=metadatas,
             ids=ids
         )
-        
+
+        logger.info(f"Indexed {len(chunks)} hierarchical chunks from {url}")
         return {
             "url": url,
             "chunks_indexed": len(chunks),
             "title": website_data['title']
         }
+
+       
     
     def search_similar(self, query: str, k: int = 5) -> List[Dict]:
         # Generate embedding from the user query
