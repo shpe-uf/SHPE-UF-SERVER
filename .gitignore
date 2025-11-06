@@ -15,3 +15,5 @@ rag/faiss_storage/
 *.safetensors
 .DS_Store
 Thumbs.db
+CLAUDE.md
+rag/.graphql_cache.json
