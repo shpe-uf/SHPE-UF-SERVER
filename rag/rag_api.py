@@ -2,14 +2,11 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import chromadb
-from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 import requests
 from bs4 import BeautifulSoup
-import os
-import json
 import hashlib
-from typing import List, Dict, Optional
+from typing import List, Dict
 from datetime import datetime
 import logging
 
@@ -410,6 +407,10 @@ class IndexRequest(BaseModel):
 class BulkIndexRequest(BaseModel):
     urls: List[str]
 
+class TextIndexRequest(BaseModel):
+    chunks: List[str]
+    source_name: str
+
 # API endpoints
 @app.post("/query")
 async def query_endpoint(request: QueryRequest):
@@ -436,19 +437,54 @@ async def bulk_index_endpoint(request: BulkIndexRequest):
     """Index multiple websites"""
     results = []
     errors = []
-    
+
     for url in request.urls:
         try:
             result = rag_system.index_website(url)
             results.append(result)
         except Exception as e:
             errors.append({"url": url, "error": str(e)})
-    
+
     return {
         "status": "completed",
         "indexed": results,
         "errors": errors
     }
+
+@app.post("/index_text")
+async def index_text_endpoint(request: TextIndexRequest):
+    """Index raw text chunks directly (no scraping)"""
+    try:
+        # Generate embeddings from chunks
+        embeddings = rag_system.embedding_model.encode(request.chunks).tolist()
+
+        # Create unique IDs for each chunk
+        ids = [f"{hashlib.md5(f'{request.source_name}_{i}'.encode()).hexdigest()}"
+               for i in range(len(request.chunks))]
+
+        # Prepare metadata
+        metadatas = [{
+            "source": request.source_name,
+            "chunk_index": i,
+            "indexed_at": datetime.now().isoformat()
+        } for i in range(len(request.chunks))]
+
+        # Add to ChromaDB
+        rag_system.collection.add(
+            embeddings=embeddings,
+            documents=request.chunks,
+            metadatas=metadatas,
+            ids=ids
+        )
+
+        return {
+            "status": "success",
+            "chunks_indexed": len(request.chunks),
+            "source": request.source_name
+        }
+    except Exception as e:
+        logger.error(f"Text indexing error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/stats")
 async def stats_endpoint():
