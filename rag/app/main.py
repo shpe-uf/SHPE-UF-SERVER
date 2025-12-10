@@ -1,7 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from .core.rag import RAGSystem
-from .models.api import QueryRequest, TextIndexRequest
+from .core.agent_loop import generate_answer_with_tools
+from .models.api import QueryRequest, TextIndexRequest, AgentQueryRequest
 import logging
 
 # Configure logging
@@ -34,6 +35,29 @@ async def query_endpoint(request: QueryRequest):
         return {"answer": answer}
     except Exception as e:
         logger.error(f"Query error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/query_agent")
+async def query_agent_endpoint(request: AgentQueryRequest):
+    """Query with tool calling enabled (agent loop)"""
+    try:
+        # Optionally get RAG context as background knowledge
+        context_snippets = None
+        if request.use_rag_context:
+            relevant_docs = rag_system.search_similar(request.question, k=5)
+            if relevant_docs:
+                context_snippets = [doc['content'] for doc in relevant_docs[:3]]
+        
+        # Run agent loop with tools
+        answer = generate_answer_with_tools(
+            ollama_model=rag_system.ollama_model,
+            question=request.question,
+            context_snippets=context_snippets,
+            max_hops=4
+        )
+        return {"answer": answer}
+    except Exception as e:
+        logger.error(f"Agent query error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/index_text")
