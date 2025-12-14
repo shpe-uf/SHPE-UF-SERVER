@@ -26,8 +26,8 @@ class RAGSystem:
             )
         
         # Ollama configuration
-        self.ollama_url = "http://localhost:11434/api/generate"
-        self.ollama_model = "llama2"
+        self.ollama_url = "http://localhost:11434/api/chat"
+        self.ollama_model = "llama3.1"
 
     def search_similar(self, query: str, k: int = 5) -> List[Dict]:
         # Generate embedding from the user query
