@@ -8,28 +8,32 @@ the functions that call your GraphQL backend to fetch live data.
 """
 
 import requests
-import json
 import logging
-from typing import Dict
+import os
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
+from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
 
 # Configuration
-GRAPHQL_URL = "http://localhost:4000"
+GRAPHQL_URL = os.getenv("GRAPHQL_API_URL", "http://localhost:5000")
 
-# ============================================================================
 # TOOL DEFINITIONS (Ollama schema for function calling)
-# ============================================================================
-
 TOOLS = [
     {
         "type": "function",
         "function": {
             "name": "get_upcoming_events",
-            "description": "Fetch all upcoming SHPE UF events with names, categories, points, and semesters.",
+            "description": "Fetch upcoming SHPE UF events (non-expired). Defaults to current semester; optionally filter by semester (e.g., 'Fall Semester').",
             "parameters": {
                 "type": "object",
-                "properties": {},
+                "properties": {
+                    "semester": {
+                        "type": "string",
+                        "description": "Optional semester filter. Examples: 'Fall Semester', 'Spring Semester', 'Summer Semester'."
+                    }
+                },
                 "required": []
             }
         }
@@ -84,229 +88,133 @@ TOOLS = [
     },
 ]
 
+# DISPATCH FUNCTIONS
+def get_upcoming_events(semester: Optional[str] = None) -> Dict:
+    """Fetch non-expired events, defaulting to the current semester."""
+    if semester:
+        normalized = _normalized_semester(semester)
+        target_semester = normalized or semester.strip()
+    else:
+        target_semester = _current_semester()
 
-# ============================================================================
-# DISPATCH FUNCTIONS (Your colleague implements these)
-# ============================================================================
-
-def get_upcoming_events() -> Dict:
-    """
-    Fetch all upcoming events from GraphQL.
-    
-    Returns:
-        Dict with event data or error info
-    """
-    try:
-        # TODO: Implement GraphQL query for getEvents
-        # Query should fetch: name, category, points, semester
-        query = """
-        {
-            getEvents {
-                name
-                category
-                points
-                semester
-            }
+    query = """
+    {
+        getEvents {
+            name
+            category
+            points
+            expiration
+            semester
+            attendance
+            request
         }
-        """
-        
-        response = requests.post(
-            GRAPHQL_URL,
-            json={"query": query},
-            headers={"Content-Type": "application/json"},
-            timeout=10
-        )
-        response.raise_for_status()
-        data = response.json()
-        
-        if "errors" in data:
-            return {"error": str(data["errors"])}
-        
-        return data.get("data", {})
-    
-    except Exception as e:
-        logger.error(f"Error fetching events: {e}")
-        return {"error": str(e)}
+    }
+    """
+
+    data = _execute_graphql(query)
+    if "error" in data:
+        return data
+
+    events = data.get("getEvents", [])
+    now = datetime.now(timezone.utc)
+    filtered = []
+
+    for event in events:
+        expiry = _parse_datetime(event.get("expiration"))
+        if not expiry:
+            continue
+        if expiry <= now:
+            continue
+        if target_semester and event.get("Semester") != target_semester:
+            continue
+        filtered.append(event)
+
+    filtered.sort(key=lambda e: _parse_datetime(e.get("expiration")) or now)
+    return {"getEvents": filtered}
 
 
 def get_available_tasks() -> Dict:
-    """
-    Fetch all available tasks from GraphQL.
-    
-    Returns:
-        Dict with task data or error info
-    """
-    try:
-        # TODO: Implement GraphQL query for getTasks
-        # Query should fetch: name, description, startDate, endDate, points, semester
-        query = """
-        {
-            getTasks {
-                name
-                description
-                startDate
-                endDate
-                points
-                semester
-            }
+    """Fetch all tasks with key details."""
+    query = """
+    {
+        getTasks {
+            name
+            description
+            startDate
+            endDate
+            points
+            semester
         }
-        """
-        
-        response = requests.post(
-            GRAPHQL_URL,
-            json={"query": query},
-            headers={"Content-Type": "application/json"},
-            timeout=10
-        )
-        response.raise_for_status()
-        data = response.json()
-        
-        if "errors" in data:
-            return {"error": str(data["errors"])}
-        
-        return data.get("data", {})
-    
-    except Exception as e:
-        logger.error(f"Error fetching tasks: {e}")
-        return {"error": str(e)}
+    }
+    """
+
+    return _execute_graphql(query)
 
 
 def get_recruiting_partners() -> Dict:
-    """
-    Fetch all recruiting corporation partners from GraphQL.
-    
-    Returns:
-        Dict with corporation data or error info
-    """
-    try:
-        # TODO: Implement GraphQL query for getCorporations
-        # Query should fetch: name, industries, majors, overview, applyLink, signUpLink
-        query = """
-        {
-            getCorporations {
-                name
-                industries
-                majors
-                overview
-                applyLink
-                signUpLink
-            }
+    """Fetch recruiting corporation partners."""
+    query = """
+    {
+        getCorporations {
+            name
+            industries
+            majors
+            overview
+            applyLink
+            signUpLink
         }
-        """
-        
-        response = requests.post(
-            GRAPHQL_URL,
-            json={"query": query},
-            headers={"Content-Type": "application/json"},
-            timeout=10
-        )
-        response.raise_for_status()
-        data = response.json()
-        
-        if "errors" in data:
-            return {"error": str(data["errors"])}
-        
-        return data.get("data", {})
-    
-    except Exception as e:
-        logger.error(f"Error fetching corporations: {e}")
-        return {"error": str(e)}
+    }
+    """
+
+    return _execute_graphql(query)
 
 
 def get_learning_resources() -> Dict:
-    """
-    Fetch all learning resources from GraphQL.
-    
-    Returns:
-        Dict with resource data or error info
-    """
-    try:
-        # TODO: Implement GraphQL query for getResources
-        # Query should fetch: title, description, link, podcast
-        query = """
-        {
-            getResources {
-                title
-                description
-                link
-                podcast
-            }
+    """Fetch available learning resources."""
+    query = """
+    {
+        getResources {
+            title
+            description
+            link
+            podcast
         }
-        """
-        
-        response = requests.post(
-            GRAPHQL_URL,
-            json={"query": query},
-            headers={"Content-Type": "application/json"},
-            timeout=10
-        )
-        response.raise_for_status()
-        data = response.json()
-        
-        if "errors" in data:
-            return {"error": str(data["errors"])}
-        
-        return data.get("data", {})
-    
-    except Exception as e:
-        logger.error(f"Error fetching resources: {e}")
-        return {"error": str(e)}
+    }
+    """
+
+    return _execute_graphql(query)
 
 
 def search_alumni_network() -> Dict:
-    """
-    Fetch all alumni profiles from GraphQL.
-    
-    Returns:
-        Dict with alumni data or error info
-    """
-    try:
-        # TODO: Implement GraphQL query for getAlumnis
-        # Query should fetch: firstName, lastName, employer, position, linkedin, undergrad, grad, location
-        query = """
-        {
-            getAlumnis {
-                firstName
-                lastName
-                employer
-                position
-                linkedin
-                undergrad {
-                    university
-                    year
-                    major
-                }
-                grad {
-                    university
-                    year
-                    major
-                }
-                location {
-                    city
-                    state
-                    country
-                }
+    """Fetch alumni profiles for networking."""
+    query = """
+    {
+        getAlumnis {
+            firstName
+            lastName
+            employer
+            position
+            linkedin
+            undergrad {
+                university
+                year
+                major
+            }
+            grad {
+                university
+                year
+                major
+            }
+            location {
+                city
+                state
+                country
             }
         }
-        """
-        
-        response = requests.post(
-            GRAPHQL_URL,
-            json={"query": query},
-            headers={"Content-Type": "application/json"},
-            timeout=10
-        )
-        response.raise_for_status()
-        data = response.json()
-        
-        if "errors" in data:
-            return {"error": str(data["errors"])}
-        
-        return data.get("data", {})
-    
-    except Exception as e:
-        logger.error(f"Error fetching alumni: {e}")
-        return {"error": str(e)}
+    }
+    """
+
+    return _execute_graphql(query)
 
 
 # ============================================================================
@@ -320,3 +228,100 @@ DISPATCH = {
     "get_learning_resources": get_learning_resources,
     "search_alumni_network": search_alumni_network,
 }
+
+
+# ============================================================================
+# HELPERS
+# ============================================================================
+
+SEMESTER_ALIASES = {
+    "fall": "Fall Semester",
+    "fall semester": "Fall Semester",
+    "spring": "Spring Semester",
+    "spring semester": "Spring Semester",
+    "summer": "Summer Semester",
+    "summer semester": "Summer Semester",
+}
+
+MONTH_TO_SEMESTER = {
+    1: "Spring Semester",
+    2: "Spring Semester",
+    3: "Spring Semester",
+    4: "Spring Semester",
+    5: "Summer Semester",
+    6: "Summer Semester",
+    7: "Summer Semester",
+    8: "Fall Semester",
+    9: "Fall Semester",
+    10: "Fall Semester",
+    11: "Fall Semester",
+    12: "Fall Semester",
+}
+
+
+def _execute_graphql(query: str) -> Dict:
+    """Execute a GraphQL query against the Node API."""
+    try:
+        response = requests.post(
+            GRAPHQL_URL,
+            json={"query": query},
+            headers={"Content-Type": "application/json"},
+            timeout=10
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except Exception as exc:  # requests errors or JSON decoding
+        logger.error(f"GraphQL request failed: {exc}")
+        return {"error": str(exc)}
+
+    if "errors" in payload:
+        logger.error(f"GraphQL responded with errors: {payload['errors']}")
+        return {"error": str(payload["errors"])}
+
+    return payload.get("data", {})
+
+
+def _parse_datetime(value: Optional[str]) -> Optional[datetime]:
+    """Best-effort parsing for ISO and JS Date string formats."""
+    if not value:
+        return None
+
+    # Common ISO format with Z timezone
+    try:
+        cleaned = value.replace("Z", "+00:00")
+        dt = datetime.fromisoformat(cleaned)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc)
+    except Exception:
+        pass
+
+    # JS Date string: "Wed Dec 04 2024 17:52:03 GMT-0500 (Eastern Standard Time)"
+    try:
+        cleaned = value.split("(")[0].strip()
+        dt = datetime.strptime(cleaned, "%a %b %d %Y %H:%M:%S GMT%z")
+        return dt.astimezone(timezone.utc)
+    except Exception:
+        pass
+
+    # Fallback to email-style parser
+    try:
+        dt = parsedate_to_datetime(value)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc)
+    except Exception:
+        logger.debug(f"Could not parse datetime string: {value}")
+        return None
+
+
+def _normalized_semester(semester: Optional[str]) -> Optional[str]:
+    if not semester:
+        return None
+    normalized = semester.strip().lower()
+    return SEMESTER_ALIASES.get(normalized, None)
+
+
+def _current_semester() -> str:
+    month = datetime.now(timezone.utc).month
+    return MONTH_TO_SEMESTER.get(month, "Fall Semester")
