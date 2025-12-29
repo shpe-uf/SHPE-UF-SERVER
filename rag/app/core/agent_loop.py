@@ -7,8 +7,6 @@ This module implements the core agent loop that:
 3. Parses tool_calls from the response
 4. Dispatches tools and feeds results back
 5. Repeats until the model returns a final answer (no tool calls)
-
-**Person B (You) implements this module.**
 """
 
 import requests
@@ -46,14 +44,14 @@ def generate_answer_with_tools(
     # System prompt
     system_prompt = (
         "You are a helpful assistant for SHPE-UF (Society of Professional Engineers). "
-        "Use tools to fetch up-to-date information about events, tasks, recruiting partners, "
+        "Use tools, when needed,to fetch up-to-date information about events, tasks, recruiting partners, "
         "resources, and alumni when needed to answer user questions. "
         "Be concise and friendly, suitable for mobile users. "
         "If you cannot answer with available tools, explain what information you need."
     )
     messages.append({"role": "system", "content": system_prompt})
 
-    # Optional RAG context (background knowledge)
+    # Optional RAG context (background knowledge) possibly used later on
     if context_snippets:
         ctx = "\n\n".join(context_snippets[:3])
         messages.append({
@@ -87,6 +85,7 @@ def generate_answer_with_tools(
         data = response.json()
         msg = data.get("message", {})
         tool_calls = msg.get("tool_calls", []) if msg else []
+        messages.append({"role": "assistant", "content": msg.get("content", ""), "tool_calls": tool_calls})
 
         # If no tool calls, we have a final answer
         if not tool_calls:
