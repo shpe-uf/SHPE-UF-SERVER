@@ -3,7 +3,7 @@ from sentence_transformers import SentenceTransformer
 import requests
 import logging
 import hashlib
-from typing import List, Dict, Optional
+from typing import List, Dict
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
