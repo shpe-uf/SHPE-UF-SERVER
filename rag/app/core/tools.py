@@ -17,7 +17,7 @@ from typing import Dict, Optional
 logger = logging.getLogger(__name__)
 
 # Configuration
-GRAPHQL_URL = os.getenv("GRAPHQL_API_URL", "http://localhost:5000")
+GRAPHQL_URL = os.getenv("GRAPHQL_API_URL", "http://localhost:4000")
 
 # TOOL DEFINITIONS (Ollama schema for function calling)
 TOOLS = [
@@ -25,15 +25,10 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "get_upcoming_events",
-            "description": "Fetch upcoming SHPE UF events (non-expired). Defaults to current semester; optionally filter by semester (e.g., 'Fall Semester').",
+            "description": "Fetch the next upcoming SHPE UF events (non-expired).",
             "parameters": {
                 "type": "object",
-                "properties": {
-                    "semester": {
-                        "type": "string",
-                        "description": "Optional semester filter. Examples: 'Fall Semester', 'Spring Semester', 'Summer Semester'."
-                    }
-                },
+                "properties": {},
                 "required": []
             }
         }
@@ -89,14 +84,8 @@ TOOLS = [
 ]
 
 # DISPATCH FUNCTIONS
-def get_upcoming_events(semester: Optional[str] = None) -> Dict:
-    """Fetch non-expired events, defaulting to the current semester."""
-    if semester:
-        normalized = _normalized_semester(semester)
-        target_semester = normalized or semester.strip()
-    else:
-        target_semester = _current_semester()
-
+def get_upcoming_events(**kwargs) -> Dict:
+    """Fetch the next 5 non-expired events."""
     query = """
     {
         getEvents {
@@ -117,23 +106,30 @@ def get_upcoming_events(semester: Optional[str] = None) -> Dict:
 
     events = data.get("getEvents", [])
     now = datetime.now(timezone.utc)
+    print(f"DEBUG: Current time (UTC): {now}")
     filtered = []
 
     for event in events:
         expiry = _parse_datetime(event.get("expiration"))
+        print(f"DEBUG: Event '{event.get('name')}' | Raw Expiry: {event.get('expiration')} | Parsed: {expiry}")
+        
         if not expiry:
+            print("DEBUG: -> Skipped (No expiry)")
             continue
         if expiry <= now:
+            print("DEBUG: -> Skipped (Expired)")
             continue
-        if target_semester and event.get("Semester") != target_semester:
-            continue
+        
         filtered.append(event)
 
+    # Sort by expiration date (soonest first)
     filtered.sort(key=lambda e: _parse_datetime(e.get("expiration")) or now)
-    return {"getEvents": filtered}
+    
+    # Return only the top 5 to keep context small
+    return {"getEvents": filtered[:5]}
 
 
-def get_available_tasks() -> Dict:
+def get_available_tasks(**kwargs) -> Dict:
     """Fetch all tasks with key details."""
     query = """
     {
@@ -151,8 +147,8 @@ def get_available_tasks() -> Dict:
     return _execute_graphql(query)
 
 
-def get_recruiting_partners() -> Dict:
-    """Fetch recruiting corporation partners."""
+def get_recruiting_partners(**kwargs) -> Dict:
+    """Fetch recruiting corporation partners (limit 10)."""
     query = """
     {
         getCorporations {
@@ -166,10 +162,16 @@ def get_recruiting_partners() -> Dict:
     }
     """
 
-    return _execute_graphql(query)
+    data = _execute_graphql(query)
+    if "error" in data:
+        return data
+        
+    corps = data.get("getCorporations", [])
+    # Return only the first 10 to avoid overwhelming the context
+    return {"getCorporations": corps[:10]}
 
 
-def get_learning_resources() -> Dict:
+def get_learning_resources(**kwargs) -> Dict:
     """Fetch available learning resources."""
     query = """
     {
@@ -185,7 +187,7 @@ def get_learning_resources() -> Dict:
     return _execute_graphql(query)
 
 
-def search_alumni_network() -> Dict:
+def search_alumni_network(**kwargs) -> Dict:
     """Fetch alumni profiles for networking."""
     query = """
     {

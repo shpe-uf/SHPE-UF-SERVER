@@ -3,7 +3,7 @@ const axios = require('axios');
 
 // Configuration
 const RAG_API_URL = process.env.RAG_API_URL || 'http://localhost:8001';
-const REQUEST_TIMEOUT = 30000; // 30 seconds
+const REQUEST_TIMEOUT = 120000; // 120 seconds
 
 
 async function queryRAG(question) {
@@ -14,9 +14,13 @@ async function queryRAG(question) {
         }
 
         // Make request to Python RAG API
+        // We use the /query_agent endpoint to enable tool usage (Agentic RAG)
         const response = await axios.post(
-            `${RAG_API_URL}/query`,
-            { question },
+            `${RAG_API_URL}/query_agent`,
+            { 
+                question,
+                use_rag_context: true
+            },
             {
                 headers:
                 {

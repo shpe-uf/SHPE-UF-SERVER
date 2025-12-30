@@ -644,6 +644,21 @@ def fetch_and_transform_alumni() -> Tuple[List[str], Optional[str], str]:
     return chunks, data_hash, cache_key
 
 
+def fetch_and_transform_general_info() -> Tuple[List[str], Optional[str], str]:
+    """Return hardcoded general information about SHPE UF"""
+    print("Generating general info chunks...")
+    
+    chunks = [
+        "SHPE UF (Society of Hispanic Professional Engineers at the University of Florida) is a student organization dedicated to empowering Hispanic and Latino students in STEM. Our mission is to change lives by empowering the Hispanic community to realize its fullest potential and to impact the world through STEM awareness, access, support, and development.",
+        "SHPE UF provides professional development, mentorship, academic support, and networking opportunities with top companies. We host general body meetings, workshops, socials, and attend the SHPE National Convention.",
+        "The SHPE UF chapter is one of the largest and most active in the nation, winning multiple awards for its impact on students and the community.",
+        "Membership in SHPE UF is open to all students who support our mission, regardless of background or major. Active members can earn points by attending events and completing tasks."
+    ]
+    
+    # Always re-index general info (no cache check needed for hardcoded data)
+    return chunks, "general_info_hash", "general_info"
+
+
 def index_chunks(chunks: List[str], source_name: str = "SHPE UF Events", dry_run: bool = False) -> bool:
     """Index text chunks into the RAG system"""
     if not chunks:
@@ -707,6 +722,7 @@ def main():
     print("Starting GraphQL data indexing...\n")
 
     data_sources = [
+        ("General Info", fetch_and_transform_general_info),
         ("Events", fetch_and_transform_events),
         ("Tasks", fetch_and_transform_tasks),
         ("Corporations", fetch_and_transform_corporations),

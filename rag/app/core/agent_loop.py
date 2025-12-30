@@ -43,11 +43,20 @@ def generate_answer_with_tools(
 
     # System prompt
     system_prompt = (
-        "You are a helpful assistant for SHPE-UF (Society of Professional Engineers). "
-        "Use tools, when needed,to fetch up-to-date information about events, tasks, recruiting partners, "
-        "resources, and alumni when needed to answer user questions. "
-        "Be concise and friendly, suitable for mobile users. "
-        "If you cannot answer with available tools, explain what information you need."
+        "You are a helpful assistant for SHPE-UF (Society of Hispanic Professional Engineers). "
+        "Your goal is to answer user questions about events, tasks, recruiting partners, resources, and alumni. "
+        "You have access to tools that retrieve real-time data. "
+        "When you receive data from a tool, interpret it and synthesize a natural language response. "
+        "Do not simply list the data or describe the data structure. "
+        "Never mention technical terms like 'JSON', 'object', 'keys', 'values', or 'array' to the user. "
+        "Never mention 'tools', 'functions', 'static knowledge', or 'API' in your final answer. "
+        "Act as if you simply know the information. Do not explain how you found the answer. "
+        "Present the information in a friendly, conversational manner suitable for mobile users. "
+        "If the tool returns a list of items, summarize them or list them naturally. "
+        "Only provide the information requested by the user, even if the tool returns more details. "
+        "CRITICAL: If a tool returns an empty list (e.g., no upcoming events), state clearly that there are no such items currently scheduled. "
+        "Do NOT use the 'Background context' to invent upcoming events or current status. Only use the tool output for time-sensitive info. "
+        "Do not output JSON or tool definitions in your final answer. If you cannot answer, simply state that you don't have that information."
     )
     messages.append({"role": "system", "content": system_prompt})
 
@@ -56,7 +65,7 @@ def generate_answer_with_tools(
         ctx = "\n\n".join(context_snippets[:3])
         messages.append({
             "role": "system",
-            "content": f"Background context (static knowledge):\n{ctx}\n\nFor current info, use tools to query the API."
+            "content": f"Here is some relevant information that might help answer the user's question:\n{ctx}"
         })
 
     # User question
@@ -65,6 +74,11 @@ def generate_answer_with_tools(
     # Agent loop
     for hop in range(max_hops):
         try:
+            # Debug: Print messages to see what's being sent
+            print(f"\n--- Messages at hop {hop} ---")
+            print(json.dumps(messages, indent=2))
+            print("---------------------------\n")
+
             # Call Ollama /api/chat with tools enabled
             response = requests.post(
                 OLLAMA_URL,
