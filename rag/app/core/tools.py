@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 GRAPHQL_URL = os.getenv("GRAPHQL_API_URL", "http://localhost:4000")
 
 # TOOL DEFINITIONS (Ollama schema for function calling)
+# These JSON schemas tell the LLM what tools are available and how to call them.
 TOOLS = [
     {
         "type": "function",
@@ -84,6 +85,8 @@ TOOLS = [
 ]
 
 # DISPATCH FUNCTIONS
+# These are the actual Python functions that get executed when the LLM calls a tool.
+
 def get_upcoming_events(**kwargs) -> Dict:
     """Fetch the next 5 non-expired events."""
     query = """
@@ -223,6 +226,7 @@ def search_alumni_network(**kwargs) -> Dict:
 # DISPATCH MAPPING (Do not modify)
 # ============================================================================
 
+# Maps tool names (from the schema) to the actual Python functions above.
 DISPATCH = {
     "get_upcoming_events": get_upcoming_events,
     "get_available_tasks": get_available_tasks,
@@ -262,7 +266,10 @@ MONTH_TO_SEMESTER = {
 
 
 def _execute_graphql(query: str) -> Dict:
-    """Execute a GraphQL query against the Node API."""
+    """
+    Helper to execute a GraphQL query against the Node API.
+    Returns the 'data' part of the response or an error dict.
+    """
     try:
         response = requests.post(
             GRAPHQL_URL,
@@ -270,6 +277,7 @@ def _execute_graphql(query: str) -> Dict:
             headers={"Content-Type": "application/json"},
             timeout=10
         )
+
         response.raise_for_status()
         payload = response.json()
     except Exception as exc:  # requests errors or JSON decoding

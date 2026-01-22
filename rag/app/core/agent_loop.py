@@ -29,6 +29,7 @@ def generate_answer_with_tools(
 ) -> str:
     """
     Agent loop: iteratively call tools until the model responds with a final answer.
+    The agent can 'hop' (think -> tool -> think) multiple times to gather info.
     
     Args:
         ollama_model: The Ollama model to use (e.g., "llama3.1")
@@ -41,7 +42,8 @@ def generate_answer_with_tools(
     """
     messages = []
 
-    # System prompt
+    # System prompt: Defines the persona and rules for the agent.
+    # Critical for ensuring the agent uses tools correctly and formats output nicely.
     system_prompt = (
         "You are a helpful assistant for SHPE-UF (Society of Hispanic Professional Engineers). "
         "Your goal is to answer user questions about events, tasks, recruiting partners, resources, and alumni. "
@@ -71,7 +73,7 @@ def generate_answer_with_tools(
     # User question
     messages.append({"role": "user", "content": question})
 
-    # Agent loop
+    # Agent loop: Keep asking Ollama until it stops calling tools or we hit max_hops
     for hop in range(max_hops):
         try:
             # Debug: Print messages to see what's being sent
@@ -80,6 +82,7 @@ def generate_answer_with_tools(
             print("---------------------------\n")
 
             # Call Ollama /api/chat with tools enabled
+            # 'tools' param allows the model to request function execution
             response = requests.post(
                 OLLAMA_URL,
                 json={
@@ -109,7 +112,7 @@ def generate_answer_with_tools(
             else:
                 return "I couldn't produce an answer."
 
-        # Execute each tool call
+        # Execute each tool call requested by the LLM
         for call in tool_calls:
             fn_name = call.get("function", {}).get("name")
             raw_args = call.get("function", {}).get("arguments") or "{}"
@@ -120,16 +123,18 @@ def generate_answer_with_tools(
             except json.JSONDecodeError:
                 args = {}
 
-            # Dispatch the tool
+            # Dispatch the tool - find the actual function code
             if fn_name not in DISPATCH:
                 tool_result = f"Unknown tool: {fn_name}"
                 logger.warning(f"Tool '{fn_name}' not found in DISPATCH")
             else:
                 try:
                     logger.info(f"Executing tool: {fn_name} with args {args}")
+                    
+                    # RUN THE TOOL (e.g., fetch events from GraphQL)
                     result = DISPATCH[fn_name](**args) if isinstance(args, dict) else DISPATCH[fn_name]()
                     
-                    # Convert result to JSON string
+                    # Convert result to JSON string to feed back to LLM
                     if isinstance(result, str):
                         tool_result = result
                     else:
@@ -140,7 +145,7 @@ def generate_answer_with_tools(
                     tool_result = f"Tool {fn_name} failed: {str(e)}"
                     logger.error(f"Tool execution error: {tool_result}")
 
-            # Append tool result to messages
+            # Append tool result to messages so the LLM knows what happened
             messages.append({
                 "role": "tool",
                 "name": fn_name,

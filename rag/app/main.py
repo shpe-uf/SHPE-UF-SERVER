@@ -20,16 +20,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize RAG system
+# Initialize RAG system (Handles embeddings, ChromaDB, and Ollama connection)
 rag_system = RAGSystem()
 
 @app.get("/")
 async def root():
+    """Root endpoint to verify the API is running."""
     return {"status": "online", "message": "SHPE UF RAG API is running. Go to /docs for API documentation."}
 
 @app.post("/query")
 async def query_endpoint(request: QueryRequest):
-    """Query the RAG system"""
+    """
+    Standard RAG Query Endpoint.
+    1. Receives a user question.
+    2. Retrieves relevant context from ChromaDB.
+    3. Generates an answer using Ollama (Llama 3.1).
+    """
     try:
         answer = rag_system.query(request.question)
         return {"answer": answer}
@@ -39,7 +45,12 @@ async def query_endpoint(request: QueryRequest):
 
 @app.post("/query_agent")
 async def query_agent_endpoint(request: AgentQueryRequest):
-    """Query with tool calling enabled (agent loop)"""
+    """
+    Agentic RAG Endpoint.
+    1. Uses an 'Agent Loop' to iteratively call tools (like getting events, tasks).
+    2. Can optionally use RAG context as background knowledge.
+    3. Returns a final answer after the agent has gathered necessary data.
+    """
     try:
         # Optionally get RAG context as background knowledge
         context_snippets = None
