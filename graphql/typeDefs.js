@@ -63,7 +63,7 @@ module.exports = gql`
     semester: String!
     createdAt: String!
     users: [User]!
-  } 
+  }
 
   type Reimbursement {
     id: ID!
@@ -182,11 +182,10 @@ module.exports = gql`
     tier: String!
   }
 
-
   ### AUXILIARY TYPES ###
   type Coordinates {
-  latitude: Float!
-  longitude: Float!
+    latitude: Float!
+    longitude: Float!
   }
 
   type Grad {
@@ -215,7 +214,6 @@ module.exports = gql`
     year: Int!
     major: String!
   }
-
 
   ### QUERY AND MUTATION INPUTS ###
 
@@ -255,8 +253,7 @@ module.exports = gql`
     signUpLink: String
   }
 
-
-  input CreatePartnerInput{
+  input CreatePartnerInput {
     name: String!
     photo: String!
     tier: String!
@@ -412,12 +409,11 @@ module.exports = gql`
     username: String!
   }
 
-
   ### AUXILIARY INPUTS ###
   input GradInput {
-  university: String!
-  year: String!
-  major: String!
+    university: String!
+    year: String!
+    major: String!
   }
 
   input LocationInput {
@@ -431,7 +427,6 @@ module.exports = gql`
     year: String!
     major: String!
   }
-
 
   ### QUERIES LIST ###
 
@@ -456,8 +451,9 @@ module.exports = gql`
     getUsers: [User]
     getPartners: [Partner]
     getYearStat: [StatData]
+    lastMontOfYear: Boolean!
+    getMostActiveMonth(userId: ID!): String
   }
-
 
   ### MUTATIONS LIST ###
 
@@ -478,9 +474,7 @@ module.exports = gql`
     createCorporation(
       createCorporationInput: CreateCorporationInput
     ): [Corporation]
-    createPartner(
-      createPartnerInput: CreatePartnerInput
-    ): [Partner]
+    createPartner(createPartnerInput: CreatePartnerInput): [Partner]
     createEvent(createEventInput: CreateEventInput): [Event]
     createResource(createResourceInput: CreateResourceInput): [Resource]
     createTask(createTaskInput: CreateTaskInput): Task!
@@ -531,5 +525,4 @@ module.exports = gql`
     redeemPoints(redeemPointsInput: RedeemPointsInput): User!
     redeemTasksPoints(redeemTasksPointsInput: RedeemTasksPointsInput): User!
   }
-
 `;
