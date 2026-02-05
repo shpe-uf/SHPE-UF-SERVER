@@ -17,3 +17,5 @@ rag/faiss_storage/
 Thumbs.db
 CLAUDE.md
 rag/.graphql_cache.json
+
+.venv/

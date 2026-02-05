@@ -14,12 +14,11 @@ async function queryRAG(question) {
         }
 
         // Make request to Python RAG API
-        // We use the /query_agent endpoint to enable tool usage (Agentic RAG)
+        // Points to the new /api/v1/chat endpoint
         const response = await axios.post(
-            `${RAG_API_URL}/query_agent`,
+            `${RAG_API_URL.replace(/\/$/, "")}/api/v1/chat`,
             { 
-                question,
-                use_rag_context: true
+                message: question
             },
             {
                 headers:

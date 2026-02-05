@@ -1,153 +1,76 @@
 import chromadb
-from sentence_transformers import SentenceTransformer
-import requests
-import logging
-import hashlib
-from typing import List, Dict
-from datetime import datetime
+from app.core.config import get_settings
+from typing import List
 
-logger = logging.getLogger(__name__)
+settings = get_settings()
 
-class RAGSystem:
+class RAGEngine:
+    """
+    Manages interactions with the local Vector Database (ChromaDB).
+    Handles document retrieval ("step A" of the pipeline).
+    """
+
     def __init__(self):
-        # Initialize embedding model (SentenceTransformer)
-        # Converts text into vector embeddings for similarity search
-        self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
-        
-        # Initialize ChromaDB (Vector Database)
-        # Stores embeddings and retrieves them based on similarity
-        self.chroma_client = chromadb.PersistentClient(path="./rag/chroma_db")
-        
-        # Get or create collection
-        try:
-            self.collection = self.chroma_client.get_collection("website_docs")
-        except:
-            self.collection = self.chroma_client.create_collection(
-                name="website_docs",
-                metadata={"hnsw:space": "cosine"}
-            )
-        
-        # Ollama configuration (Local LLM Server)
-        # We use Llama 3.1 for generation
-        self.ollama_url = "http://localhost:11434/api/chat"
-        self.ollama_model = "llama3.1"
-
-    def search_similar(self, query: str, k: int = 5) -> List[Dict]:
         """
-        Embeds the query and searches the ChromaDB collection for the top k similar documents.
+        Initializes the persistent ChromaDB client and gets the collection.
+        If the collection doesn't exist, it creates it.
         """
-        # Generate embedding from the user query
-        query_embedding = self.embedding_model.encode([query])[0].tolist()
+        self.client = chromadb.PersistentClient(path=settings.CHROMA_DB_PATH)
         
-        # Search in ChromaDB for verctors most similar to query
-        results = self.collection.query(
-            query_embeddings=[query_embedding],
-            n_results=k
+        # future-proofing: logic to swap embedding function
+        embedding_fn = None
+        if settings.EMBEDDING_PROVIDER == "api":
+            # TODO: Implement UF API embedding function here (nomic-embed-text-v1.5)
+            pass 
+        
+        # Determine strict or default collection retrieval depending on setup
+        # For now, we use get_or_create to avoid errors on fresh start
+        # If embedding_function is None, Chroma uses default all-MiniLM-L6-v2 (Local)
+        self.collection = self.client.get_or_create_collection(
+            name="shpe_uf_knowledge_base",
+            embedding_function=embedding_fn,
+            metadata={"hnsw:space": "cosine"} # Cosine similarity for text
         )
-        
-        # Results
-        formatted_results = []
-        if results['documents'] and results['documents'][0]:
-            for i in range(len(results['documents'][0])):
-                formatted_results.append({
-                    "content": results['documents'][0][i],
-                    "metadata": results['metadatas'][0][i] if results['metadatas'] else {},
-                    "distance": results['distances'][0][i] if results['distances'] else 0
-                })
-        
-        return formatted_results
-    
-    def generate_answer(self, question: str, context: str) -> str:
-        """
-        Sends the question and retrieved context to Ollama to generate a natural language response.
-        """
-        prompt = f"""You are a helpful assistant. Use the following context to answer the question. 
-        If you cannot answer based on the context, say so. Do not mention how you are a large language 
-        model unless specifically asked. Keep your responses appropiatly short for a mobile device experience.
-        
-        Context:
-        {context}
 
-        Question: {question}
-
-        Answer:"""
+    def search(self, query: str, limit: int = 3) -> List[str]:
+        """
+        Searches the knowledge base for documents relevant to the query.
         
+        Args:
+            query (str): The user's search text.
+            limit (int): Max number of snippets to return.
+
+        Returns:
+            List[str]: A list of text snippets (documents) found.
+        """
         try:
-            response = requests.post(
-                self.ollama_url,
-                json={
-                    "model": self.ollama_model,
-                    "prompt": prompt,
-                    "stream": False
-                },
-                timeout=30
+            results = self.collection.query(
+                query_texts=[query],
+                n_results=limit
             )
-            response.raise_for_status()
             
-            result = response.json()
-            return result.get('response', 'Failed to generate answer')
+            # ChromaDB returns a list of lists (batch format), so access [0]
+            if results and results['documents']:
+                return results['documents'][0]
+            return []
+        except Exception as e:
+            print(f"Error searching ChromaDB: {e}")
+            return []
+
+    def add_documents(self, documents: List[str], metadatas: List[dict] = None, ids: List[str] = None):
+        """
+        Adds documents to the vector store. 
+        Useful for the ETL script or manual updates.
+        """
+        if not ids:
+            # Generate simple IDs if none provided
+            ids = [str(hash(doc)) for doc in documents]
             
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Ollama request failed: {str(e)}")
-            return f"Error generating answer: {str(e)}"
-
-    # Main RAG query function
-    def query(self, question: str) -> str:
-        """
-        Orchestrates the Standard RAG pipeline:
-        1. Search for relevant docs.
-        2. Construct context.
-        3. Generate answer via LLM.
-        """
-        
-        # Search for relevant documents
-        relevant_docs = self.search_similar(question, k=5)
-        
-        if not relevant_docs:
-            return "I don't have enough information to answer your question."
-        
-        # Combine context from relevant documents
-        context = "\n\n".join([doc['content'] for doc in relevant_docs[:3]])
-        
-        # Generate answer
-        answer = self.generate_answer(question, context)
-        
-        # Add sources
-        sources = list(set([doc['metadata'].get('url', 'Unknown') for doc in relevant_docs[:3]]))
-        if sources:
-            answer += f"\n\nSources: {', '.join(sources)}"
-        
-        return answer
-
-    def index_text(self, chunks: List[str], source_name: str) -> Dict:
-        """
-        Index raw text chunks directly.
-        Calculates embeddings and stores them in ChromaDB.
-        """
-        # Generate embeddings from chunks
-        embeddings = self.embedding_model.encode(chunks).tolist()
-
-        # Create unique IDs for each chunk
-        ids = [f"{hashlib.md5(f'{source_name}_{i}'.encode()).hexdigest()}"
-               for i in range(len(chunks))]
-
-        # Prepare metadata
-        metadatas = [{
-            "source": source_name,
-            "chunk_index": i,
-            "indexed_at": datetime.now().isoformat()
-        } for i in range(len(chunks))]
-
-        # Add to ChromaDB
-        self.collection.add(
-            embeddings=embeddings,
-            documents=chunks,
+        self.collection.upsert(
+            documents=documents,
             metadatas=metadatas,
             ids=ids
         )
 
-        return {
-            "status": "success",
-            "chunks_indexed": len(chunks),
-            "source": source_name
-        }
+# Singleton instance
+rag_engine = RAGEngine()

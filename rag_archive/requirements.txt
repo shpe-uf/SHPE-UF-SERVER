@@ -1,0 +1,21 @@
+# Web API
+fastapi>=0.110,<1
+uvicorn[standard]>=0.23,<1
+
+# Data and scraping
+requests>=2.31,<3
+beautifulsoup4>=4.12,<5
+
+# Embeddings
+sentence-transformers>=3.0,<4
+torch>=2.2,<3
+
+# Vector database
+chromadb>=0.4.18,<0.5
+chroma-hnswlib>=0.7,<0.8
+
+# Core numeric
+numpy>=1.26,<2.0  # Pin to <2.0 for ChromaDB compatibility
+
+# FastAPI expects Pydantic v2
+pydantic>=2.4,<3
