@@ -451,8 +451,10 @@ module.exports = gql`
     getUsers: [User]
     getPartners: [Partner]
     getYearStat: [StatData]
-    lastMontOfYear: Boolean!
+    IsShpewrappedtime: Boolean!
     getMostActiveMonth(userId: ID!): String
+    getTopCategory(userId: ID!): String
+    getYearsBeingShpeMember(userId: ID!): String
   }
 
   ### MUTATIONS LIST ###
