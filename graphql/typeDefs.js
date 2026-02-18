@@ -183,6 +183,7 @@ module.exports = gql`
   }
 
   type DevTeamMember {
+    id: ID!
     name: String!
     position: String!
     team: String!
@@ -192,6 +193,7 @@ module.exports = gql`
   }
 
   type EboardMember {
+    id: ID!
     position: String!
     name: String!
     picture: String!
