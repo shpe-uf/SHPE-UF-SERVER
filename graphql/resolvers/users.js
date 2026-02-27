@@ -7,6 +7,8 @@ const Event = require("../../models/Event.js");
 const Request = require("../../models/Request.js");
 const Task = require("../../models/Task.js");
 const eventFunctions = require("./events.js");
+const { checkTopUsers } = require("../../util/top-users");
+const TopUser = require("../../models/TopUser");
 
 const {
   handleInputError,
@@ -312,6 +314,28 @@ module.exports = {
         } else {
           handleGeneralError({}, "Data not found.");
         }
+      } catch (err) {
+        handleGeneralError(err, err.message);
+      }
+    },
+
+    async getTopUsers(_, { semester, year }) {
+      try {
+        const TopUser = require("../../models/TopUser");
+
+        const data = await TopUser.find({ semester, year })
+          .sort({ createdAt: 1 })
+          .limit(3)
+          .populate("user");
+
+        if (!data || data.length === 0) return null;
+
+        let csv = "First Name,Last Name,Points\n";
+        data.forEach((t) => {
+          csv += `${t.user.firstName},${t.user.lastName},${t.points}\n`;
+        });
+
+        return Buffer.from(csv, "utf-8").toString("base64");
       } catch (err) {
         handleGeneralError(err, err.message);
       }
@@ -639,6 +663,10 @@ module.exports = {
         );
 
         updatedUser.message = "";
+
+        const semester = event.semester;
+        const year = new Date().getFullYear();
+        await checkTopUsers(updatedUser, semester, year);
 
         await Event.findOneAndUpdate(
           {

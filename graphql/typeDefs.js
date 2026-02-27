@@ -176,6 +176,14 @@ module.exports = gql`
     socialMedia: [String]
   }
 
+  type TopUser {
+    id: ID!
+    user: User!
+    semester: String!
+    year: Int!
+    points: Int!
+    createdAt: String!
+  }
 
   ### AUXILIARY TYPES ###
   type Coordinates {
@@ -439,6 +447,7 @@ module.exports = gql`
     getResources: [Resource]
     getSexStat: [StatData]
     getTasks: [Task]
+    getTopUsers(semester: String!, year: Int!): String
     getUser(userId: ID!): User
     getUsers: [User]
     getYearStat: [StatData]
