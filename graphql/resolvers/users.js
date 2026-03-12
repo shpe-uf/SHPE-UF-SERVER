@@ -328,9 +328,13 @@ module.exports = {
         handleInputError(errors);
       }
 
-      const user = await User.findOne({
-        username,
-      });
+      // Check if the input is an email or username
+      const isEmail = username.includes('@');
+      
+      // Query by email or username accordingly
+      const user = await User.findOne(
+        isEmail ? { email: username } : { username }
+      );
 
       if (!user) {
         errors.general = "User not found.";
