@@ -1,16 +1,20 @@
+//const nodemailer = require("nodemailer");
+//const nodemailerSendgrid = require("nodemailer-sendgrid");
+
 const nodemailer = require("nodemailer");
-const nodemailerSendgrid = require("nodemailer-sendgrid");
+const { SESv2Client, SendEmailCommand } = require("@aws-sdk/client-sesv2");
 
 require("dotenv").config();
 
 const contactRequest = require("../../models/ContactRequest.js");
 const { validateContactUsForm } = require("../../util/validators");
 
-const transport = nodemailer.createTransport(
-  nodemailerSendgrid({
-    apiKey: process.env.SENDGRID_API_KEY,
-  })
-);
+const sesClient = new SESv2Client({ region: process.env.AWS_REGION });
+
+const transport = nodemailer.createTransport({
+  SES: { sesClient, SendEmailCommand},
+});
+
 
 const { handleInputError } = require("../../util/error-handling");
 

@@ -1,7 +1,11 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const nodemailerSendgrid = require("nodemailer-sendgrid");
+const { SESv2Client, SendEmailCommand } = require("@aws-sdk/client-sesv2");
+
+//const nodemailer = require("nodemailer");
+//const { SESClient, SendRawEmailCommand } = require("@aws-sdk/client-ses");
+//const nodemailerSendgrid = require("nodemailer-sendgrid");
 const User = require("../../models/User.js");
 const Event = require("../../models/Event.js");
 const Request = require("../../models/Request.js");
@@ -15,11 +19,18 @@ const {
 
 require("dotenv").config();
 
-const transport = nodemailer.createTransport(
+/*const transport = nodemailer.createTransport(
   nodemailerSendgrid({
     apiKey: process.env.SENDGRID_API_KEY,
   })
 );
+*/
+const sesClient = new SESv2Client({ region: process.env.AWS_REGION });
+
+const transport = nodemailer.createTransport({
+  SES: { sesClient, SendEmailCommand},
+});
+
 
 const {
   validateRegisterInput,
