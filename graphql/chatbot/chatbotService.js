@@ -117,6 +117,7 @@ async function queryRAG(question) {
             retries: config.llmRetries,
             payload: {
                 model: config.litellmResponseModel,
+                temperature: config.responseTemperature,
                 messages: finalMessages,
                 extra_body: shouldAttachRag ? buildExtraBody(config.vectorStoreIds) : undefined,
             },

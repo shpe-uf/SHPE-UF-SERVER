@@ -18,10 +18,6 @@ const CRITICAL_CHATBOT_ENV_VARS = [
 
 const OPTIONAL_CHATBOT_ENV_VARS = [
   "LITELLM_VECTOR_STORE_IDS",
-  "LITELLM_MODEL",
-  "LITELLM_CLASSIFIER_MODEL",
-  "LITELLM_RESPONSE_MODEL",
-  "LITELLM_CLASSIFIER_TEMPERATURE",
 ];
 
 function runChatbotEnvStartupInfo() {
@@ -39,25 +35,13 @@ function runChatbotEnvStartupInfo() {
 
   OPTIONAL_CHATBOT_ENV_VARS.forEach((key) => {
     const isSet = Boolean(process.env[key]);
-    if (
-      key === "LITELLM_MODEL" ||
-      key === "LITELLM_CLASSIFIER_MODEL" ||
-      key === "LITELLM_RESPONSE_MODEL"
-    ) {
-      const defaultModelByKey = {
-        LITELLM_MODEL: "llama-3.1-70b-instruct (shared fallback)",
-        LITELLM_CLASSIFIER_MODEL: "llama-3.1-8b-instruct (default classifier)",
-        LITELLM_RESPONSE_MODEL: "llama-3.1-70b-instruct (default response)",
-      };
-      const value = isSet ? process.env[key] : defaultModelByKey[key];
-      console.log(`[chatbot] ${key}: ${value}`);
-    } else if (key === "LITELLM_CLASSIFIER_TEMPERATURE") {
-      const value = isSet ? process.env[key] : "0.1 (default)";
-      console.log(`[chatbot] ${key}: ${value}`);
-    } else {
-      console.log(`[chatbot] ${key}: ${isSet ? "configured" : "not configured (RAG disabled if missing)"}`);
-    }
+    console.log(`[chatbot] ${key}: ${isSet ? "configured" : "not configured (RAG disabled if missing)"}`);
   });
+
+  console.log("[chatbot] classifier model: llama-3.1-8b-instruct (config)");
+  console.log("[chatbot] response model: llama-3.1-70b-instruct (config)");
+  console.log("[chatbot] classifier temperature: 0.1 (config)");
+  console.log("[chatbot] response temperature: 0.2 (config)");
 
   if (missingCritical.length) {
     console.warn(

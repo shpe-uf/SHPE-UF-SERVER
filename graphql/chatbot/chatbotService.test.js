@@ -7,9 +7,6 @@ const SERVICE_PATH = require.resolve('./chatbotService');
 const BASE_ENV = {
   LITELLM_VIRTUAL_KEY: 'test-litellm-key',
   LITELLM_VECTOR_STORE_IDS: 'vs_test_1,vs_test_2',
-  LITELLM_CLASSIFIER_MODEL: 'llama-3.1-8b-instruct',
-  LITELLM_RESPONSE_MODEL: 'llama-3.1-70b-instruct',
-  LITELLM_CLASSIFIER_TEMPERATURE: '0.1',
   GOOGLE_CALENDAR_API_KEY: 'test-google-key',
 };
 
@@ -20,13 +17,6 @@ let originalGet;
 function loadServiceWithEnv(overrides = {}) {
   process.env.LITELLM_VIRTUAL_KEY = overrides.LITELLM_VIRTUAL_KEY ?? BASE_ENV.LITELLM_VIRTUAL_KEY;
   process.env.LITELLM_VECTOR_STORE_IDS = overrides.LITELLM_VECTOR_STORE_IDS ?? BASE_ENV.LITELLM_VECTOR_STORE_IDS;
-  process.env.LITELLM_MODEL = overrides.LITELLM_MODEL ?? '';
-  process.env.LITELLM_CLASSIFIER_MODEL =
-    overrides.LITELLM_CLASSIFIER_MODEL ?? BASE_ENV.LITELLM_CLASSIFIER_MODEL;
-  process.env.LITELLM_RESPONSE_MODEL =
-    overrides.LITELLM_RESPONSE_MODEL ?? BASE_ENV.LITELLM_RESPONSE_MODEL;
-  process.env.LITELLM_CLASSIFIER_TEMPERATURE =
-    overrides.LITELLM_CLASSIFIER_TEMPERATURE ?? BASE_ENV.LITELLM_CLASSIFIER_TEMPERATURE;
   process.env.GOOGLE_CALENDAR_API_KEY = overrides.GOOGLE_CALENDAR_API_KEY ?? BASE_ENV.GOOGLE_CALENDAR_API_KEY;
 
   delete require.cache[SERVICE_PATH];
@@ -140,6 +130,7 @@ test('general conversation path does not call Google Calendar API', async () => 
   assert.equal(postCalls[0].payload.model, 'llama-3.1-8b-instruct');
   assert.equal(postCalls[1].payload.model, 'llama-3.1-70b-instruct');
   assert.equal(postCalls[0].payload.temperature, 0.1);
+  assert.equal(postCalls[1].payload.temperature, 0.2);
 
   // No tool-based routing payload is used in Option B.
   assert.equal(postCalls[0].payload.tools, undefined);
@@ -201,6 +192,7 @@ test('calendar intent path executes calendar fetch and returns final model respo
   assert.equal(postCalls[0].payload.model, 'llama-3.1-8b-instruct');
   assert.equal(postCalls[1].payload.model, 'llama-3.1-70b-instruct');
   assert.equal(postCalls[0].payload.temperature, 0.1);
+  assert.equal(postCalls[1].payload.temperature, 0.2);
 
   const secondCallMessages = postCalls[1].payload.messages.map((m) => m.content).join('\n');
   assert.match(secondCallMessages, /GM Meeting/);
@@ -306,4 +298,5 @@ test('high-confidence needs_rag general intent attaches vector store metadata on
   assert.equal(postCalls[0].payload.model, 'llama-3.1-8b-instruct');
   assert.equal(postCalls[1].payload.model, 'llama-3.1-70b-instruct');
   assert.equal(postCalls[0].payload.temperature, 0.1);
+  assert.equal(postCalls[1].payload.temperature, 0.2);
 });
