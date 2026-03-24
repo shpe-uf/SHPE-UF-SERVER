@@ -1,78 +1,137 @@
-// graphql/chatbot/ragService.js
-const axios = require('axios');
-const { SYSTEM_PROMPT } = require('./prompt');
+// graphql/chatbot/chatbotService.js
+const { SYSTEM_PROMPT } = require('./systemprompt');
+const { getChatbotConfig } = require('./config');
+const { createChatCompletion } = require('./litellmClient');
+const { fetchCalendarEvents } = require('./calendarTool');
+const {
+    classifyIntent,
+    shouldUseCalendarIntent,
+    shouldUseRag,
+} = require('./intentClassifier');
+const logger = require('./logger');
 
-// Configuration
-const LITELLM_API_URL = 'https://api.ai.it.ufl.edu/v1/chat/completions';
-const LITELLM_API_KEY = process.env.LITELLM_VIRTUAL_KEY; 
-const GOOGLE_API_KEY = process.env.GOOGLE_CALENDAR_API_KEY; 
-const SHPE_CALENDAR_ID = 'calendar.shpeuf@gmail.com';
+function buildExtraBody(vectorStoreIds) {
+    if (!vectorStoreIds.length) {
+        return undefined;
+    }
+
+    return {
+        metadata: {
+            vector_stores: vectorStoreIds,
+        },
+    };
+}
+
+function buildCalendarContextMessage(events) {
+    return {
+        role: 'system',
+        content: `Calendar data from backend API. Use this data as authoritative for event scheduling questions.\n${JSON.stringify(events)}`,
+    };
+}
 
 async function queryRAG(question) {
     try {
-        // 1. Initialize conversation with the imported Master Prompt
-        const messages = [
-            { role: "system", content: SYSTEM_PROMPT },
-            { role: "user", content: question }
-        ];
-        
-        const headers = { 
-            'Authorization': `Bearer ${LITELLM_API_KEY}`,
-            'Content-Type': 'application/json'
-        };
+        const config = getChatbotConfig();
 
-        // 1. Initial Call: Inform the AI it has the 'get_calendar_events' tool
-        const response1 = await axios.post(LITELLM_API_URL, {
-            model: "llama3.2-70b-instruct",
-            messages,
-            tools: [{
-                type: "function",
-                function: {
-                    name: "get_calendar_events",
-                    description: "Fetch upcoming public events from the SHPE UF Master Calendar."
-                }
-            }]
-        }, { headers });
-
-        const message = response1.data.choices[0].message;
-
-        // 2. Handle Tool Call (if the AI thinks it needs the calendar)
-        if (message.tool_calls) {
-            messages.push(message);
-            const toolCall = message.tool_calls[0];
-
-            // 3. Native Fetch: Get public events directly from Google (No OAuth needed!)
-            const now = new Date().toISOString();
-            const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(SHPE_CALENDAR_ID)}/events?key=${GOOGLE_API_KEY}&timeMin=${now}&singleEvents=true&orderBy=startTime&maxResults=5`;
-            
-            const calResponse = await axios.get(url);
-            const events = calResponse.data.items.map(e => ({
-                summary: e.summary,
-                start: e.start.dateTime || e.start.date,
-                location: e.location || 'TBA'
-            }));
-
-            // 4. Send the result back to the AI
-            messages.push({
-                role: "tool",
-                tool_call_id: toolCall.id,
-                content: JSON.stringify(events)
+        // Runtime validation: these must exist to query chatbot
+        if (!config.litellmApiKey) {
+            logger.error('runtime-validation-failed', {
+                missing: 'LITELLM_VIRTUAL_KEY',
+                hint: 'Set LITELLM_VIRTUAL_KEY env var to use chatbot',
             });
-
-            // 5. Final Call: Get the natural language answer
-            const response2 = await axios.post(LITELLM_API_URL, {
-                model: "llama3.2-70b-instruct",
-                messages
-            }, { headers });
-
-            return response2.data.choices[0].message.content;
+            return "I'm having trouble answering right now. Please try again later.";
         }
 
-        return message.content;
+        if (!config.googleApiKey) {
+            logger.error('runtime-validation-failed', {
+                missing: 'GOOGLE_CALENDAR_API_KEY',
+                hint: 'Set GOOGLE_CALENDAR_API_KEY env var to use chatbot',
+            });
+            return "I'm having trouble answering right now. Please try again later.";
+        }
+
+        logger.info('intent-classification-start');
+        let classification;
+        try {
+            classification = await classifyIntent({
+                question,
+                apiUrl: config.litellmApiUrl,
+                apiKey: config.litellmApiKey,
+                model: config.litellmClassifierModel,
+                temperature: config.classifierTemperature,
+                timeoutMs: config.llmTimeoutMs,
+                retries: config.llmRetries,
+            });
+        } catch (error) {
+            logger.warn('intent-classification-failed-fallback-general', {
+                reason: error.response?.status || error.message,
+            });
+            classification = { intent: 'general', confidence: 0, needs_rag: false, params: {} };
+        }
+
+        logger.info('intent-classification-result', {
+            intent: classification.intent,
+            confidence: classification.confidence,
+            needs_rag: Boolean(classification.needs_rag),
+        });
+
+        const baseMessages = [
+            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'user', content: question },
+        ];
+
+        const shouldUseCalendar = shouldUseCalendarIntent(
+            classification,
+            config.classificationConfidenceThreshold
+        );
+        const shouldAttachRag = shouldUseRag(
+            classification,
+            config.classificationConfidenceThreshold
+        ) && config.vectorStoreIds.length > 0;
+
+        if (classification.needs_rag && !shouldAttachRag) {
+            logger.warn('rag-request-skipped', {
+                reason: config.vectorStoreIds.length ? 'low-confidence-or-non-general-intent' : 'missing-vector-store-ids',
+            });
+        }
+
+        let finalMessages = baseMessages;
+        if (shouldUseCalendar) {
+            logger.info('calendar-execution-start');
+            const events = await fetchCalendarEvents({
+                googleApiKey: config.googleApiKey,
+                calendarId: config.shpeCalendarId,
+                maxResults: classification.params.max_results,
+                timeoutMs: config.calendarTimeoutMs,
+                retries: config.calendarRetries,
+            });
+            finalMessages = [...baseMessages, buildCalendarContextMessage(events)];
+            logger.info('calendar-execution-finished', { eventsCount: events.length });
+        }
+
+        logger.info('final-answer-generation-start');
+        const finalResponse = await createChatCompletion({
+            apiUrl: config.litellmApiUrl,
+            apiKey: config.litellmApiKey,
+            timeoutMs: config.llmTimeoutMs,
+            retries: config.llmRetries,
+            payload: {
+                model: config.litellmResponseModel,
+                messages: finalMessages,
+                extra_body: shouldAttachRag ? buildExtraBody(config.vectorStoreIds) : undefined,
+            },
+        });
+
+        const content = finalResponse?.data?.choices?.[0]?.message?.content;
+        if (!content) {
+            return "I'm having trouble answering right now. Please try again later.";
+        }
+
+        return content;
 
     } catch (error) {
-        console.error('Bot Error:', error.response?.data || error.message);
-        return "I'm having trouble checking the calendar right now. Please try again later.";
+        logger.error('queryRAG-failed', error);
+        return "I'm having trouble answering right now. Please try again later.";
     }
 }
 

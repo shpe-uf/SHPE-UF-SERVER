@@ -7,6 +7,8 @@
     "serve:rag": "cd rag && source .venv/bin/activate && python3 -m uvicorn rag_api:app --host 0.0.0.0 --port 8001",
     "wait-and-serve:node": "wait-on http-get://localhost:8001/health && cross-env RAG_API_URL=http://localhost:8001 node index.js",
     "start": "concurrently -k -n RAG,NODE -c yellow,cyan \"npm:serve:rag\" \"npm:wait-and-serve:node\"",
+    "test": "node --test",
+    "test:chatbot": "node --test graphql/chatbot/**/*.test.js",
     "prettier": "prettier --single-quote --write '*.{js,css,json}'",
     "precommit": "lint-staged"
   },
