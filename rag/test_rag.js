@@ -1,5 +1,5 @@
 //Test the RAG system
-const { queryRAG } = require('../graphql/chatbot/ragService');
+const { queryRAG } = require('../graphql/chatbot/chatbotService');
 
 async function testRAG() {
     console.log('🧪 Testing RAG system...\n');
@@ -13,12 +13,12 @@ async function testRAG() {
     ];
     
     for (const question of questions) {
-        console.log('❓Question: ${question}');
+        console.log(`❓Question: ${question}`);
         try {
             const answer = await queryRAG(question);
-            console.log('✅Answer: ${answer}\n');
+            console.log(`✅Answer: ${answer}\n`);
         } catch (error) {
-            console.error('❌ Error: ${error.message}\n');
+            console.error(`❌ Error: ${error.message}\n`);
         }
     }
 }

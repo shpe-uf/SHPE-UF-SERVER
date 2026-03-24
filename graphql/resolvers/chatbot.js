@@ -1,4 +1,4 @@
-const { queryRAG } = require("../chatbot/ragService");
+const { queryRAG } = require('../chatbot/chatbotService');
 
 module.exports = {
   Query: {
