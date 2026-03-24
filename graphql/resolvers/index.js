@@ -1,4 +1,5 @@
 const usersResolvers = require("./users.js");
+const chatbotResolvers = require("./chatbot.js");
 const eventsResolvers = require("./events.js");
 const requestsResolvers = require("./requests.js");
 const tasksResolvers = require("./tasks.js");
@@ -24,6 +25,7 @@ module.exports = {
     ...resourcesResolvers.Query,
     ...partnerResolvers.Query,
     ...shpewrappedResolvers.Query,
+    ...chatbotResolvers.Query,
   },
 
   Mutation: {

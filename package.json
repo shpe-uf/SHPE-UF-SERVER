@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
+    "test": "node --test",
+    "test:chatbot": "node --test graphql/chatbot/chatbotService.test.js graphql/chatbot/intentClassifier.test.js graphql/chatbot/config.test.js",
     "prettier": "./node_modules/.bin/prettier --single-quote --write '*.{js,css,json}'",
     "precommit": "lint-staged"
   },
@@ -19,6 +21,7 @@
     "@apollo/server": "^4.3.0",
     "@aws-sdk/client-sesv2": "^3.1006.0",
     "@sendgrid/mail": "^8.1.0",
+    "axios": "^1.13.5",
     "bcryptjs": "^2.4.3",
     "data-urls": "^5.0.0",
     "dotenv": "^16.3.1",
