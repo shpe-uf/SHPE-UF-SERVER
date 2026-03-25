@@ -9,18 +9,6 @@ const {
 } = require('./intentClassifier');
 const logger = require('./logger');
 
-function buildExtraBody(vectorStoreIds) {
-    if (!vectorStoreIds.length) {
-        return undefined;
-    }
-
-    return {
-        metadata: {
-            vector_stores: vectorStoreIds,
-        },
-    };
-}
-
 function buildCalendarContextMessage(events) {
     return {
         role: 'system',
@@ -33,10 +21,18 @@ async function queryRAG(question) {
         const config = getChatbotConfig();
 
         // Runtime validation: these must exist to query chatbot
-        if (!config.litellmApiKey) {
+        if (!config.litellmClassifierApiKey) {
             logger.error('runtime-validation-failed', {
-                missing: 'LITELLM_VIRTUAL_KEY',
-                hint: 'Set LITELLM_VIRTUAL_KEY env var to use chatbot',
+                missing: 'LITELLM_CLASSIFIER_VIRTUAL_KEY',
+                hint: 'Set LITELLM_CLASSIFIER_VIRTUAL_KEY env var to use chatbot classifier',
+            });
+            return "I'm having trouble answering right now. Please try again later.";
+        }
+
+        if (!config.litellmResponseApiKey) {
+            logger.error('runtime-validation-failed', {
+                missing: 'LITELLM_RESPONSE_VIRTUAL_KEY',
+                hint: 'Set LITELLM_RESPONSE_VIRTUAL_KEY env var to use chatbot response generation',
             });
             return "I'm having trouble answering right now. Please try again later.";
         }
@@ -55,7 +51,7 @@ async function queryRAG(question) {
             classification = await classifyIntent({
                 question,
                 apiUrl: config.litellmApiUrl,
-                apiKey: config.litellmApiKey,
+                apiKey: config.litellmClassifierApiKey,
                 model: config.litellmClassifierModel,
                 temperature: config.classifierTemperature,
                 timeoutMs: config.llmTimeoutMs,
@@ -65,7 +61,7 @@ async function queryRAG(question) {
             logger.warn('intent-classification-failed-fallback-general', {
                 reason: error.response?.status || error.message,
             });
-            classification = { intent: 'general', confidence: 0, needs_rag: false, params: {} };
+            classification = { intent: 'general', confidence: 0,  params: {} };
         }
 
         logger.info('intent-classification-result', {
@@ -82,10 +78,6 @@ async function queryRAG(question) {
             classification,
             config.classificationConfidenceThreshold
         );
-
-        // Always attach the vector store when IDs are configured so the model
-        // can retrieve relevant information regardless of classifier output.
-        const shouldAttachRag = config.vectorStoreIds.length > 0;
 
         let finalMessages = baseMessages;
         if (shouldUseCalendar) {
@@ -104,14 +96,14 @@ async function queryRAG(question) {
         logger.info('final-answer-generation-start');
         const finalResponse = await createChatCompletion({
             apiUrl: config.litellmApiUrl,
-            apiKey: config.litellmApiKey,
+            apiKey: config.litellmResponseApiKey,
             timeoutMs: config.llmTimeoutMs,
             retries: config.llmRetries,
             payload: {
                 model: config.litellmResponseModel,
                 temperature: config.responseTemperature,
                 messages: finalMessages,
-                extra_body: shouldAttachRag ? buildExtraBody(config.vectorStoreIds) : undefined,
+                vector_store_ids: config.vectorStoreIds,
             },
         });
 

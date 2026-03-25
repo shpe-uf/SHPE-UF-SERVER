@@ -16,7 +16,8 @@ function parseVectorStoreIds(rawValue) {
 function getChatbotConfig() {
   return {
     litellmApiUrl: LITELLM_API_URL,
-    litellmApiKey: process.env.LITELLM_VIRTUAL_KEY || '',
+    litellmClassifierApiKey: process.env.LITELLM_CLASSIFIER_VIRTUAL_KEY || '',
+    litellmResponseApiKey: process.env.LITELLM_RESPONSE_VIRTUAL_KEY || '',
     litellmClassifierModel: CLASSIFIER_MODEL,
     litellmResponseModel: RESPONSE_MODEL,
     classifierTemperature: CLASSIFIER_TEMPERATURE,

@@ -22,7 +22,21 @@ function error(message, err = undefined) {
     return;
   }
 
-  const details = err.response?.data || err.message || String(err);
+  let details;
+  if (err.response?.data !== undefined) {
+    details = err.response.data;
+  } else if (err.message) {
+    details = err.message;
+  } else if (typeof err === 'object') {
+    try {
+      details = JSON.stringify(err);
+    } catch {
+      details = String(err);
+    }
+  } else {
+    details = String(err);
+  }
+
   console.error(`[chatbot] ${message}`, details);
 }
 

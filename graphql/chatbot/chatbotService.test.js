@@ -5,7 +5,8 @@ const axios = require('axios');
 const SERVICE_PATH = require.resolve('./chatbotService');
 
 const BASE_ENV = {
-  LITELLM_VIRTUAL_KEY: 'test-litellm-key',
+  LITELLM_CLASSIFIER_VIRTUAL_KEY: 'test-litellm-classifier-key',
+  LITELLM_RESPONSE_VIRTUAL_KEY: 'test-litellm-response-key',
   LITELLM_VECTOR_STORE_IDS: 'vs_test_1,vs_test_2',
   GOOGLE_CALENDAR_API_KEY: 'test-google-key',
 };
@@ -15,7 +16,8 @@ let originalPost;
 let originalGet;
 
 function loadServiceWithEnv(overrides = {}) {
-  process.env.LITELLM_VIRTUAL_KEY = overrides.LITELLM_VIRTUAL_KEY ?? BASE_ENV.LITELLM_VIRTUAL_KEY;
+  process.env.LITELLM_CLASSIFIER_VIRTUAL_KEY = overrides.LITELLM_CLASSIFIER_VIRTUAL_KEY ?? BASE_ENV.LITELLM_CLASSIFIER_VIRTUAL_KEY;
+  process.env.LITELLM_RESPONSE_VIRTUAL_KEY = overrides.LITELLM_RESPONSE_VIRTUAL_KEY ?? BASE_ENV.LITELLM_RESPONSE_VIRTUAL_KEY;
   process.env.LITELLM_VECTOR_STORE_IDS = overrides.LITELLM_VECTOR_STORE_IDS ?? BASE_ENV.LITELLM_VECTOR_STORE_IDS;
   process.env.GOOGLE_CALENDAR_API_KEY = overrides.GOOGLE_CALENDAR_API_KEY ?? BASE_ENV.GOOGLE_CALENDAR_API_KEY;
 
@@ -55,8 +57,8 @@ test.afterEach(() => {
   delete require.cache[SERVICE_PATH];
 });
 
-test('returns fallback response when LiteLLM key is missing', async () => {
-  const { queryRAG } = loadServiceWithEnv({ LITELLM_VIRTUAL_KEY: '' });
+test('returns fallback response when LiteLLM classifier key is missing', async () => {
+  const { queryRAG } = loadServiceWithEnv({ LITELLM_CLASSIFIER_VIRTUAL_KEY: '' });
 
   const response = await queryRAG('What is SHPE UF?');
 
@@ -126,8 +128,8 @@ test('general conversation path does not call Google Calendar API and always att
   assert.equal(postCalls.length, 2);
   assert.equal(calendarGetCalls, 0);
   // Vector store is always attached when IDs are configured, regardless of classifier output
-  assert.deepEqual(postCalls[1].payload.extra_body.metadata.vector_stores, ['vs_test_1', 'vs_test_2']);
-  assert.equal(postCalls[0].payload.extra_body, undefined);
+  assert.deepEqual(postCalls[1].payload.vector_store_ids, ['vs_test_1', 'vs_test_2']);
+  assert.equal(postCalls[0].payload.vector_store_ids, undefined);
   assert.equal(postCalls[0].payload.model, 'llama-3.1-8b-instruct');
   assert.equal(postCalls[1].payload.model, 'llama-3.1-70b-instruct');
   assert.equal(postCalls[0].payload.temperature, 0.1);
@@ -188,9 +190,9 @@ test('calendar intent path executes calendar fetch and returns final model respo
   assert.equal(postCalls.length, 2);
   assert.equal(getCalls.length, 1);
   assert.match(getCalls[0], /maxResults=3/);
-  assert.equal(postCalls[0].payload.extra_body, undefined);
+  assert.equal(postCalls[0].payload.vector_store_ids, undefined);
   // Calendar path still attaches vector store on final answer call
-  assert.deepEqual(postCalls[1].payload.extra_body.metadata.vector_stores, ['vs_test_1', 'vs_test_2']);
+  assert.deepEqual(postCalls[1].payload.vector_store_ids, ['vs_test_1', 'vs_test_2']);
   assert.equal(postCalls[0].payload.model, 'llama-3.1-8b-instruct');
   assert.equal(postCalls[1].payload.model, 'llama-3.1-70b-instruct');
   assert.equal(postCalls[0].payload.temperature, 0.1);
@@ -227,7 +229,7 @@ test('invalid classifier JSON falls back to general response path safely', async
   assert.equal(postCalls.length, 2);
   assert.equal(calendarGetCalls, 0);
   // Vector store is always attached when IDs are configured
-  assert.deepEqual(postCalls[1].payload.extra_body.metadata.vector_stores, ['vs_test_1', 'vs_test_2']);
+  assert.deepEqual(postCalls[1].payload.vector_store_ids, ['vs_test_1', 'vs_test_2']);
 });
 
 test('low-confidence calendar classifier output degrades to general path', async () => {
@@ -296,8 +298,8 @@ test('vector store is attached for general queries regardless of needs_rag flag'
   assert.equal(response, 'RAG-backed general answer.');
   assert.equal(postCalls.length, 2);
   assert.equal(calendarGetCalls, 0);
-  assert.equal(postCalls[0].payload.extra_body, undefined);
-  assert.deepEqual(postCalls[1].payload.extra_body.metadata.vector_stores, ['vs_test_1', 'vs_test_2']);
+  assert.equal(postCalls[0].payload.vector_store_ids, undefined);
+  assert.deepEqual(postCalls[1].payload.vector_store_ids, ['vs_test_1', 'vs_test_2']);
   assert.equal(postCalls[0].payload.model, 'llama-3.1-8b-instruct');
   assert.equal(postCalls[1].payload.model, 'llama-3.1-70b-instruct');
   assert.equal(postCalls[0].payload.temperature, 0.1);
@@ -330,5 +332,5 @@ test('vector store is attached even when classifier returns needs_rag=false', as
   assert.equal(response, 'Answer using vector store context for national convention team.');
   assert.equal(postCalls.length, 2);
   // Key assertion: vector store MUST be attached even when classifier says needs_rag=false
-  assert.deepEqual(postCalls[1].payload.extra_body.metadata.vector_stores, ['vs_test_1', 'vs_test_2']);
+  assert.deepEqual(postCalls[1].payload.vector_store_ids, ['vs_test_1', 'vs_test_2']);
 });
