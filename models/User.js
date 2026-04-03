@@ -1,5 +1,21 @@
 const { model, Schema } = require('mongoose');
 
+function coerceBoolean(value) {
+  if (value === true) return true;
+  if (value === false) return false;
+  if (value === null || value === undefined) return false;
+  if (typeof value === 'number') return value !== 0;
+  if (typeof value === 'string') {
+    const v = value.trim().toLowerCase();
+    if (v === '' || v === 'not graduating') return false;
+    if (v === 'false' || v === 'no' || v === 'n' || v === '0') return false;
+    if (v === 'true' || v === 'yes' || v === 'y' || v === '1') return true;
+
+    return true;
+  }
+  return Boolean(value);
+}
+
 const userSchema = new Schema({
   firstName: {
     type: String,
@@ -22,8 +38,10 @@ const userSchema = new Schema({
     required: true,
   },
   graduating: {
-    type: String,
+    type: Boolean,
     required: true,
+    default: false,
+    set: coerceBoolean,
   },
   country: {
     type: String,
@@ -125,6 +143,9 @@ const userSchema = new Schema({
   confirmed: {
     type: Boolean,
     default: false,
+  },
+  alumniConversionEmailSentAt: {
+    type: String,
   },
   bookmarks: [String],
 });

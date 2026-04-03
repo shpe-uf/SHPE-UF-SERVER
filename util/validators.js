@@ -47,7 +47,7 @@ module.exports.validateRegisterInput = (
     errors.year = "Year is required.";
   }
 
-  if (graduating.trim() === "") {
+  if (typeof graduating !== "boolean") {
     errors.graduating = "Graduating is required.";
   }
 
@@ -498,7 +498,7 @@ module.exports.validateEditUserProfile = (
     errors.year = "Year is required.";
   }
 
-  if (graduating.trim() === "") {
+  if (typeof graduating !== "boolean") {
     errors.graduating = "Graduating is required.";
   }
 

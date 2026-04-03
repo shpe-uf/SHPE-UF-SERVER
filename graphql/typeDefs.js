@@ -146,7 +146,7 @@ module.exports = gql`
     photo: String!
     major: String!
     year: String!
-    graduating: String!
+    graduating: Boolean!
     country: String!
     ethnicity: String!
     sex: String!
@@ -322,7 +322,7 @@ module.exports = gql`
     photo: String!
     major: String!
     year: String!
-    graduating: String!
+    graduating: Boolean!
     country: String!
     ethnicity: String!
     sex: String!
@@ -369,7 +369,7 @@ module.exports = gql`
     lastName: String!
     major: String!
     year: String!
-    graduating: String!
+    graduating: Boolean!
     country: String!
     ethnicity: String!
     sex: String!

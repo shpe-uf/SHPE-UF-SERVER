@@ -32,6 +32,55 @@ const transport = nodemailer.createTransport({
 });
 
 
+function isTruthy(value) {
+  if (value === true) return true;
+  if (value === false) return false;
+  if (value === null || value === undefined) return false;
+  if (typeof value === 'number') return value !== 0;
+  if (typeof value === 'string') {
+    const v = value.trim().toLowerCase();
+    return v === 'true' || v === 'yes' || v === 'y' || v === '1';
+  }
+  return Boolean(value);
+}
+
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+async function maybeSendAlumniConversionEmail({ prevUser, nextGraduating }) {
+  const becameGraduating = !isTruthy(prevUser.graduating) && isTruthy(nextGraduating);
+  if (!becameGraduating) return;
+
+  if (prevUser.alumniConversionEmailSentAt) return;
+  if (!prevUser.email) return;
+
+  const html = `
+    <h1 style="text-align: center;">Hi, ${prevUser.firstName}!</h1>
+    <p>We noticed you marked that you're graduating soon.</p>
+    <p>If we implement an alumni feature in the future, would you like to convert your account to an alumni account?</p>
+    <p>No action is required right now—this is just a heads-up so we can reach out when it becomes available.</p>
+  `;
+
+  try {
+    await transport.sendMail({
+      from: process.env.EMAIL,
+      to: prevUser.email,
+      subject: 'Alumni Account (Future Feature)',
+      html,
+    });
+
+    await User.findByIdAndUpdate(prevUser._id, {
+      alumniConversionEmailSentAt: new Date().toISOString(),
+    });
+  } catch (err) {
+    console.error(
+      'Failed to send alumni conversion email. Check SENDGRID_API_KEY and EMAIL env vars.',
+      err
+    );
+  }
+}
+
 const {
   validateRegisterInput,
   validateLoginInput,
@@ -137,7 +186,12 @@ module.exports = {
           lastName: 1,
           firstName: 1,
         });
-        return users;
+
+        return users.map((u) => ({
+          ...u._doc,
+          id: u._id,
+          graduating: isTruthy(u.graduating),
+        }));
       } catch (err) {
         handleGeneralError(err, "Users not found!");
       }
@@ -155,7 +209,7 @@ module.exports = {
             email: user.email,
             major: user.major,
             year: user.year,
-            graduating: user.graduating,
+            graduating: isTruthy(user.graduating),
             country: user.country,
             ethnicity: user.ethnicity,
             sex: user.sex,
@@ -1057,6 +1111,7 @@ module.exports = {
         },
       }
     ) {
+      email = email.trim().toLowerCase();
       const { errors, valid } = validateEditUserProfile(
         firstName,
         lastName,
@@ -1076,15 +1131,18 @@ module.exports = {
         handleInputError(errors);
       }
 
-      const user = await User.findOne({ email });
+      const user = await User.findOne({
+        email: new RegExp(`^${escapeRegExp(email)}$`, "i"),
+      });
 
       if (user) {
+        await maybeSendAlumniConversionEmail({ prevUser: user, nextGraduating: graduating });
         updatedAt = user.updatedAt;
         if (user.year !== year) {
           updatedAt = new Date().toISOString();
         }
         const updatedUser = await User.findOneAndUpdate(
-          { email },
+          { email: user.email },
           {
             firstName,
             lastName,
@@ -1184,37 +1242,39 @@ module.exports = {
     },
 
     async updateYears() {
-      var users = await User.find();
-      users.forEach(async function(user) {
-        const currDate = new Date();
-        const email = user.email;
-        const msPerDay = 1000 * 60 * 60 * 24;
-        var updatedAt = currDate;
-        var year = user.year;
+      const users = await User.find();
+      const updatedUsers = await Promise.all(
+        users.map(async (user) => {
+          const currDate = new Date();
+          const msPerDay = 1000 * 60 * 60 * 24;
+          let updatedAt = currDate;
+          let year = user.year;
 
-        if (user.updatedAt) updatedAt = new Date(user.updatedAt);
-        const difference = Math.round((currDate - updatedAt) / msPerDay);
+          if (user.updatedAt) updatedAt = new Date(user.updatedAt);
+          const difference = Math.round((currDate - updatedAt) / msPerDay);
 
-        if (difference >= 365) {
-          updatedAt = currDate;
-          if (year === "1st Year") year = "2nd Year";
-          else if (year === "2nd Year") year = "3rd Year";
-          else if (year === "3rd Year") year = "4th Year";
-          else if (year === "4th Year") year = "5th Year or Higher";
-        }
-
-        const updatedUser = await User.findOneAndUpdate(
-          { email },
-          {
-            year: year,
-            updatedAt: updatedAt.toISOString(),
-          },
-          {
-            new: true
+          if (difference >= 365) {
+            updatedAt = currDate;
+            if (year === '1st Year') year = '2nd Year';
+            else if (year === '2nd Year') year = '3rd Year';
+            else if (year === '3rd Year') year = '4th Year';
+            else if (year === '4th Year') year = '5th Year or Higher';
           }
-        );
-      });
-      return users;
+
+          return User.findOneAndUpdate(
+            { email: user.email },
+            {
+              year,
+              updatedAt: updatedAt.toISOString(),
+            },
+            {
+              new: true,
+            }
+          );
+        })
+      );
+
+      return updatedUsers;
     },
 
 
