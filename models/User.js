@@ -79,6 +79,9 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  yearSetAt: {
+    type: String,
+  },
   points: {
     type: Number,
     default: 0,

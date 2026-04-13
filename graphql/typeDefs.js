@@ -170,6 +170,7 @@ module.exports = gql`
     token: String!
     message: String!
     confirmed: Boolean!
+    alumniConversionEmailSentAt: String
     bookmarks: [String]!
     classes: [String]
     internships: [String]

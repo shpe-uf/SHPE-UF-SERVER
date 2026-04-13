@@ -52,11 +52,14 @@ async function updateUserYearsIfNeeded() {
 
   await Promise.all(
     users.map(async (user) => {
-      let updatedAt = currDate;
+      let yearSetAt = currDate;
       let year = user.year;
 
-      if (user.updatedAt) updatedAt = new Date(user.updatedAt);
-      const difference = Math.round((currDate - updatedAt) / msPerDay);
+      if (user.yearSetAt) yearSetAt = new Date(user.yearSetAt);
+      else if (user.createdAt) yearSetAt = new Date(user.createdAt);
+      else if (user.updatedAt) yearSetAt = new Date(user.updatedAt);
+
+      const difference = Math.round((currDate - yearSetAt) / msPerDay);
 
       if (difference < 365) return;
 
@@ -67,7 +70,7 @@ async function updateUserYearsIfNeeded() {
 
       await User.findByIdAndUpdate(user._id, {
         year,
-        updatedAt: currDate.toISOString(),
+        yearSetAt: currDate.toISOString(),
       });
     })
   );

@@ -25,7 +25,7 @@ require("dotenv").config();
   })
 );
 */
-const sesClient = new SESv2Client({ region: process.env.AWS_REGION });
+const sesClient = new SESv2Client({ region: process.env.AWS_REGION || "us-east-1" });
 
 const transport = nodemailer.createTransport({
   SES: { sesClient, SendEmailCommand},
@@ -74,10 +74,28 @@ async function maybeSendAlumniConversionEmail({ prevUser, nextGraduating }) {
       alumniConversionEmailSentAt: new Date().toISOString(),
     });
   } catch (err) {
+    const meta = err && typeof err === "object" ? err.$metadata : undefined;
+    console.error("Failed to send alumni conversion email.");
     console.error(
-      'Failed to send alumni conversion email. Check SENDGRID_API_KEY and EMAIL env vars.',
-      err
+      "Check AWS SES configuration (AWS_REGION, AWS credentials), sender verification, SES sandbox, and EMAIL env var."
     );
+    console.error("Error name:", err?.name);
+    console.error("Error message:", err?.message);
+    if (meta) {
+      console.error(
+        "AWS metadata:",
+        JSON.stringify(
+          {
+            httpStatusCode: meta.httpStatusCode,
+            requestId: meta.requestId,
+            attempts: meta.attempts,
+            totalRetryDelay: meta.totalRetryDelay,
+          },
+          null,
+          2
+        )
+      );
+    }
   }
 }
 
@@ -493,6 +511,8 @@ module.exports = {
       password = await bcrypt.hash(password, 12);
       listServ = listServ === "true" || listServ === true ? true : false;
 
+      const nowIso = new Date().toISOString();
+
       const newUser = new User({
         firstName,
         lastName,
@@ -505,8 +525,9 @@ module.exports = {
         username,
         email,
         password,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: nowIso,
+        updatedAt: nowIso,
+        yearSetAt: nowIso,
         points: 0,
         fallPoints: 0,
         springPoints: 0,
@@ -1137,9 +1158,13 @@ module.exports = {
 
       if (user) {
         await maybeSendAlumniConversionEmail({ prevUser: user, nextGraduating: graduating });
-        updatedAt = user.updatedAt;
+
+        let updatedAt = user.updatedAt;
+        let yearSetAt = user.yearSetAt;
         if (user.year !== year) {
-          updatedAt = new Date().toISOString();
+          const nowIso = new Date().toISOString();
+          updatedAt = nowIso;
+          yearSetAt = nowIso;
         }
         const updatedUser = await User.findOneAndUpdate(
           { email: user.email },
@@ -1157,6 +1182,7 @@ module.exports = {
             internships,
             socialMedia,
             updatedAt,
+            yearSetAt,
           },
           {
             new: true
@@ -1247,14 +1273,17 @@ module.exports = {
         users.map(async (user) => {
           const currDate = new Date();
           const msPerDay = 1000 * 60 * 60 * 24;
-          let updatedAt = currDate;
+          let yearSetAt = currDate;
           let year = user.year;
 
-          if (user.updatedAt) updatedAt = new Date(user.updatedAt);
-          const difference = Math.round((currDate - updatedAt) / msPerDay);
+          if (user.yearSetAt) yearSetAt = new Date(user.yearSetAt);
+          else if (user.createdAt) yearSetAt = new Date(user.createdAt);
+          else if (user.updatedAt) yearSetAt = new Date(user.updatedAt);
+
+          const difference = Math.round((currDate - yearSetAt) / msPerDay);
 
           if (difference >= 365) {
-            updatedAt = currDate;
+            yearSetAt = currDate;
             if (year === '1st Year') year = '2nd Year';
             else if (year === '2nd Year') year = '3rd Year';
             else if (year === '3rd Year') year = '4th Year';
@@ -1265,7 +1294,7 @@ module.exports = {
             { email: user.email },
             {
               year,
-              updatedAt: updatedAt.toISOString(),
+              yearSetAt: yearSetAt.toISOString(),
             },
             {
               new: true,
