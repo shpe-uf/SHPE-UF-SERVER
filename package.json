@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index",
     "prettier": "./node_modules/.bin/prettier --single-quote --write '*.{js,css,json}'",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "test": "jest"
   },
   "engines": {
     "node": "20.10.0",
@@ -42,6 +43,7 @@
   },
   "devDependencies": {
     "husky": "^8.0.2",
+    "jest": "^30.3.0",
     "lint-staged": "^15.2.0",
     "prettier": "^3.1.1"
   }

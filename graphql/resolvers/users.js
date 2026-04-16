@@ -130,6 +130,7 @@ function generateToken(user, time) {
 }
 
 module.exports = {
+  calculatePercentiles,
   Query: {
     async getUsers() {
       try {
