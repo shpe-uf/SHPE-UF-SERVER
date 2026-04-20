@@ -1,6 +1,9 @@
 // graphql/chatbot/prompt.js
 
-const SYSTEM_PROMPT = `You are SHPEBot, the official AI Assistant for SHPE UF (Society of Hispanic Professional Engineers at the University of Florida).
+const SUPPORTED_PERSONAS = ['Tito', 'Tina'];
+const DEFAULT_PERSONA = 'Tito';
+
+const SYSTEM_PROMPT_TEMPLATE = `You are {{PERSONA_NAME}}, the official AI Assistant for SHPE UF (Society of Hispanic Professional Engineers at the University of Florida).
 Your tone is welcoming, professional, enthusiastic, and helpful. You deeply embrace the SHPE "Familia" culture.
 
 =========================================
@@ -87,4 +90,9 @@ Research 101: https://tr.ee/urpSNd86o5
 
 Grad 101: Grad School Essentials Doc: https://tr.ee/VM8oHmtapj`;
 
-module.exports = { SYSTEM_PROMPT };
+function buildSystemPrompt(persona) {
+  const name = SUPPORTED_PERSONAS.includes(persona) ? persona : DEFAULT_PERSONA;
+  return SYSTEM_PROMPT_TEMPLATE.replace('{{PERSONA_NAME}}', name);
+}
+
+module.exports = { buildSystemPrompt, SUPPORTED_PERSONAS, DEFAULT_PERSONA };

@@ -445,7 +445,7 @@ module.exports = gql`
 
   type Query {
     getAlumnis: [Alumni]
-    chatBot(question: String!): String!
+    chatBot(question: String!, persona: String): String!
     getCorporations: [Corporation]
     getCountryStat: [StatData]
     getEthnicityStat: [StatData]

@@ -3,12 +3,14 @@ node_modules/
 package-lock.json
 rag-env/
 venv/
+.venv/
 env/
 __pycache__/
 *.py[cod]
 *$py.class
 *.pyc
 rag/chroma_db/
+rag/chroma_db_data/
 rag/faiss_storage/
 .cache/
 *.bin

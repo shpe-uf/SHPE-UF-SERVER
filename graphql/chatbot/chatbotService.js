@@ -1,5 +1,5 @@
 // graphql/chatbot/chatbotService.js
-const { SYSTEM_PROMPT } = require('./systemprompt');
+const { buildSystemPrompt } = require('./systemprompt');
 const { getChatbotConfig } = require('./config');
 const { createChatCompletion } = require('./litellmClient');
 const { fetchCalendarEvents } = require('./calendarTool');
@@ -29,7 +29,7 @@ function buildCalendarContextMessage(events) {
     };
 }
 
-async function queryRAG(question) {
+async function queryRAG(question, persona) {
     try {
         const config = getChatbotConfig();
 
@@ -76,7 +76,7 @@ async function queryRAG(question) {
         });
 
         const baseMessages = [
-            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'system', content: buildSystemPrompt(persona) },
             { role: 'user', content: question },
         ];
 
