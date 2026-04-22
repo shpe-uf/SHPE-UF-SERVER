@@ -10,7 +10,38 @@ const {
 } = require("./intentClassifier");
 const logger = require("./logger");
 
-const OUT_OF_SCOPE_PATTERNS = [];
+const OUT_OF_SCOPE_PATTERNS = [
+  // Code generation, debugging, review
+  /\b(write|generate|implement|create|build)\b.{0,40}\b(code|program|script|function|method|class|algorithm|app|application|website|api|endpoint|query)\b/i,
+  /\b(debug|fix|review|optimize|refactor) (this|my|the) (code|function|program|script|bug|error)\b/i,
+  /\bin (python|javascript|java|c\+\+|swift|go|rust|typescript|sql|kotlin|php|ruby|c#)(?=\W|$).{0,40}\b(write|implement|create|generate|build)\b/i,
+  /\b(write|implement|create|generate|build|code)\b.{0,40}\bin (python|javascript|java|c\+\+|swift|go|rust|typescript|sql|kotlin|php|ruby|c#)(?=\W|$)/i,
+
+  // Homework, assignments, exams
+  /\b(do|finish|complete|help me with) my (homework|assignment|essay|paper|exam|test|quiz|lab|problem set|project)\b/i,
+  /\bhelp (me )?(with )?(this |my )?(homework|assignment|exam|quiz|lab report|problem set)\b/i,
+  /\bwhat('s| is) the answer to (problem|question|number) \d/i,
+
+  // Math operations
+  /\b(solve|calculate|compute|integrate|differentiate|simplify|factor)\b.*\b(equation|integral|derivative|polynomial|matrix|expression|inequality|limit|sum)\b/i,
+  /\b(prove|derive)\b.*\b(theorem|lemma|formula|identity)\b/i,
+
+  // Creative writing
+  /\bwrite (me )?(a |an )?(essay|poem|story|song|joke|haiku|article|blog post|caption|speech|tweet|rap)\b/i,
+  /\b(give|tell) me a (joke|story|poem|riddle|fun fact)\b/i,
+
+  // Translation
+  /\btranslate\b.*\b(to|into) (spanish|french|german|chinese|japanese|portuguese|italian|korean|arabic|russian|hindi)\b/i,
+
+  // Jailbreak attempts and prompt extraction
+  /\bignore\b.{0,30}\b(instructions|rules|prompt|directives|system message|guidelines)\b/i,
+  /\b(show|reveal|repeat|print|tell me|what('s| is)) your (system )?(prompt|instructions|directives|rules|guidelines)\b/i,
+  /\bwhat (are|were) your (original |initial )?(instructions|rules|directives)\b/i,
+  /\bfrom now on,? you('?| a)re (?!(my|a) (mentor|recruiter|interviewer|hiring manager|professional|advisor))/i,
+  /\byou('?| a)re no longer (tito|tina|shpebot|an? assistant|an? ai|bound)/i,
+  /\b(dan mode|jailbreak|developer mode|god mode|unrestricted mode)\b/i,
+  /\bpretend (you('?| a)re|to be) (?!(at|in|writing) (a|an|my|the))/i,
+];
 
 const DOC_TOPIC_RULES = [
   {
