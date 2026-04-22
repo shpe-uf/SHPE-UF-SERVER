@@ -19,6 +19,7 @@ from .tools import TOOLS, DISPATCH
 logger = logging.getLogger(__name__)
 
 OLLAMA_URL = "http://localhost:11434/api/chat"
+MAX_TOKENS = 200
 
 
 def generate_answer_with_tools(
@@ -89,6 +90,7 @@ def generate_answer_with_tools(
                     "model": ollama_model,
                     "messages": messages,
                     "tools": TOOLS,
+                    "options": {"num_predict": MAX_TOKENS},
                     "stream": False
                 },
                 timeout=60

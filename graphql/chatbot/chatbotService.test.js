@@ -5,7 +5,7 @@ const axios = require('axios');
 const SERVICE_PATH = require.resolve('./chatbotService');
 
 const BASE_ENV = {
-  LITELLM_VIRTUAL_KEY: 'test-litellm-key',
+  LITELLM_RESPONSE_KEY: 'test-litellm-key',
   LITELLM_VECTOR_STORE_IDS: 'vs_test_1,vs_test_2',
   GOOGLE_CALENDAR_API_KEY: 'test-google-key',
 };
@@ -15,7 +15,8 @@ let originalPost;
 let originalGet;
 
 function loadServiceWithEnv(overrides = {}) {
-  process.env.LITELLM_VIRTUAL_KEY = overrides.LITELLM_VIRTUAL_KEY ?? BASE_ENV.LITELLM_VIRTUAL_KEY;
+  process.env.LITELLM_RESPONSE_KEY = overrides.LITELLM_RESPONSE_KEY ?? BASE_ENV.LITELLM_RESPONSE_KEY;
+  process.env.LITELLM_VIRTUAL_KEY = overrides.LITELLM_VIRTUAL_KEY ?? '';
   process.env.LITELLM_VECTOR_STORE_IDS = overrides.LITELLM_VECTOR_STORE_IDS ?? BASE_ENV.LITELLM_VECTOR_STORE_IDS;
   process.env.GOOGLE_CALENDAR_API_KEY = overrides.GOOGLE_CALENDAR_API_KEY ?? BASE_ENV.GOOGLE_CALENDAR_API_KEY;
 
@@ -56,12 +57,58 @@ test.afterEach(() => {
 });
 
 test('returns fallback response when LiteLLM key is missing', async () => {
-  const { queryRAG } = loadServiceWithEnv({ LITELLM_VIRTUAL_KEY: '' });
+  const { queryRAG } = loadServiceWithEnv({ LITELLM_RESPONSE_KEY: '' });
 
   const response = await queryRAG('What is SHPE UF?');
 
   assert.equal(response, "I'm having trouble answering right now. Please try again later.");
   assert.equal(response.includes('test-litellm-key'), false);
+});
+
+test('missing Google Calendar key does not block general path', async () => {
+  const { queryRAG } = loadServiceWithEnv({ GOOGLE_CALENDAR_API_KEY: '' });
+
+  let postCount = 0;
+  axios.post = async () => {
+    postCount += 1;
+    if (postCount === 1) {
+      return makeLiteLLMText(
+        JSON.stringify({
+          intent: 'general',
+          confidence: 0.95,
+          needs_rag: false,
+          params: {},
+        })
+      );
+    }
+
+    return makeLiteLLMText('General response still works.');
+  };
+
+  const response = await queryRAG('Tell me about SHPE UF.');
+  assert.equal(response, 'General response still works.');
+  assert.equal(postCount, 2);
+});
+
+test('missing Google Calendar key blocks calendar path only', async () => {
+  const { queryRAG } = loadServiceWithEnv({ GOOGLE_CALENDAR_API_KEY: '' });
+
+  let postCount = 0;
+  axios.post = async () => {
+    postCount += 1;
+    return makeLiteLLMText(
+      JSON.stringify({
+        intent: 'calendar',
+        confidence: 0.95,
+        needs_rag: false,
+        params: { max_results: 3 },
+      })
+    );
+  };
+
+  const response = await queryRAG('What events are upcoming this week?');
+  assert.match(response, /can\u2019t access the chapter calendar/i);
+  assert.equal(postCount, 1);
 });
 
 test('missing vector store IDs does not hard-fail general path', async () => {
@@ -131,6 +178,7 @@ test('general conversation path does not call Google Calendar API', async () => 
   assert.equal(postCalls[1].payload.model, 'llama-3.1-70b-instruct');
   assert.equal(postCalls[0].payload.temperature, 0.1);
   assert.equal(postCalls[1].payload.temperature, 0.2);
+  assert.equal(postCalls[1].payload.max_tokens, 200);
 
   // No tool-based routing payload is used in Option B.
   assert.equal(postCalls[0].payload.tools, undefined);
@@ -193,10 +241,11 @@ test('calendar intent path executes calendar fetch and returns final model respo
   assert.equal(postCalls[1].payload.model, 'llama-3.1-70b-instruct');
   assert.equal(postCalls[0].payload.temperature, 0.1);
   assert.equal(postCalls[1].payload.temperature, 0.2);
+  assert.equal(postCalls[1].payload.max_tokens, 200);
 
   const secondCallMessages = postCalls[1].payload.messages.map((m) => m.content).join('\n');
   assert.match(secondCallMessages, /GM Meeting/);
-  assert.match(secondCallMessages, /calendar data/i);
+  assert.match(secondCallMessages, /official shpe uf calendar events/i);
 });
 
 test('invalid classifier JSON falls back to general response path safely', async () => {
@@ -290,7 +339,7 @@ test('high-confidence needs_rag general intent attaches vector store metadata on
 
   const response = await queryRAG('Can you answer from SHPE docs about convention prep?');
 
-  assert.equal(response, 'RAG-backed general answer.');
+  assert.match(response, /RAG-backed general answer/);
   assert.equal(postCalls.length, 2);
   assert.equal(calendarGetCalls, 0);
   assert.equal(postCalls[0].payload.extra_body, undefined);
@@ -299,4 +348,35 @@ test('high-confidence needs_rag general intent attaches vector store metadata on
   assert.equal(postCalls[1].payload.model, 'llama-3.1-70b-instruct');
   assert.equal(postCalls[0].payload.temperature, 0.1);
   assert.equal(postCalls[1].payload.temperature, 0.2);
+  assert.equal(postCalls[1].payload.max_tokens, 200);
+});
+
+test('out_of_scope classifier intent returns refusal without calling final model', async () => {
+  const { queryRAG } = loadServiceWithEnv();
+
+  const postCalls = [];
+  let calendarGetCalls = 0;
+
+  axios.post = async (url, payload) => {
+    postCalls.push({ url, payload });
+    return makeLiteLLMText(
+      JSON.stringify({
+        intent: 'out_of_scope',
+        confidence: 0.95,
+        needs_rag: true,
+        params: {},
+      })
+    );
+  };
+
+  axios.get = async () => {
+    calendarGetCalls += 1;
+    return { data: { items: [] } };
+  };
+
+  const response = await queryRAG("What's the weather today?");
+
+  assert.match(response, /I can help with SHPE UF/i);
+  assert.equal(postCalls.length, 1);
+  assert.equal(calendarGetCalls, 0);
 });

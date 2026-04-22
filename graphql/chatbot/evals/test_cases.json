@@ -1,0 +1,293 @@
+{
+  "version": 1,
+  "name": "shpeuf-chatbot-evals",
+  "notes": "25 high-fidelity cases for SHPE UF chatbot: 5 out-of-scope refusals, 10 doc-grounded (must cite exact link), 10 general SHPE knowledge (concise).",
+  "official_documents": {
+    "Corporate Database": "https://drive.google.com/file/d/1lolTWTDZ1vlMygtQnoSbnyZUOgj9jU4L/view",
+    "Professionalism & Resume": "https://drive.google.com/file/d/12Ty7Xt6nVeqyVoR2epwMescmw0ZW5TqB/view?usp=sharing",
+    "Interviews 101": "https://drive.google.com/file/d/1g4RzZWSWotNginnI4ynZZEDvDXJf8F6f/view?usp=sharing",
+    "Networking & LinkedIn": "https://drive.google.com/file/d/18Jwm10muiHDA3_R5d_jiWbDcTzRAwl0_/view?usp=sharing",
+    "Behavioral Interview Questions": "https://docs.google.com/document/d/1FDaX5KXw-qCzMjeL3UH7F-DRkjxpKg3CjN_XMcGqHsk/edit?tab=t.0",
+    "Cover Letter Template": "https://docs.google.com/document/d/1dMTamT5LZ25CJB8L8o1tWuPmUOGeCw0S6YbEXrXHOmE/edit?tab=t.0",
+    "National Convention": "https://drive.google.com/file/d/1W6CtxhqhKVky85b5VE57MgfcEoV6zJTN/view?usp=sharing"
+  },
+  "test_cases": [
+    {
+      "id": "oos-cook-rice",
+      "category": "out_of_scope",
+      "question": "How do I cook rice on the stove?",
+      "target": {
+        "type": "refusal",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "oos-math-homework",
+      "category": "out_of_scope",
+      "question": "Solve this: integrate x^2 * sin(x) dx.",
+      "target": {
+        "type": "refusal",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "oos-medical-advice",
+      "category": "out_of_scope",
+      "question": "I have a fever and sore throat—what medicine should I take?",
+      "target": {
+        "type": "refusal",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "oos-relationship",
+      "category": "out_of_scope",
+      "question": "How do I get my ex back?",
+      "target": {
+        "type": "refusal",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "oos-travel-itinerary",
+      "category": "out_of_scope",
+      "question": "Plan a 7-day itinerary for Japan with a $1,000 budget.",
+      "target": {
+        "type": "refusal",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+
+    {
+      "id": "rag-resume-bullets",
+      "category": "rag_specific",
+      "question": "Give me SHPE-style tips to improve my resume bullet points.",
+      "target": {
+        "type": "doc_grounded",
+        "required_link": "https://drive.google.com/file/d/12Ty7Xt6nVeqyVoR2epwMescmw0ZW5TqB/view?usp=sharing",
+        "max_tokens": 200,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "rag-resume-format",
+      "category": "rag_specific",
+      "question": "What resume format should I use for recruiting and career fairs?",
+      "target": {
+        "type": "doc_grounded",
+        "required_link": "https://drive.google.com/file/d/12Ty7Xt6nVeqyVoR2epwMescmw0ZW5TqB/view?usp=sharing",
+        "max_tokens": 200,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "rag-interviews-star",
+      "category": "rag_specific",
+      "question": "How should I structure my answers in interviews (like STAR), and what should I practice?",
+      "target": {
+        "type": "doc_grounded",
+        "required_link": "https://drive.google.com/file/d/1g4RzZWSWotNginnI4ynZZEDvDXJf8F6f/view?usp=sharing",
+        "max_tokens": 200,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "rag-interviews-prep",
+      "category": "rag_specific",
+      "question": "What are the best steps to prepare for an internship interview this week?",
+      "target": {
+        "type": "doc_grounded",
+        "required_link": "https://drive.google.com/file/d/1g4RzZWSWotNginnI4ynZZEDvDXJf8F6f/view?usp=sharing",
+        "max_tokens": 200,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "rag-networking-linkedin",
+      "category": "rag_specific",
+      "question": "How do I message a recruiter on LinkedIn without sounding awkward?",
+      "target": {
+        "type": "doc_grounded",
+        "required_link": "https://drive.google.com/file/d/18Jwm10muiHDA3_R5d_jiWbDcTzRAwl0_/view?usp=sharing",
+        "max_tokens": 200,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "rag-networking-elevator",
+      "category": "rag_specific",
+      "question": "Can you help me craft a quick elevator pitch for networking events?",
+      "target": {
+        "type": "doc_grounded",
+        "required_link": "https://drive.google.com/file/d/18Jwm10muiHDA3_R5d_jiWbDcTzRAwl0_/view?usp=sharing",
+        "max_tokens": 200,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "rag-behavioral-questions",
+      "category": "rag_specific",
+      "question": "Give me behavioral interview questions to practice and what strong answers should include.",
+      "target": {
+        "type": "doc_grounded",
+        "required_link": "https://docs.google.com/document/d/1FDaX5KXw-qCzMjeL3UH7F-DRkjxpKg3CjN_XMcGqHsk/edit?tab=t.0",
+        "max_tokens": 200,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "rag-cover-letter",
+      "category": "rag_specific",
+      "question": "Help me write a cover letter for an engineering internship—what structure should I follow?",
+      "target": {
+        "type": "doc_grounded",
+        "required_link": "https://docs.google.com/document/d/1dMTamT5LZ25CJB8L8o1tWuPmUOGeCw0S6YbEXrXHOmE/edit?tab=t.0",
+        "max_tokens": 200,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "rag-corporate-database",
+      "category": "rag_specific",
+      "question": "Where can I find SHPE UF’s corporate contacts or sponsor list?",
+      "target": {
+        "type": "doc_grounded",
+        "required_link": "https://drive.google.com/file/d/1lolTWTDZ1vlMygtQnoSbnyZUOgj9jU4L/view",
+        "max_tokens": 200,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "rag-national-convention",
+      "category": "rag_specific",
+      "question": "How should I prepare for SHPE National Convention and make the most of it?",
+      "target": {
+        "type": "doc_grounded",
+        "required_link": "https://drive.google.com/file/d/1W6CtxhqhKVky85b5VE57MgfcEoV6zJTN/view?usp=sharing",
+        "max_tokens": 200,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+
+    {
+      "id": "gen-mission",
+      "category": "general_shpe",
+      "question": "What is SHPE’s mission in one or two sentences?",
+      "target": {
+        "type": "concise_summary",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "gen-core-values",
+      "category": "general_shpe",
+      "question": "What are SHPE’s core values?",
+      "target": {
+        "type": "concise_summary",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "gen-five-pillars",
+      "category": "general_shpe",
+      "question": "What are the 5 pillars of SHPE?",
+      "target": {
+        "type": "concise_summary",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "gen-uf-history",
+      "category": "general_shpe",
+      "question": "When was SHPE UF founded and what was it called before?",
+      "target": {
+        "type": "concise_summary",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "gen-name-change",
+      "category": "general_shpe",
+      "question": "When did SHPE UF change its name to SHPE, and why?",
+      "target": {
+        "type": "concise_summary",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "gen-signature-events",
+      "category": "general_shpe",
+      "question": "What are SHPE UF’s signature events?",
+      "target": {
+        "type": "concise_summary",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "gen-shadowshpe",
+      "category": "general_shpe",
+      "question": "What is ShadowSHPE Day?",
+      "target": {
+        "type": "concise_summary",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "gen-bbq-industry",
+      "category": "general_shpe",
+      "question": "What is BBQ with Industry and who should attend?",
+      "target": {
+        "type": "concise_summary",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "gen-goals-for-tomorrow",
+      "category": "general_shpe",
+      "question": "What is Goals for Tomorrow?",
+      "target": {
+        "type": "concise_summary",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    },
+    {
+      "id": "gen-research-symposium",
+      "category": "general_shpe",
+      "question": "What is the SHPE UF Research Symposium?",
+      "target": {
+        "type": "concise_summary",
+        "max_tokens": 200,
+        "max_sentences": 3,
+        "must_not_contain": ["API", "JSON", "Tool"]
+      }
+    }
+  ]
+}
