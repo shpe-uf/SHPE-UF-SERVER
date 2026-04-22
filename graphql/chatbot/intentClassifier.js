@@ -1,11 +1,11 @@
 const { createChatCompletion } = require('./litellmClient');
 
-const SUPPORTED_INTENTS = new Set(['calendar', 'general']);
+const SUPPORTED_INTENTS = new Set(['calendar', 'general', 'out_of_scope']);
 
 const INTENT_CLASSIFIER_SYSTEM_PROMPT = `You are an intent classifier for SHPE UF chatbot routing.
 Return JSON only with this exact schema:
 {
-  "intent": "calendar" | "general",
+  "intent": "calendar" | "general" | "out_of_scope",
   "confidence": number between 0 and 1,
   "needs_rag": boolean,
   "params": {
@@ -14,8 +14,9 @@ Return JSON only with this exact schema:
 }
 No markdown. No extra keys.
 Choose "calendar" only when the user asks for schedules, meetings, event dates, event times, event locations, or upcoming chapter events.
-Choose "general" for all other requests.
-Set "needs_rag" to true only if the user question likely requires retrieval from vector store documents to answer accurately.`;
+Choose "out_of_scope" when the user asks for something unrelated to SHPE UF, student org info, UF chapter info, events, or SHPE career resources (e.g., cooking, travel planning, relationship advice, medical/legal advice, entertainment, or solving homework problems).
+Choose "general" for everything else.
+Set "needs_rag" to true only for "general" when the user likely needs an official document answer.`;
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
@@ -33,7 +34,7 @@ function normalizeClassification(parsed) {
     ? clamp(Number(parsed.confidence), 0, 1)
     : 0;
 
-  const needsRag = Boolean(parsed.needs_rag);
+  const needsRag = intent === 'general' ? Boolean(parsed.needs_rag) : false;
 
   const params = {};
   if (parsed.params && typeof parsed.params === 'object' && parsed.params.max_results !== undefined) {

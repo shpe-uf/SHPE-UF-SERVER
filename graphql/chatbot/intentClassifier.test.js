@@ -59,7 +59,7 @@ test('parseIntentClassification clamps out-of-range params and confidence', () =
 
   assert.equal(parsed.intent, 'calendar');
   assert.equal(parsed.confidence, 1);
-  assert.equal(parsed.needs_rag, true);
+  assert.equal(parsed.needs_rag, false);
   assert.deepEqual(parsed.params, { max_results: 10 });
 });
 
@@ -121,4 +121,22 @@ test('shouldUseRag requires general intent, rag=true and confidence threshold', 
     ),
     false
   );
+});
+
+test('parseIntentClassification accepts out_of_scope and forces needs_rag=false', () => {
+  const parsed = parseIntentClassification(
+    JSON.stringify({
+      intent: 'out_of_scope',
+      confidence: 0.9,
+      needs_rag: true,
+      params: {},
+    })
+  );
+
+  assert.deepEqual(parsed, {
+    intent: 'out_of_scope',
+    confidence: 0.9,
+    needs_rag: false,
+    params: {},
+  });
 });

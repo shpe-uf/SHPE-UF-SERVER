@@ -12,6 +12,7 @@ function loadConfig() {
 
 test.beforeEach(() => {
   originalEnv = { ...process.env };
+  process.env.NODE_ENV = 'test';
 });
 
 test.afterEach(() => {
@@ -41,4 +42,28 @@ test('ignores model and temperature env variables', () => {
   assert.equal(config.litellmResponseModel, 'llama-3.1-70b-instruct');
   assert.equal(config.classifierTemperature, 0.1);
   assert.equal(config.responseTemperature, 0.2);
+});
+
+test('uses LITELLM_CLASSIFIER_KEY when set, otherwise falls back to response key', () => {
+  process.env.LITELLM_RESPONSE_KEY = 'response-key';
+  delete process.env.LITELLM_VIRTUAL_KEY;
+  delete process.env.LITELLM_CLASSIFIER_KEY;
+
+  let config = loadConfig();
+  assert.equal(config.litellmApiKey, 'response-key');
+  assert.equal(config.litellmClassifierKey, 'response-key');
+
+  process.env.LITELLM_CLASSIFIER_KEY = 'classifier-key';
+  config = loadConfig();
+  assert.equal(config.litellmApiKey, 'response-key');
+  assert.equal(config.litellmClassifierKey, 'classifier-key');
+});
+
+test('falls back to LITELLM_VIRTUAL_KEY when LITELLM_RESPONSE_KEY is missing', () => {
+  delete process.env.LITELLM_RESPONSE_KEY;
+  process.env.LITELLM_VIRTUAL_KEY = 'legacy-key';
+
+  const config = loadConfig();
+  assert.equal(config.litellmApiKey, 'legacy-key');
+  assert.equal(config.litellmResponseKey, 'legacy-key');
 });
