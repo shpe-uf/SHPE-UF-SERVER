@@ -4,8 +4,8 @@ Index GraphQL data into the RAG system instead of scraping websites.
 This script queries the SHPE UF GraphQL API and indexes structured data
 into ChromaDB for the chatbot to use.
 
-Usage:
-    python rag/index_graphql_data.py [--dry-run]
+Usage (run from project root):
+    python rag/scripts/index_graphql_data.py [--dry-run]
 """
 
 import json

@@ -1,4 +1,4 @@
-// graphql/chatbot/prompt.js
+// graphql/chatbot/systemprompt.js
 
 const SUPPORTED_PERSONAS = ['Tito', 'Tina'];
 const DEFAULT_PERSONA = 'Tito';

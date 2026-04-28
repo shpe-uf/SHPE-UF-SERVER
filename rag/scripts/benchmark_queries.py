@@ -10,8 +10,8 @@ Usage:
     # Make sure RAG API is running first
     npm run serve:rag
 
-    # Then run benchmark
-    python rag/benchmark_queries.py
+    # Then run benchmark (from project root)
+    python rag/scripts/benchmark_queries.py
 
     # Or save results to compare later
     python rag/benchmark_queries.py > rag/benchmark_before.txt

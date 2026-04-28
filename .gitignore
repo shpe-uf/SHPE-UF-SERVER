@@ -11,6 +11,7 @@ __pycache__/
 *.pyc
 rag/chroma_db/
 rag/chroma_db_data/
+rag/rag/
 rag/faiss_storage/
 .cache/
 *.bin

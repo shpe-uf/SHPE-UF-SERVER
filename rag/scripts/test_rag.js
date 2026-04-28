@@ -1,5 +1,5 @@
 //Test the RAG system
-const { queryRAG } = require('../graphql/chatbot/chatbotService');
+const { queryRAG } = require('../../graphql/chatbot/chatbotService');
 
 async function testRAG() {
     console.log('🧪 Testing RAG system...\n');

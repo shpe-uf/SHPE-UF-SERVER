@@ -3,8 +3,8 @@ import os
 import asyncio
 import logging
 
-# Add the current directory to sys.path so we can import from app
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Add the rag/ directory (parent of scripts/) to sys.path so we can import from app
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from app.core.agent_loop import generate_answer_with_tools
 from app.core.rag import RAGSystem

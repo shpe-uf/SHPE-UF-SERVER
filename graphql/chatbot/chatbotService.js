@@ -35,7 +35,8 @@ const OUT_OF_SCOPE_PATTERNS = [
 
   // Jailbreak attempts and prompt extraction
   /\bignore\b.{0,30}\b(instructions|rules|prompt|directives|system message|guidelines)\b/i,
-  /\b(show|reveal|repeat|print|tell me|what('s| is)) your (system )?(prompt|instructions|directives|rules|guidelines)\b/i,
+  /\b(show|reveal|repeat|print|tell|give)( (me|us|to me))? (your|the) (system )?(prompt|instructions|directives|rules|guidelines)\b/i,
+  /\bwhat('s| is| are) your (system )?(prompt|instructions|directives|rules|guidelines)\b/i,
   /\bwhat (are|were) your (original |initial )?(instructions|rules|directives)\b/i,
   /\bfrom now on,? you('?| a)re (?!(my|a) (mentor|recruiter|interviewer|hiring manager|professional|advisor))/i,
   /\byou('?| a)re no longer (tito|tina|shpebot|an? assistant|an? ai|bound)/i,
@@ -253,11 +254,6 @@ function shrinkToTokenBudget(text, budgetTokens) {
   return out.trim();
 }
 
-function getDeterministicAnswer(_question) {
-  // Intentionally disabled: deterministic answers should live in shared config/prompting.
-  return null;
-}
-
 function postProcessAnswer({ content, docTopic }) {
   let text = String(content || "").trim();
   if (!text) return "";
@@ -298,15 +294,8 @@ async function queryRAG(question, persona) {
     }
 
     if (isOutOfScopeQuestion(question)) {
+      logger.info("out-of-scope-refusal-regex");
       return "I can help with SHPE UF (events, chapter info, and career resources). I can’t help with that topic.";
-    }
-
-    const deterministic = getDeterministicAnswer(question);
-    if (deterministic) {
-      return postProcessAnswer({
-        content: deterministic,
-        docTopic: detectDocTopic(question),
-      });
     }
 
     const docTopic = detectDocTopic(question);
@@ -439,4 +428,4 @@ async function queryRAG(question, persona) {
   }
 }
 
-module.exports = { queryRAG };
+module.exports = { queryRAG, isOutOfScopeQuestion };

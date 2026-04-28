@@ -1,8 +1,8 @@
 """
 Analyze the current RAG indexed data to identify noise and quality issues.
 
-Usage:
-    python rag/analyze_indexed_data.py
+Usage (run from project root):
+    python rag/scripts/analyze_indexed_data.py
 """
 
 import chromadb
