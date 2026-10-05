@@ -1,6 +1,7 @@
 const Event = require("../../models/Event.js");
 const User = require("../../models/User.js");
 const Request = require("../../models/Request.js");
+const checkAuth = require("../../util/check-auth");
 
 const {
   validateCreateEventInput,
@@ -41,8 +42,15 @@ module.exports = {
       _,
       {
         createEventInput: { name, code, category, expiration, request, points },
-      }
+      },
+      context
     ) {
+      const user = checkAuth(context);
+      
+      if(user.permission !== "admin") {
+        handleGeneralError({}, "You do not have permission to create events.");
+      }
+
       const { valid, errors } = validateCreateEventInput(
         name,
         code,
@@ -101,7 +109,13 @@ module.exports = {
       return updatedEvents;
     },
 
-    async manualInput(_, { manualInputInput: { username, eventName } }) {
+    async manualInput(_, { manualInputInput: { username, eventName } }, context) {
+      const authUser = checkAuth(context);
+
+      if(authUser.permission !== "admin") {
+        handleGeneralError({}, "You do not have permission to manually add users to events.");
+      }
+
       const { valid, errors } = validateManualInputInput(username);
 
       if (!valid) {
@@ -226,8 +240,13 @@ module.exports = {
     },
     async removeUserFromEvent(
       _,
-      { manualInputInput: { username, eventName } }
+      { manualInputInput: { username, eventName } }, context
     ) {
+      const authUser = checkAuth(context);
+
+      if(authUser.permission !== "admin") {
+        handleGeneralError({}, "You do not have permission to remove users from events.");
+      }
       const { valid, errors } = validateManualInputInput(username);
 
       if (!valid) {
@@ -300,7 +319,13 @@ module.exports = {
 
       return newEvent;
     },
-    async deleteEvent(_, { eventName }) {
+    async deleteEvent(_, { eventName }, context) {
+      const authUser = checkAuth(context);
+
+      if(authUser.permission !== "admin") {
+        handleGeneralError({}, "You do not have permission to delete events.");
+      }
+
       const errors = {};
       const users = await User.find();
       const event = await Event.findOne({
