@@ -1,4 +1,4 @@
-const nodegeocoder = require("node-geocoder");
+const { geocodeAlumni } = require("../../util/geocode-alumni");
 
 const Alumni = require("../../models/Alumni.js");
 
@@ -70,36 +70,28 @@ module.exports = {
         handleInputError(errors);
       }
 
-      const alumniLocation =
-        location.city +
-        ", " +
-        (location.state ? location.state + ", " : "") +
-        location.country;
-
-      var ngcOptions = {
-        provider: "mapquest",
-        httpAdapter: "https",
-        apiKey: process.env.MQ_KEY,
-        formatter: null,
-      };
-
-      var geocoder = nodegeocoder(ngcOptions);
-
-      await geocoder
-        .geocode(alumniLocation)
-        .then(function (res) {
-          var north = Math.random() * 0.007;
-          var south = -1 * Math.random() * 0.007;
-          var east = Math.random() * 0.007;
-          var west = -1 * Math.random() * 0.007;
-          coordinates.latitude = res[0].latitude + north + south;
-          coordinates.longitude = res[0].longitude + east + west;
-        })
-        .catch(function (err) {
+      try {
+        coordinates = await geocodeAlumni(location);
+        // Keep nearby alumni markers from completely overlapping.
+        coordinates.latitude = Math.max(-90, Math.min(90,
+          coordinates.latitude + (Math.random() - Math.random()) * 0.007));
+        coordinates.longitude = ((coordinates.longitude +
+          (Math.random() - Math.random()) * 0.007 + 540) % 360) - 180;
+      } catch (err) {
+        if (err.code === "LOCATION_NOT_FOUND") {
           errors.general =
-            "Invalid location, please check city, state and/or country.";
+            "Location not found. Please check city, state and country.";
           handleInputError(errors);
+        }
+        console.error("Alumni geocoding failed", {
+          code: err.code || "UNKNOWN_ERROR",
+          status: err.status,
         });
+        handleGeneralError(
+          { general: "Location lookup is temporarily unavailable." },
+          "Location lookup is temporarily unavailable. Please try again later."
+        );
+      }
 
       const newAlumni = new Alumni({
         firstName,
