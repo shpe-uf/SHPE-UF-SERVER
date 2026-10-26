@@ -1,6 +1,6 @@
-const { model, Schema } = require('mongoose');
-const User = require('./User').schema;
-const Event = require('./Event').schema;
+const { model, Schema } = require("mongoose");
+const User = require("./User").schema;
+const Event = require("./Event").schema;
 
 const requestSchema = new Schema({
   name: {
@@ -34,4 +34,4 @@ const requestSchema = new Schema({
   },
 });
 
-module.exports = model('Request', requestSchema);
+module.exports = model("Request", requestSchema);

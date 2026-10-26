@@ -44,7 +44,7 @@ module.exports = {
           receiptPhoto,
           execute,
         },
-      }
+      },
     ) {
       const { valid, errors } = validateReimbursementRequest(
         firstName,
@@ -59,7 +59,7 @@ module.exports = {
         amount,
         receiptPhoto,
         ufEmployee,
-        eventFlyer
+        eventFlyer,
       );
 
       if (!valid) {
@@ -160,7 +160,7 @@ module.exports = {
       try {
         const resolvedReimbursement = await Reimbursement.findByIdAndUpdate(
           id,
-          { reimbursed: "resolved" }
+          { reimbursed: "resolved" },
         );
 
         const transporter = nodemailer.createTransport({
@@ -199,7 +199,7 @@ module.exports = {
       try {
         const unresolvedReimbursement = await Reimbursement.findByIdAndUpdate(
           id,
-          { reimbursed: "pending" }
+          { reimbursed: "pending" },
         );
 
         const transporter = nodemailer.createTransport({
@@ -238,7 +238,7 @@ module.exports = {
       try {
         const unresolvedReimbursement = await Reimbursement.findByIdAndUpdate(
           id,
-          { reimbursed: "cancelled" }
+          { reimbursed: "cancelled" },
         );
 
         const transporter = nodemailer.createTransport({
@@ -277,7 +277,7 @@ module.exports = {
       try {
         const unresolvedReimbursement = await Reimbursement.findByIdAndUpdate(
           id,
-          { reimbursed: "pending" }
+          { reimbursed: "pending" },
         );
 
         const transporter = nodemailer.createTransport({

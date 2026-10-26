@@ -37,8 +37,12 @@ async function geocodeAlumni(location) {
   }
   if (!result.results.length) throw new GeocodingError("LOCATION_NOT_FOUND");
   const { lat, lon } = result.results[0];
-  if (!Number.isFinite(lat) || !Number.isFinite(lon) ||
-      Math.abs(lat) > 90 || Math.abs(lon) > 180) {
+  if (
+    !Number.isFinite(lat) ||
+    !Number.isFinite(lon) ||
+    Math.abs(lat) > 90 ||
+    Math.abs(lon) > 180
+  ) {
     throw new GeocodingError("INVALID_RESPONSE");
   }
   return { latitude: lat, longitude: lon };

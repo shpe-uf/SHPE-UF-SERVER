@@ -1,21 +1,21 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema } = require("mongoose");
 
 const partnerSchema = new Schema({
   name: {
     type: String,
-    default: '',
+    default: "",
     required: true,
   },
   photo: {
     type: String,
-    default: '',
+    default: "",
     required: true,
   },
   tier: {
     type: String,
-    default: 'Bronze',
+    default: "Bronze",
     required: true,
-  }
+  },
 });
 
-module.exports = model('Partner', partnerSchema);
+module.exports = model("Partner", partnerSchema);

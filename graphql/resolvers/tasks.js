@@ -29,14 +29,14 @@ module.exports = {
   Mutation: {
     async createTask(
       _,
-      { createTaskInput: { name, startDate, endDate, description, points } }
+      { createTaskInput: { name, startDate, endDate, description, points } },
     ) {
       const { errors, valid } = validateCreateTaskInput(
         name,
         startDate,
         endDate,
         description,
-        points
+        points,
       );
 
       if (!valid) {
@@ -164,7 +164,7 @@ module.exports = {
         },
         {
           new: true,
-        }
+        },
       );
       updatedUser.message = "";
 
@@ -192,7 +192,7 @@ module.exports = {
         },
         {
           new: true,
-        }
+        },
       );
 
       const newTask = await Task.findOne({
@@ -203,7 +203,7 @@ module.exports = {
     },
     async removeUserFromTask(
       _,
-      { manualTaskInputInput: { username, taskName } }
+      { manualTaskInputInput: { username, taskName } },
     ) {
       const { valid, errors } = validateManualTaskInputInput(username);
 
@@ -245,7 +245,7 @@ module.exports = {
             tasks: newTasks,
             points: user.points - task.points,
             fallPoints: user.fallPoints - task.points,
-          }
+          },
         );
       } else if (task.semester === "Spring Semester") {
         await User.findOneAndUpdate(
@@ -254,7 +254,7 @@ module.exports = {
             tasks: newTasks,
             points: user.points - task.points,
             springPoints: user.springPoints - task.points,
-          }
+          },
         );
       } else if (task.semester === "Summer Semester") {
         await User.findOneAndUpdate(
@@ -263,7 +263,7 @@ module.exports = {
             tasks: newTasks,
             points: user.points - task.points,
             summerPoints: user.summerPoints - task.points,
-          }
+          },
         );
       } else {
         errors.general = "Invalid task.";
@@ -273,7 +273,7 @@ module.exports = {
       newTask = await Task.findOneAndUpdate(
         { name: taskName },
         { users: newUsers, attendance: task.attendance - 1 },
-        { new: true }
+        { new: true },
       );
 
       return newTask;
@@ -334,7 +334,7 @@ module.exports = {
             },
           },
           $inc: pointsDecrease,
-        }
+        },
       );
 
       tasks = await Task.find();

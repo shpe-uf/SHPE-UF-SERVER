@@ -60,7 +60,6 @@ The project is organized as follows:
 
 - `/util`: Utility functions and helpers
 
-
 # Backend Implementation
 
 Our frontend connects with the backend using GraphQL. Below attached examples of queries and mutations.
@@ -83,6 +82,7 @@ mutation CreateUser($name: String!, $email: String!) {
   }
 }
 ```
+
 # Build scripts
 
 Build scripts are not included in this readme beacause the build is deployed on Heroku which builds the server for us

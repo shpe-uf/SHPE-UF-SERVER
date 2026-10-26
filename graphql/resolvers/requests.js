@@ -18,7 +18,7 @@ function generateToken(user, time) {
     process.env.SECRET,
     {
       expiresIn: time,
-    }
+    },
   );
 }
 
@@ -39,7 +39,7 @@ module.exports = {
   Mutation: {
     async rejectRequest(
       _,
-      { approveRejectRequestInput: { username, name, type } }
+      { approveRejectRequestInput: { username, name, type } },
     ) {
       const res = await Request.deleteOne({
         username: username,
@@ -56,7 +56,7 @@ module.exports = {
 
     async approveRequest(
       _,
-      { approveRejectRequestInput: { username, name, type } }
+      { approveRejectRequestInput: { username, name, type } },
     ) {
       const event = await Event.findOne({
         name: name,
@@ -115,7 +115,7 @@ module.exports = {
           },
           {
             new: true,
-          }
+          },
         );
 
         await Event.findOneAndUpdate(
@@ -145,7 +145,7 @@ module.exports = {
           },
           {
             new: true,
-          }
+          },
         );
       }
 
@@ -194,7 +194,7 @@ module.exports = {
           },
           {
             new: true,
-          }
+          },
         );
 
         await Task.findOneAndUpdate(
@@ -224,7 +224,7 @@ module.exports = {
           },
           {
             new: true,
-          }
+          },
         );
       }
 

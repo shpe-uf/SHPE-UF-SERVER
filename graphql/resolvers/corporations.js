@@ -50,7 +50,7 @@ module.exports = {
           recruitmentDay,
           signUpLink,
         },
-      }
+      },
     ) {
       const { valid, errors } = validateCreateEditCorporationInput(
         name,
@@ -95,7 +95,8 @@ module.exports = {
         nationalConvention === "true" || nationalConvention === true
           ? true
           : false;
-      recruitmentDay = recruitmentDay === "true" || recruitmentDay === true ? true : false;
+      recruitmentDay =
+        recruitmentDay === "true" || recruitmentDay === true ? true : false;
 
       const newCorporation = new Corporation({
         name,
@@ -123,7 +124,6 @@ module.exports = {
       });
 
       await newCorporation.save();
-
 
       const corporations = await Corporation.find();
 
@@ -158,7 +158,7 @@ module.exports = {
           recruitmentDay,
           signUpLink,
         },
-      }
+      },
     ) {
       const { valid, errors } = validateCreateEditCorporationInput(
         name,
@@ -172,7 +172,7 @@ module.exports = {
         businessModel,
         newsLink,
         applyLink,
-        signUpLink
+        signUpLink,
       );
 
       if (!valid) {
@@ -197,7 +197,8 @@ module.exports = {
         nationalConvention === "true" || nationalConvention === true
           ? true
           : false;
-      recruitmentDay = recruitmentDay === "true" || recruitmentDay === true ? true : false;
+      recruitmentDay =
+        recruitmentDay === "true" || recruitmentDay === true ? true : false;
 
       const companyExists = await Corporation.findOne({ _id: id });
 
@@ -232,7 +233,7 @@ module.exports = {
           {
             //Returns the updated object, instead of the old one
             new: true,
-          }
+          },
         );
         return updatedCorporation;
       } else {
@@ -241,9 +242,9 @@ module.exports = {
     },
 
     async deleteCorporation(_, { corporationId }) {
-      try{
+      try {
         await Corporation.deleteOne({ _id: corporationId });
-      }catch(err){
+      } catch (err) {
         handleGeneralError(err, err.message);
       }
       const corporations = await Corporation.find();

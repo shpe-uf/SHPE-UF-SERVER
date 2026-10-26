@@ -53,7 +53,7 @@ module.exports = {
       try {
         //fixes bug where Object Null is received
         const { item, username, numberOfItems, email } = JSON.parse(
-          JSON.stringify(data)
+          JSON.stringify(data),
         ).data;
 
         const rentable = await Rentable.findOne({ item: item });
@@ -72,7 +72,7 @@ module.exports = {
         let { errors, valid } = validateRentalRequest(
           numberOfItems,
           rentable.quantity,
-          rentable.renters
+          rentable.renters,
         );
 
         if (!valid) {
@@ -177,7 +177,7 @@ module.exports = {
           {
             datePickedUp: JSON.stringify(new Date()),
           },
-          { new: true }
+          { new: true },
         );
 
         return newReceipt;
@@ -219,7 +219,7 @@ module.exports = {
         for (let i = 0; i < receipt.quantity; i++) {
           newRenters.splice(
             rentable.renters.findIndex((e) => e === receipt.username),
-            1
+            1,
           );
         }
 
@@ -227,7 +227,7 @@ module.exports = {
           { item: item },
           {
             renters: newRenters,
-          }
+          },
         );
 
         const newReceipt = await Receipt.findOneAndUpdate(
@@ -235,7 +235,7 @@ module.exports = {
           {
             dateClosed: JSON.stringify(new Date()),
           },
-          { new: true }
+          { new: true },
         );
 
         return newReceipt;
@@ -266,7 +266,7 @@ module.exports = {
           {
             datePickedUp: null,
           },
-          { new: true }
+          { new: true },
         );
 
         return newReceipt;
@@ -320,7 +320,7 @@ module.exports = {
             $push: {
               renters: users,
             },
-          }
+          },
         );
 
         const newReceipt = await Receipt.findOneAndUpdate(
@@ -328,7 +328,7 @@ module.exports = {
           {
             dateClosed: null,
           },
-          { new: true }
+          { new: true },
         );
 
         return newReceipt;
@@ -370,7 +370,7 @@ module.exports = {
           for (let i = 0; i < receipt.quantity; i++) {
             newRenters.splice(
               rentable.renters.findIndex((e) => e === receipt.username),
-              1
+              1,
             );
           }
 
@@ -378,7 +378,7 @@ module.exports = {
             { item: item },
             {
               renters: newRenters,
-            }
+            },
           );
         }
 
@@ -387,7 +387,7 @@ module.exports = {
           {
             deleted: true,
           },
-          { new: true }
+          { new: true },
         );
 
         return newReceipt;

@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema } = require("mongoose");
 
 const corporationSchema = new Schema({
   name: {
@@ -95,4 +95,4 @@ const corporationSchema = new Schema({
   },
 });
 
-module.exports = model('Corporation', corporationSchema);
+module.exports = model("Corporation", corporationSchema);

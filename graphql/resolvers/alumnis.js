@@ -38,7 +38,7 @@ module.exports = {
           location,
           linkedin,
         },
-      }
+      },
     ) {
       const { valid, errors } = validateRegisterAlumniInput(
         firstName,
@@ -49,7 +49,7 @@ module.exports = {
         employer,
         position,
         location,
-        linkedin
+        linkedin,
       );
 
       var coordinates = {
@@ -73,10 +73,19 @@ module.exports = {
       try {
         coordinates = await geocodeAlumni(location);
         // Keep nearby alumni markers from completely overlapping.
-        coordinates.latitude = Math.max(-90, Math.min(90,
-          coordinates.latitude + (Math.random() - Math.random()) * 0.007));
-        coordinates.longitude = ((coordinates.longitude +
-          (Math.random() - Math.random()) * 0.007 + 540) % 360) - 180;
+        coordinates.latitude = Math.max(
+          -90,
+          Math.min(
+            90,
+            coordinates.latitude + (Math.random() - Math.random()) * 0.007,
+          ),
+        );
+        coordinates.longitude =
+          ((coordinates.longitude +
+            (Math.random() - Math.random()) * 0.007 +
+            540) %
+            360) -
+          180;
       } catch (err) {
         if (err.code === "LOCATION_NOT_FOUND") {
           errors.general =
@@ -89,7 +98,7 @@ module.exports = {
         });
         handleGeneralError(
           { general: "Location lookup is temporarily unavailable." },
-          "Location lookup is temporarily unavailable. Please try again later."
+          "Location lookup is temporarily unavailable. Please try again later.",
         );
       }
 

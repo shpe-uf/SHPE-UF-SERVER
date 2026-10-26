@@ -16,7 +16,7 @@ module.exports = {
     async getPartners() {
       try {
         const partners = await Partner.find().sort({ name: 1 });
-        return partners
+        return partners;
       } catch (err) {
         handleGeneralError(err, err.message);
       }
@@ -24,16 +24,7 @@ module.exports = {
   },
 
   Mutation: {
-    async createPartner(
-      _,
-      {
-        createPartnerInput: {
-          name,
-          photo,
-          tier,
-        },
-      }
-    ) {
+    async createPartner(_, { createPartnerInput: { name, photo, tier } }) {
       const { valid, errors } = validateCreateEditPartnerInput(
         name,
         photo,
@@ -56,7 +47,6 @@ module.exports = {
         photo,
         tier,
       });
-
 
       const savedPartner = await newPartner.save();
 

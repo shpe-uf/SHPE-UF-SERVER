@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema } = require("mongoose");
 
 const eventSchema = new Schema({
   name: {
@@ -50,4 +50,4 @@ const eventSchema = new Schema({
   ],
 });
 
-module.exports = model('Event', eventSchema);
+module.exports = model("Event", eventSchema);

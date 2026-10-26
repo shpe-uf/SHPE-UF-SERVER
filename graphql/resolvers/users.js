@@ -28,9 +28,8 @@ require("dotenv").config();
 const sesClient = new SESv2Client({ region: process.env.AWS_REGION });
 
 const transport = nodemailer.createTransport({
-  SES: { sesClient, SendEmailCommand},
+  SES: { sesClient, SendEmailCommand },
 });
-
 
 const {
   validateRegisterInput,
@@ -65,7 +64,7 @@ async function calculatePercentiles(user) {
       .lt(user.fallPoints);
 
     const fallPercent = Math.trunc(
-      (fallBelowUsers.length / users.length) * 100
+      (fallBelowUsers.length / users.length) * 100,
     );
 
     percentileUpdate = {
@@ -77,7 +76,7 @@ async function calculatePercentiles(user) {
       .lt(user.springPoints);
 
     const springPercent = Math.trunc(
-      (springBelowUsers.length / users.length) * 100
+      (springBelowUsers.length / users.length) * 100,
     );
 
     percentileUpdate = {
@@ -89,7 +88,7 @@ async function calculatePercentiles(user) {
       .lt(user.summerPoints);
 
     const summerPercent = Math.trunc(
-      (summerBelowUsers.length / users.length) * 100
+      (summerBelowUsers.length / users.length) * 100,
     );
 
     percentileUpdate = {
@@ -108,7 +107,7 @@ async function calculatePercentiles(user) {
     },
     {
       new: true,
-    }
+    },
   );
 }
 
@@ -125,7 +124,7 @@ function generateToken(user, time) {
     process.env.SECRET,
     {
       expiresIn: time,
-    }
+    },
   );
 }
 
@@ -144,7 +143,7 @@ module.exports = {
       }
     },
 
-    async getUser(_, { userId },) {
+    async getUser(_, { userId }) {
       try {
         var user = await User.findById(userId);
         if (user) {
@@ -393,7 +392,7 @@ module.exports = {
           confirmPassword,
           listServ,
         },
-      }
+      },
     ) {
       firstName = firstName.trim();
       lastName = lastName.trim();
@@ -412,7 +411,7 @@ module.exports = {
         username,
         email,
         password,
-        confirmPassword
+        confirmPassword,
       );
 
       if (!valid) {
@@ -478,7 +477,6 @@ module.exports = {
         email,
       });
 
-
       transport
         .sendMail({
           from: process.env.EMAIL,
@@ -501,7 +499,6 @@ module.exports = {
         .catch((err) => {
           console.error("there was an error: ", err);
         });
-
 
       return {
         ...res._doc,
@@ -656,7 +653,7 @@ module.exports = {
           },
           {
             new: true,
-          }
+          },
         );
 
         updatedUser.message = "";
@@ -688,7 +685,7 @@ module.exports = {
           },
           {
             new: true,
-          }
+          },
         );
 
         calculatePercentiles(updatedUser);
@@ -728,7 +725,7 @@ module.exports = {
           },
           {
             new: true,
-          }
+          },
         );
       }
 
@@ -753,7 +750,7 @@ module.exports = {
         },
         {
           new: true,
-        }
+        },
       );
 
       return updatedUser;
@@ -777,7 +774,7 @@ module.exports = {
         },
         {
           new: true,
-        }
+        },
       );
 
       return updatedUser;
@@ -808,7 +805,7 @@ module.exports = {
         23,
         59,
         59,
-        999
+        999,
       );
 
       if (endDate < currentdate) {
@@ -885,7 +882,7 @@ module.exports = {
         },
         {
           confirmed: true,
-        }
+        },
       );
 
       if (!user) {
@@ -931,7 +928,7 @@ module.exports = {
         },
         {
           token,
-        }
+        },
       );
 
       transport
@@ -969,7 +966,7 @@ module.exports = {
     async resetPassword(_, { password, confirmPassword, token }) {
       const { errors, valid } = validatePasswordInput(
         password,
-        confirmPassword
+        confirmPassword,
       );
 
       if (!valid) {
@@ -993,7 +990,7 @@ module.exports = {
         {
           password,
           token: "",
-        }
+        },
       );
 
       var Token = {
@@ -1014,7 +1011,7 @@ module.exports = {
         },
         {
           new: true,
-        }
+        },
       );
 
       return updatedUser;
@@ -1032,7 +1029,7 @@ module.exports = {
         },
         {
           new: true,
-        }
+        },
       );
 
       return updatedUser;
@@ -1056,7 +1053,7 @@ module.exports = {
           internships,
           socialMedia,
         },
-      }
+      },
     ) {
       const { errors, valid } = validateEditUserProfile(
         firstName,
@@ -1070,7 +1067,7 @@ module.exports = {
         sex,
         classes,
         internships,
-        socialMedia
+        socialMedia,
       );
 
       if (!valid) {
@@ -1102,8 +1099,8 @@ module.exports = {
             updatedAt,
           },
           {
-            new: true
-          }
+            new: true,
+          },
         );
 
         return updatedUser;
@@ -1126,8 +1123,8 @@ module.exports = {
             updatedAt,
           },
           {
-            new: true
-          }
+            new: true,
+          },
         );
 
         return updatedUser;
@@ -1174,7 +1171,7 @@ module.exports = {
         {
           permission,
         },
-        options
+        options,
       );
       if (!user) {
         errors.general = "User not found";
@@ -1186,7 +1183,7 @@ module.exports = {
 
     async updateYears() {
       var users = await User.find();
-      users.forEach(async function(user) {
+      users.forEach(async function (user) {
         const currDate = new Date();
         const email = user.email;
         const msPerDay = 1000 * 60 * 60 * 24;
@@ -1211,45 +1208,43 @@ module.exports = {
             updatedAt: updatedAt.toISOString(),
           },
           {
-            new: true
-          }
+            new: true,
+          },
         );
       });
       return users;
     },
 
-
     /**
      * This function removes a user from all events they have attended and deletes them
      * from our Mongodb database. Needed for our iOS user privacy concerns.
-     * 
+     *
      * @param {String} email - the user's email we would like to delete.
      * @returns {Boolean} - optional return value, returns true if the user is deleted.
-     * 
+     *
      * @example deleteUser(testUser@ufl.edu)
      */
     async deleteUser(_, { email }) {
-
-      var user = await User.findOne({ email })
+      var user = await User.findOne({ email });
 
       if (!user) {
-        errors = { email: "User not found" }
+        errors = { email: "User not found" };
         handleInputError(errors);
       }
 
-      user.events.forEach(async function(userEvent) {
-        var event = await Event.findOne({ name: userEvent.name })
+      user.events.forEach(async function (userEvent) {
+        var event = await Event.findOne({ name: userEvent.name });
         var newUsers = event.users.filter((e) => e.username !== user.username);
 
         await Event.findOneAndUpdate(
           { name: event.name },
           { users: newUsers, attendance: event.attendance },
-          { new: true }
+          { new: true },
         );
       });
 
       var user = await User.findOneAndDelete({ email });
-      return true
-    }
+      return true;
+    },
   },
 };

@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema } = require("mongoose");
 
 const userSchema = new Schema({
   firstName: {
@@ -11,7 +11,7 @@ const userSchema = new Schema({
   },
   photo: {
     type: String,
-    default: '',
+    default: "",
   },
   major: {
     type: String,
@@ -91,7 +91,7 @@ const userSchema = new Schema({
   },
   permission: {
     type: String,
-    default: 'member',
+    default: "member",
   },
   listServ: Boolean,
   internships: {
@@ -129,4 +129,4 @@ const userSchema = new Schema({
   bookmarks: [String],
 });
 
-module.exports = model('User', userSchema);
+module.exports = model("User", userSchema);

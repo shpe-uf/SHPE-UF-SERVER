@@ -12,9 +12,8 @@ const { validateContactUsForm } = require("../../util/validators");
 const sesClient = new SESv2Client({ region: process.env.AWS_REGION });
 
 const transport = nodemailer.createTransport({
-  SES: { sesClient, SendEmailCommand},
+  SES: { sesClient, SendEmailCommand },
 });
-
 
 const { handleInputError } = require("../../util/error-handling");
 
@@ -22,14 +21,14 @@ module.exports = {
   Mutation: {
     async submitContactRequest(
       _,
-      { firstName, lastName, email, messageType, message }
+      { firstName, lastName, email, messageType, message },
     ) {
       const { valid, errors } = validateContactUsForm(
         firstName,
         lastName,
         email,
         messageType,
-        message
+        message,
       );
 
       if (!valid) {

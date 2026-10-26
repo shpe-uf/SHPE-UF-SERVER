@@ -1,5 +1,5 @@
-const { Schema } = require('mongoose');
-const mongoose = require('mongoose');
+const { Schema } = require("mongoose");
+const mongoose = require("mongoose");
 
 const receiptSchema = new Schema(
   {
@@ -38,10 +38,10 @@ const receiptSchema = new Schema(
     },
   },
   {
-    collection: 'Receipts',
-  }
+    collection: "Receipts",
+  },
 );
 
 const switchDB = mongoose.createConnection(process.env.DB_URI, {});
 
-module.exports = switchDB.model('Receipt', receiptSchema);
+module.exports = switchDB.model("Receipt", receiptSchema);

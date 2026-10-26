@@ -7,10 +7,12 @@
     "start": "node index",
     "prettier": "./node_modules/.bin/prettier --single-quote --write '*.{js,css,json}'",
     "precommit": "lint-staged",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky",
+    "format": "prettier --write . && git add -A ."
   },
   "engines": {
-    "node": "20.10.0",
+    "node": ">=20.10.0",
     "npm": "10.2.3"
   },
   "keywords": [],
@@ -41,9 +43,9 @@
     ]
   },
   "devDependencies": {
-    "husky": "^8.0.2",
+    "husky": "^8.0.3",
     "jest": "^30.3.0",
     "lint-staged": "^15.2.0",
-    "prettier": "^3.1.1"
+    "prettier": "^3.9.10"
   }
 }

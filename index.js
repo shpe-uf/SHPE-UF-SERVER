@@ -28,11 +28,11 @@ startApolloServer = async () => {
   app.use(
     cors({ origin: [RegExp(process.env.CLIENT_ORIGIN)], credentials: true }),
     json(),
-    expressMiddleware(server)
+    expressMiddleware(server),
   );
   await new Promise((resolve) => httpServer.listen({ port }, resolve));
   const addr = httpServer.address();
-  const host = addr.address === '::' ? 'localhost' : addr.address;
+  const host = addr.address === "::" ? "localhost" : addr.address;
   const hport = addr.port;
   console.log(`SERVER RUNNING AT http://${host}:${hport}/`);
 };

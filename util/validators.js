@@ -12,14 +12,17 @@ module.exports.validateRegisterInput = (
   username,
   email,
   password,
-  confirmPassword
+  confirmPassword,
 ) => {
   const errors = {};
 
   const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
-  const usernameValidator = /^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i;
-  const emailRegex = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
-  const passwordValidator = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
+  const usernameValidator =
+    /^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/i;
+  const emailRegex =
+    /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
+  const passwordValidator =
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
 
   if (firstName.trim() === "") {
     errors.firstName = "First name is required.";
@@ -124,7 +127,8 @@ module.exports.validateLoginInput = (username, password) => {
 
 module.exports.validatePasswordInput = (password, confirmPassword) => {
   const errors = {};
-  const passwordValidator = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
+  const passwordValidator =
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
 
   if (password === "") {
     errors.password = "Password is required.";
@@ -142,7 +146,8 @@ module.exports.validatePasswordInput = (password, confirmPassword) => {
 };
 
 module.exports.validateEmailInput = (email) => {
-  const emailRegex = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
+  const emailRegex =
+    /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
   const errors = {};
 
   if (email.trim() === "") {
@@ -164,7 +169,7 @@ module.exports.validateCreateEventInput = (
   code,
   category,
   points,
-  expiration
+  expiration,
 ) => {
   const errors = {};
 
@@ -198,7 +203,8 @@ module.exports.validateCreateEventInput = (
   }
 
   if (points < 0 || points > 10) {
-    errors.points = "Points must be a whole number greater than 0 and less than 10.";
+    errors.points =
+      "Points must be a whole number greater than 0 and less than 10.";
   }
 
   return {
@@ -212,9 +218,8 @@ module.exports.validateCreateTaskInput = (
   startDate,
   endDate,
   description,
-  points
+  points,
 ) => {
-
   const errors = {};
 
   const nameValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
@@ -229,26 +234,26 @@ module.exports.validateCreateTaskInput = (
   }
 
   if (isNaN(Date.parse(startDate)) || isNaN(Date.parse(endDate))) {
-    errors.date = "Invalid date, please enter a 'MM/DD/YYYY' format"
+    errors.date = "Invalid date, please enter a 'MM/DD/YYYY' format";
   } else {
-    let start = new Date(Date.parse(startDate))
-    let end = new Date(Date.parse(endDate))
-    let d = new Date()
-    let futureLimit = new Date(d.getFullYear() + 1, d.getMonth(), d.getDay())
-    let pastLimit = new Date(d.getFullYear() - 1, d.getMonth(), d.getDay())
+    let start = new Date(Date.parse(startDate));
+    let end = new Date(Date.parse(endDate));
+    let d = new Date();
+    let futureLimit = new Date(d.getFullYear() + 1, d.getMonth(), d.getDay());
+    let pastLimit = new Date(d.getFullYear() - 1, d.getMonth(), d.getDay());
     if (start > futureLimit || end > futureLimit) {
-      errors.date = "Invalid date, too far into the future"
+      errors.date = "Invalid date, too far into the future";
     } else if (start < pastLimit || end < pastLimit) {
-      errors.date = "Invalid date, too far into the past"
+      errors.date = "Invalid date, too far into the past";
     } else if (end <= start) {
-      errors.date = "End date needs to be after start date"
+      errors.date = "End date needs to be after start date";
     }
   }
 
   if (description.trim() === "" && description.length > 280) {
-    errors.description = "Description must be between 1 and 280 characters."
+    errors.description = "Description must be between 1 and 280 characters.";
   }
-  if (typeof (points) !== 'number') {
+  if (typeof points !== "number") {
     errors.points = "Points must be a whole number greater than 0.";
   }
 
@@ -267,14 +272,14 @@ module.exports.validateCreateResourceInput = (
   link,
   description,
   image,
-  podcast
+  podcast,
 ) => {
-
   const errors = {};
 
   const titleValidator = /^[a-zA-Z0-9- ]{6,50}$/i;
 
-  const linkValidator = /^(https?:\/\/)?([0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-]){1,63}(\.)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF0-9]{1,63}(((\/)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF-=?#&]{1,63}){1,63})?(\/)?((\.)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-=?#&]{1,63})?$/gm;
+  const linkValidator =
+    /^(https?:\/\/)?([0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-]){1,63}(\.)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF0-9]{1,63}(((\/)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF-=?#&]{1,63}){1,63})?(\/)?((\.)[0-9\x41-\x5A\x61-\x7A\xC0-\xF6\xF8-\xFF.-=?#&]{1,63})?$/gm;
 
   //Other link validators if needed
   //Without other countries characters: /^https?:\/\/([a-zA-Z0-9.-]){1,63}(\.)[a-zA-Z0-9]{1,63}(((\/)[a-zA-Z0-9-]{1,63}){1,63})?(\/)?((\.)[a-zA-Z0-9.]{1,63})?$/gm;
@@ -293,14 +298,12 @@ module.exports.validateCreateResourceInput = (
     errors.link = "Link is required.";
   } else {
     if (!link.match(linkValidator)) {
-      errors.link =
-        "Link must be valid format.";
+      errors.link = "Link must be valid format.";
     }
   }
 
-
   if (!description.trim() && description.length > 280) {
-    errors.description = "Description must be between 1 and 150 characters."
+    errors.description = "Description must be between 1 and 150 characters.";
   }
 
   return {
@@ -361,7 +364,7 @@ module.exports.validateCreateEditCorporationInput = (
   newsLink,
   applyLink,
   recruitmentDay,
-  signUpLink
+  signUpLink,
 ) => {
   const errors = {};
 
@@ -412,19 +415,13 @@ module.exports.validateCreateEditCorporationInput = (
     errors.signUpLink = "No sign up link was provided.";
   }
 
-
-
   return {
     errors,
     valid: Object.keys(errors).length < 1,
   };
 };
 
-module.exports.validateCreateEditPartnerInput = (
-  name,
-  photo,
-  tier,
-) => {
+module.exports.validateCreateEditPartnerInput = (name, photo, tier) => {
   const errors = {};
 
   if (name.trim() === "") {
@@ -454,7 +451,7 @@ module.exports.validateEditUserProfile = (
   graduating,
   country,
   ethnicity,
-  sex
+  sex,
 ) => {
   const errors = {};
 
@@ -489,7 +486,6 @@ module.exports.validateEditUserProfile = (
     }
   }
 
-
   if (major.trim() === "") {
     errors.major = "Major is required.";
   }
@@ -520,9 +516,7 @@ module.exports.validateEditUserProfile = (
   };
 };
 
-module.exports.validateEditUpdatedAt = (
-  email,
-) => {
+module.exports.validateEditUpdatedAt = (email) => {
   const errors = {};
 
   if (email.trim() === "") {
@@ -533,7 +527,7 @@ module.exports.validateEditUpdatedAt = (
     errors,
     valid: Object.keys(errors).length < 1,
   };
-}
+};
 
 module.exports.validateRegisterAlumniInput = (
   firstName,
@@ -544,12 +538,13 @@ module.exports.validateRegisterAlumniInput = (
   employer,
   position,
   location,
-  linkedin
+  linkedin,
 ) => {
   const errors = {};
 
   const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
-  const emailValidator = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
+  const emailValidator =
+    /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
   const yearValidator = /^\d{4}$/;
 
   if (firstName.trim() === "") {
@@ -684,12 +679,13 @@ module.exports.validateReimbursementRequest = (
   event,
   description,
   reimbursed,
-  amount
+  amount,
 ) => {
   const errors = {};
 
   const nameValidator = /^[a-zA-Z ',.-]{3,20}$/;
-  const emailValidator = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
+  const emailValidator =
+    /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
 
   if (firstName.trim() === "") {
     errors.firstName = "First name is required.";
@@ -718,9 +714,9 @@ module.exports.validateReimbursementRequest = (
   }
 
   if (studentId.trim() === "") {
-    errors.studentId = "Student ID is required."
+    errors.studentId = "Student ID is required.";
   } else if (isNaN(studentId)) {
-    errors.studentId = "Student ID can only be numbers."
+    errors.studentId = "Student ID can only be numbers.";
   } else {
     if (studentId > 99999999 || studentId < 10000000) {
       errors.studentId = "Invalid student ID.";
@@ -728,35 +724,35 @@ module.exports.validateReimbursementRequest = (
   }
 
   if (amount.trim() === "") {
-    errors.amount = "Amount is required."
+    errors.amount = "Amount is required.";
   }
 
   if (address.trim() === "") {
-    errors.address = "Address is required."
+    errors.address = "Address is required.";
   }
 
   if (company.trim() === "") {
-    errors.company = "Company is required."
+    errors.company = "Company is required.";
   }
 
   if (event.trim() === "") {
-    errors.event = "Event is required."
+    errors.event = "Event is required.";
   }
 
   if (description.trim() === "") {
-    errors.description = "Description is required."
+    errors.description = "Description is required.";
   }
 
   return {
     errors,
-    valid: Object.keys(errors).length < 1
+    valid: Object.keys(errors).length < 1,
   };
 };
 
 module.exports.validateRentalRequest = (
   numberRequested,
   totalQuantity,
-  currentRenters
+  currentRenters,
 ) => {
   let errors = {};
 
@@ -767,7 +763,7 @@ module.exports.validateRentalRequest = (
   }
 
   if (numberRequested === 0) {
-    errors.invalid = 'The requested number must be greater than 0';
+    errors.invalid = "The requested number must be greater than 0";
   }
 
   return {
@@ -785,13 +781,14 @@ module.exports.validateContactUsForm = (
 ) => {
   const errors = {};
 
-  const emailValidator = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
+  const emailValidator =
+    /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,12})$/;
 
   if (firstName.trim() === "") {
     errors.firstName = "First name is required.";
   } else {
     if (firstName.length > 20) {
-      errors.firstName = "First name must be 20 characters max."
+      errors.firstName = "First name must be 20 characters max.";
     }
   }
 
@@ -799,7 +796,7 @@ module.exports.validateContactUsForm = (
     errors.lastName = "Last Name is required.";
   } else {
     if (lastName.length > 20) {
-      errors.lastName = "Last name must be 20 characters max."
+      errors.lastName = "Last name must be 20 characters max.";
     }
   }
 
@@ -819,7 +816,7 @@ module.exports.validateContactUsForm = (
     errors.message = "Message is required.";
   } else {
     if (message.length > 500) {
-      errors.message = "Message must be 500 characters max."
+      errors.message = "Message must be 500 characters max.";
     }
   }
 
@@ -827,5 +824,4 @@ module.exports.validateContactUsForm = (
     errors,
     valid: Object.keys(errors).length < 1,
   };
-
-}
+};

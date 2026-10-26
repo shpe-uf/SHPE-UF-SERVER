@@ -23,21 +23,14 @@ module.exports = {
   Mutation: {
     async createResource(
       _,
-      { createResourceInput: { 
-        title,
-        link,
-        description,
-        image,
-        podcast
-        }, 
-      }
+      { createResourceInput: { title, link, description, image, podcast } },
     ) {
       const { errors, valid } = validateCreateResourceInput(
         title,
         link,
         description,
         image,
-        podcast
+        podcast,
       );
 
       if (!valid) {
@@ -63,12 +56,11 @@ module.exports = {
       await newResource.save();
 
       const updatedResources = await Resource.find();
- 
+
       return updatedResources;
     },
 
     async deleteResource(_, { resourceId }) {
-
       const resource = await Resource.findOne({
         _id: resourceId,
       });

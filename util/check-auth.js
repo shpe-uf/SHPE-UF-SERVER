@@ -3,7 +3,7 @@ const { AuthenticationError } = require("apollo-server");
 
 require("dotenv").config();
 
-module.exports = context => {
+module.exports = (context) => {
   const authHeader = context.req.headers.authorization;
 
   if (authHeader) {
@@ -17,7 +17,9 @@ module.exports = context => {
         throw new AuthenticationError("Invalid/expired token");
       }
     }
-    throw new Error("Authentication token must follow the format: 'Bearer [token]'");
+    throw new Error(
+      "Authentication token must follow the format: 'Bearer [token]'",
+    );
   }
 
   throw new Error("Authorization header must be provided");

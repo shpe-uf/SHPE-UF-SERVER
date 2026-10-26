@@ -41,14 +41,14 @@ module.exports = {
       _,
       {
         createEventInput: { name, code, category, expiration, request, points },
-      }
+      },
     ) {
       const { valid, errors } = validateCreateEventInput(
         name,
         code,
         category,
         points,
-        expiration
+        expiration,
       );
 
       if (!valid) {
@@ -59,11 +59,11 @@ module.exports = {
       const month = new Date().getMonth();
 
       code = code.toLowerCase().trim().replace(/ /g, "");
-      points = points ? points: findPoints.points;
+      points = points ? points : findPoints.points;
 
       semester = monthOptions[month].value;
       expiration = new Date(
-        new Date().getTime() + parseInt(expiration, 10) * 60 * 60 * 1000
+        new Date().getTime() + parseInt(expiration, 10) * 60 * 60 * 1000,
       );
       request = request === "true" || request === true ? true : false;
 
@@ -188,7 +188,7 @@ module.exports = {
         },
         {
           new: true,
-        }
+        },
       );
 
       updatedUser.message = "";
@@ -217,7 +217,7 @@ module.exports = {
         },
         {
           new: true,
-        }
+        },
       );
 
       const updatedEvents = await Event.find();
@@ -226,7 +226,7 @@ module.exports = {
     },
     async removeUserFromEvent(
       _,
-      { manualInputInput: { username, eventName } }
+      { manualInputInput: { username, eventName } },
     ) {
       const { valid, errors } = validateManualInputInput(username);
 
@@ -267,7 +267,7 @@ module.exports = {
             events: newEvents,
             points: user.points - event.points,
             fallPoints: user.fallPoints - event.points,
-          }
+          },
         );
       } else if (event.semester === "Spring Semester") {
         await User.findOneAndUpdate(
@@ -276,7 +276,7 @@ module.exports = {
             events: newEvents,
             points: user.points - event.points,
             springPoints: user.springPoints - event.points,
-          }
+          },
         );
       } else if (event.semester === "Summer Semester") {
         await User.findOneAndUpdate(
@@ -285,7 +285,7 @@ module.exports = {
             events: newEvents,
             points: user.points - event.points,
             summerPoints: user.summerPoints - event.points,
-          }
+          },
         );
       } else {
         errors.general = "Invalid event.";
@@ -295,7 +295,7 @@ module.exports = {
       newEvent = await Event.findOneAndUpdate(
         { name: eventName },
         { users: newUsers, attendance: event.attendance - 1 },
-        { new: true }
+        { new: true },
       );
 
       return newEvent;
@@ -356,7 +356,7 @@ module.exports = {
             },
           },
           $inc: pointsDecrease,
-        }
+        },
       );
 
       events = await Event.find();

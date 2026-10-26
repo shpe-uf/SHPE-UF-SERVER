@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema } = require("mongoose");
 
 const reimbursementSchema = new Schema({
   firstName: {
@@ -55,4 +55,4 @@ const reimbursementSchema = new Schema({
   },
 });
 
-module.exports = model('Reimbursement', reimbursementSchema);
+module.exports = model("Reimbursement", reimbursementSchema);
